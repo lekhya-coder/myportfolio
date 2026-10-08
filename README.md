@@ -1,4 +1,4 @@
-# Vinjamuri Lekhya Sahiti — Portfolio
+# Professional Resume Portfolio
 
 React / Express / tRPC / Drizzle starter, adapted from the Sandbox web-db-user template.
 
