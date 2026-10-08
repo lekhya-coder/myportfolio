@@ -30,6 +30,7 @@ A single-page personal resume portfolio for recruiters, technical selection team
 - Use a display-only Contact section with the supplied phone, email, LinkedIn, GitHub, LeetCode, CodeChef, location, internship focus, and academic details; do not collect visitor-entered information.
 - Add a profile-photo block with initials and a clear label rather than inventing a real likeness. Reuse the supplied resume PDF at `/resume.pdf` for view and download actions.
 - Add a recruiter snapshot strip and correct the achievement label to `SYNTH VISION`, including the supplied Krithomedh organizer attribution.
+- Enrich every major section with resume-grounded context: a three-part About focus map, a complete technical skill breakdown, deeper project explanations, expanded strengths, and an additional technical-evidence card.
 - Add `public/manus-routes.json`, metadata, and descriptive initial body content for the public root route.
 
 ## Project structure

@@ -66,8 +66,9 @@ const technicalSkills = [
   { label: "C & C++", signal: "Coursework + practice" },
   { label: "Java", signal: "Coursework + practice" },
   { label: "Data Structures & Problem Solving", signal: "Active practice" },
-  { label: "IoT, Sensors & Microcontrollers", signal: "Hands-on projects" },
   { label: "HTML, CSS & JavaScript", signal: "Web fundamentals" },
+  { label: "NodeMCU & Microcontrollers", signal: "Hands-on projects" },
+  { label: "Sensors & IoT", signal: "Embedded applications" },
 ];
 
 const softSkills = [
@@ -77,6 +78,8 @@ const softSkills = [
   "Sensor & hardware prototyping",
   "Academic consistency (SGPA 9.48)",
   "Curious & fast learner",
+  "Technical presentation",
+  "Hands-on prototyping",
 ];
 
 const experience = [
@@ -111,7 +114,7 @@ const education = [
     year: "2nd Year",
     title: "B.Tech — Internet of Things (IoT)",
     school: "VNR Vignana Jyothi Institute of Engineering & Technology (VNRVJIET)",
-    detail: "SGPA: 9.48 / 10 · Academic focus: programming fundamentals (C, C++, Java), data structures, and IoT / embedded-systems coursework.",
+    detail: "SGPA: 9.48 / 10 · Academic focus: programming fundamentals (C, C++, Java), data structures, IoT, and embedded-systems coursework.",
   },
   {
     year: "Continuous",
@@ -131,6 +134,7 @@ const projects = [
     tags: ["IoT Sensors", "Embedded Systems", "Microcontroller", "Soil Monitoring"],
     metric: "Underground soil monitoring",
     badge: "Resume project",
+    detail: "A practical build centered on sensing soil conditions below the surface and connecting sensor readings to microcontroller-based monitoring.",
     tone: "project-slate",
   },
   {
@@ -142,6 +146,7 @@ const projects = [
     tags: ["NodeMCU", "Wi-Fi", "Robotics"],
     metric: "Wireless movement control",
     badge: "Resume project",
+    detail: "A connected hardware build that combines NodeMCU, Wi-Fi control, and robotics fundamentals into a remotely operated car.",
     tone: "project-lime",
   },
   {
@@ -153,6 +158,7 @@ const projects = [
     tags: ["Data Structures", "Algorithms", "C++", "Java", "Problem Solving"],
     metric: "Active coding practice",
     badge: "Coding practice",
+    detail: "Ongoing practice in C++ and Java through data structures, algorithms, and problem-solving challenges on coding platforms.",
     tone: "project-ink",
   },
 ];
@@ -174,6 +180,11 @@ const evidenceNotes = [
     quote: "A 9.48 / 10 SGPA, SYNTH VISION Hackathon finalist experience, and regular coding practice describe a focused student profile.",
     name: "Resume evidence",
     role: "VNRVJIET · B.Tech in IoT",
+  },
+  {
+    quote: "Technical foundations span C, C++, Java, data structures, web technologies, NodeMCU, sensors, microcontrollers, and IoT.",
+    name: "Resume evidence",
+    role: "Technical skills & hands-on practice",
   },
 ];
 
@@ -438,7 +449,8 @@ function Home() {
               </article>
             </div>
             <div className="about-details">
-              <div><span className="detail-label">Career goal</span><p>Seeking software development and technical internship opportunities to build practical technology solutions, apply core data structures, embedded system principles, and algorithmic thinking to grow as an engineer.</p></div>
+                  <div><span className="detail-label">Career goal</span><p>Seeking software development and technical internship opportunities to build practical technology solutions, apply core data structures, embedded system principles, and algorithmic thinking to grow as an engineer.</p></div>
+                  <div className="about-focus-grid"><div><span>01</span><strong>Software foundations</strong><p>Java, C++, data structures, algorithms, and web fundamentals.</p></div><div><span>02</span><strong>Embedded practice</strong><p>NodeMCU, sensors, microcontrollers, and IoT project work.</p></div><div><span>03</span><strong>Growth mindset</strong><p>Hackathons, coding platforms, and a steady focus on practical problem solving.</p></div></div>
                   <div><span className="detail-label">Strengths</span><div className="tag-list">{["Data Structures & Algorithms", "SYNTH VISION Finalist", "Embedded Systems & Prototyping", "Rapid Problem Solving", "Academic Rigor (SGPA 9.48)", "Microcontroller Firmware"].map(tag => <span className="tag" key={tag}>{tag}</span>)}</div></div>
               <div className="quote-callout"><Quote size={22} /><p>Practical engineering starts with solid fundamentals and the curiosity to build.</p></div>
             </div>
@@ -465,7 +477,7 @@ function Home() {
 
         <section className="section-wrap content-section project-section" id="projects" aria-labelledby="projects-title">
           <SectionHeading id="projects-title" index="05 /" eyebrow="Selected projects" title="From sensors to software." body="Selected builds spanning embedded systems, wireless control, sensors, and problem solving." />
-          <div className="project-list">{projects.map(project => <article className={`project-card ${project.tone}`} key={project.title}><div className="project-visual"><div className="visual-window"><div className="visual-window-bar"><span /><span /><span /></div><div className="visual-lines"><b /><b /><b /><i /><i /></div></div><span className="project-number">{project.number}</span></div><div className="project-body"><div className="project-type">{project.type}</div><h3>{project.title}</h3><p>{project.description}</p><div className="project-tags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div><div className="project-footer"><strong>{project.metric}</strong><span className="project-badge">{project.badge}</span></div></div></article>)}</div>
+          <div className="project-list">{projects.map(project => <article className={`project-card ${project.tone}`} key={project.title}><div className="project-visual"><div className="visual-window"><div className="visual-window-bar"><span /><span /><span /></div><div className="visual-lines"><b /><b /><b /><i /><i /></div></div><span className="project-number">{project.number}</span></div><div className="project-body"><div className="project-type">{project.type}</div><h3>{project.title}</h3><p>{project.description}</p><p className="project-detail">{project.detail}</p><div className="project-tags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div><div className="project-footer"><strong>{project.metric}</strong><span className="project-badge">{project.badge}</span></div></div></article>)}</div>
         </section>
 
         <section className="section-wrap content-section recognitions-section" aria-labelledby="recognitions-title">
