@@ -32,7 +32,7 @@ import {
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Streamdown } from "streamdown";
-import { answerForIntent } from "@shared/profileFacts";
+import { answerForIntent, intentForQuestion } from "@shared/profileFacts";
 import { useTheme } from "../contexts/ThemeContext";
 import { trpc } from "../lib/trpc";
 
@@ -198,11 +198,13 @@ const evidenceNotes = [
 ];
 
 const suggestedQuestions = [
+  "Tell me about yourself",
   "What are your core technical skills?",
   "Tell me about your projects",
   "What is your academic background and SGPA?",
   "Tell me about your coding achievements",
   "How can I get in touch with you?",
+  "Can I view or download your resume?",
 ];
 
 const initialMessage: ChatMessage = {
@@ -231,19 +233,7 @@ function SectionHeading({ id, index, eyebrow, title, body }: { id?: string; inde
 }
 
 function generateAssistantAnswer(userPrompt: string): string {
-  const query = userPrompt.toLowerCase().trim();
-  let intent = "unknown";
-
-  if (/intern|hire|job|availab|opportunit|open to work|recruit/.test(query)) intent = "availability";
-  else if (/contact|email|phone|linkedin|github|leetcode|codechef|reach|call|message/.test(query)) intent = "contact";
-  else if (/resume|cv|download|pdf/.test(query)) intent = "resume";
-  else if (/project|built|build|worked|soil|moisture|car|nodemcu|wi-?fi|hardware|embedded/.test(query)) intent = "projects";
-  else if (/skill|language|tech|stack|java|c\+\+|\bc\b|dsa|data structure|html|css|javascript|microcontroller|sensor/.test(query)) intent = "skills";
-  else if (/education|college|university|sgpa|cgpa|gpa|vnrvjiet|study|degree|year|coursework/.test(query)) intent = "education";
-  else if (/hackathon|achievement|award|competition|contest|synthe|vision|finalist|coding practice/.test(query)) intent = "achievements";
-  else if (/summary|bio|profile|background|about|who is|hello|hi|hey|introduce/.test(query)) intent = "profile";
-
-  return answerForIntent(intent);
+  return answerForIntent(intentForQuestion(userPrompt));
 }
 
 function Home() {

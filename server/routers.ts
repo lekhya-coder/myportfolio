@@ -1,5 +1,5 @@
 import { COOKIE_NAME } from "@shared/const";
-import { answerForIntent, type AssistantIntent } from "../shared/profileFacts";
+import { answerForIntent, intentForQuestion, type AssistantIntent } from "../shared/profileFacts";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { invokeLLM } from "./_core/llm";
 import { systemRouter } from "./_core/systemRouter";
@@ -33,21 +33,8 @@ Use resume for questions about viewing or downloading the PDF resume.
 Use unknown when the question cannot be answered from the supplied resume topics.
 `;
 
-function heuristicIntent(question: string): AssistantIntent {
-  const q = question.toLowerCase();
-  if (/intern|hire|job|availab|opportunit|open to work|recruit/.test(q)) return "availability";
-  if (/contact|email|phone|linkedin|github|leetcode|codechef|reach|call|message/.test(q)) return "contact";
-  if (/resume|cv|download|pdf/.test(q)) return "resume";
-  if (/project|built|build|worked|soil|moisture|car|nodemcu|wi-?fi|hardware|embedded/.test(q)) return "projects";
-  if (/skill|language|tech|stack|java|c\+\+|\bc\b|dsa|data structure|html|css|javascript|microcontroller|sensor/.test(q)) return "skills";
-  if (/education|college|university|sgpa|cgpa|gpa|vnrvjiet|study|degree|year|coursework/.test(q)) return "education";
-  if (/hackathon|achievement|award|competition|contest|synthe|vision|finalist|coding practice/.test(q)) return "achievements";
-  if (/summary|bio|profile|background|about|who is|hello|hi|hey|introduce/.test(q)) return "profile";
-  return "unknown";
-}
-
 async function classifyIntent(question: string): Promise<AssistantIntent> {
-  const heuristic = heuristicIntent(question);
+  const heuristic = intentForQuestion(question);
   if (heuristic !== "unknown") return heuristic;
 
   try {

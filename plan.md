@@ -34,6 +34,7 @@ A single-page personal resume portfolio for recruiters, technical selection team
 - Enrich every major section with resume-grounded context: a three-part About focus map, a complete technical skill breakdown, deeper project explanations, expanded strengths, and an additional technical-evidence card.
 - Add a dynamic project showcase with accessible filter tabs for All signals, Embedded & IoT, Wireless control, and Problem solving, plus an animated live result count.
 - Present the Technical toolkit and How I show up areas as descriptive responsive cards rather than table-like rows, and give the chatbot direct View resume and Download PDF actions.
+- Keep chatbot routing deterministic and shared between server and client for About/profile, skills, projects, education, achievements, availability, contact, and resume questions; use the managed AI only to classify otherwise ambiguous resume-grounded questions.
 - Add `public/manus-routes.json`, metadata, and descriptive initial body content for the public root route.
 
 ## Project structure

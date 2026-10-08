@@ -23,6 +23,7 @@
 - [x] A floating resume assistant opens from the bottom-right, supports suggested questions, timestamps, typing state, clear history, Escape-to-close, and responsive layout.
 - [x] The open resume assistant provides direct View resume and Download PDF actions linked to the supplied `/resume.pdf`.
 - [x] The assistant classifies ambiguous questions with the managed AI service but returns only fixed responses from a shared resume-grounded fact source; it does not forward chat history into future classification turns or echo unsupported generated facts.
+- [x] Server and client fallback routing share one intent map covering About/profile, technical skills, projects, education, achievements, availability, contact details, and resume access, with focused tests for each topic and safe unknown-question handling.
 
 ## Delivery quality
 - [x] The root route is declared in `client/public/manus-routes.json`, the HTML shell includes descriptive SEO/social metadata, and the project exposes `/api/health` plus the chatbot API.
