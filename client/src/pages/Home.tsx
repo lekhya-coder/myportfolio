@@ -376,7 +376,7 @@ function Home() {
             <div className="orbit orbit-one" aria-hidden="true" />
             <div className="orbit orbit-two" aria-hidden="true" />
             <div className="profile-card">
-              <div className="profile-photo"><span>LS</span><div className="photo-caption">Vinjamuri<br />Lekhya Sahiti</div></div>
+              <div className="profile-photo"><span className="profile-monogram">LS</span><span className="profile-signal profile-signal-one"><Cpu size={13} /></span><span className="profile-signal profile-signal-two"><Sparkles size={13} /></span><span className="profile-signal profile-signal-three" /><span className="profile-scanline" /><div className="photo-caption">Vinjamuri<br />Lekhya Sahiti</div></div>
               <div className="profile-card-footer"><span>VNRVJIET / Engineering</span><span>Open to Internships <span className="mini-dot" /></span></div>
             </div>
             <div className="floating-note floating-note-top"><Sparkles size={15} /><span>Building with<br /><strong>Sensors & Code</strong></span></div>
