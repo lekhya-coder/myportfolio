@@ -422,7 +422,7 @@ function Home() {
         </section>
 
         <section className="section-wrap content-section" id="about" aria-labelledby="about-title">
-          <SectionHeading id="about-title" index="01 /" eyebrow="A little context" title="Connecting hardware, logic, and clean code." body="Second-year B.Tech student at VNRVJIET with solid foundations in Java, C++, data structures, sensor interfacing, and embedded systems." />
+          <SectionHeading id="about-title" index="01 /" eyebrow="A little context" title="Where curiosity becomes working systems." body="Second-year B.Tech student at VNRVJIET with solid foundations in Java, C++, data structures, sensor interfacing, and embedded systems." />
           <div className="about-grid">
             <div className="about-lead">
               <article className="bio-card" aria-label="Professional summary">
@@ -472,7 +472,7 @@ function Home() {
         </section>
 
         <section className="section-wrap content-section skills-section" aria-labelledby="skills-title">
-          <SectionHeading id="skills-title" index="02 /" eyebrow="Capability map" title="Foundations & technical craft." body="Core strengths in programming languages, data structures, web technologies, and hands-on microcontroller prototyping." />
+          <SectionHeading id="skills-title" index="02 /" eyebrow="Capability map" title="The stack behind the signal." body="Core strengths in programming languages, data structures, web technologies, and hands-on microcontroller prototyping." />
           <div className="skills-grid">
             <div className="skill-panel"><div className="panel-label"><Layers3 size={17} /> Technical / craft</div>{technicalSkills.map(skill => <div className="skill-row" key={skill.label}><div className="skill-row-top"><span>{skill.label}</span><span>{skill.signal}</span></div><div className="skill-rule" aria-hidden="true"><span /></div></div>)}</div>
             <div className="skill-panel soft-panel"><div className="panel-label"><Zap size={17} /> How I show up</div><div className="soft-skill-list">{softSkills.map(skill => <span key={skill}><Check size={14} /> {skill}</span>)}</div><div className="skill-footnote">Curious by default. Analytical under constraints. Always driven to solve practical problems.</div></div>
@@ -480,34 +480,34 @@ function Home() {
         </section>
 
         <section className="section-wrap content-section" id="work" aria-labelledby="work-title">
-          <SectionHeading id="work-title" index="03 /" eyebrow="Selected practice" title="Projects, coding & milestones." body="Hands-on milestones from embedded-systems projects, competitive programming, and technical hackathons." />
+          <SectionHeading id="work-title" index="03 /" eyebrow="Selected practice" title="Proof of practice, not just potential." body="Hands-on milestones from embedded-systems projects, competitive programming, and technical hackathons." />
           <div className="timeline">{experience.map((item, index) => <article className="timeline-item" key={item.role}><div className="timeline-marker"><span>0{index + 1}</span></div><div className="timeline-content"><div className="timeline-top"><span className="period">{item.period}</span><span className="company">{item.company}</span></div><h3>{item.role}</h3><p>{item.description}</p><div className="outcome-list">{item.outcomes.map(outcome => <span key={outcome}><CheckCircle2 size={14} /> {outcome}</span>)}</div></div></article>)}</div>
         </section>
 
         <section className="section-wrap content-section education-section" aria-labelledby="education-title">
-          <div className="split-heading"><SectionHeading id="education-title" index="04 /" eyebrow="Academic foundation" title="A strong academic foundation." /><span className="section-side-note">B.Tech in IoT at VNRVJIET<br />SGPA 9.48/10 · Strong record.</span></div>
+          <div className="split-heading"><SectionHeading id="education-title" index="04 /" eyebrow="Academic foundation" title="A record built on consistency." /><span className="section-side-note">B.Tech in IoT at VNRVJIET<br />SGPA 9.48/10 · Strong record.</span></div>
           <div className="education-grid">{education.map(item => <article className="education-card" key={item.title}><div className="education-year">{item.year}</div><GraduationCap size={23} /><h3>{item.title}</h3><p className="education-school">{item.school}</p><p>{item.detail}</p></article>)}</div>
         </section>
 
         <section className="section-wrap content-section project-section" id="projects" aria-labelledby="projects-title">
-          <SectionHeading id="projects-title" index="05 /" eyebrow="Selected projects" title="Built from hardware to software." body="Selected builds spanning embedded systems, wireless control, sensors, and problem solving." />
+          <SectionHeading id="projects-title" index="05 /" eyebrow="Selected projects" title="From sensors to software." body="Selected builds spanning embedded systems, wireless control, sensors, and problem solving." />
           <div className="project-list">{projects.map(project => <article className={`project-card ${project.tone}`} key={project.title}><div className="project-visual"><div className="visual-window"><div className="visual-window-bar"><span /><span /><span /></div><div className="visual-lines"><b /><b /><b /><i /><i /></div></div><span className="project-number">{project.number}</span></div><div className="project-body"><div className="project-type">{project.type}</div><h3>{project.title}</h3><p>{project.description}</p><div className="project-tags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div><div className="project-footer"><strong>{project.metric}</strong><span className="project-badge">{project.badge}</span></div></div></article>)}</div>
         </section>
 
         <section className="section-wrap content-section recognitions-section" aria-labelledby="recognitions-title">
-          <div className="recognitions-head"><SectionHeading id="recognitions-title" index="06 /" eyebrow="Key achievements" title="Recognitions & milestones." /><p>Highlights from the SYNTH VISION Hackathon finale conducted by Krithomedh, competitive coding platforms, and a strong academic record.</p></div>
+          <div className="recognitions-head"><SectionHeading id="recognitions-title" index="06 /" eyebrow="Key achievements" title="Signals worth noticing." /><p>Highlights from the SYNTH VISION Hackathon finale conducted by Krithomedh, competitive coding platforms, and a strong academic record.</p></div>
           <div className="recognition-list">{recognitions.map((item, index) => <div className="recognition-row" key={item.label}><span className="recognition-index">0{index + 1}</span><Award size={20} /><strong>{item.label}</strong><span>{item.detail}</span><ArrowUpRight size={17} /></div>)}</div>
         </section>
 
         <section className="section-wrap content-section testimonial-section" aria-labelledby="testimonial-title">
-          <SectionHeading id="testimonial-title" index="07 /" eyebrow="Resume evidence" title="Academic & technical highlights." />
+          <SectionHeading id="testimonial-title" index="07 /" eyebrow="Resume evidence" title="The details behind the signal." />
           <div className="testimonial-grid">{evidenceNotes.map(item => <blockquote key={`${item.name}-${item.role}`}><Quote size={26} /><p>“{item.quote}”</p><footer><strong>{item.name}</strong><span>{item.role}</span></footer></blockquote>)}</div>
         </section>
 
         <section className="section-wrap contact-section" id="contact" aria-labelledby="contact-title">
           <div className="contact-intro">
             <p className="eyebrow">08 / Direct Connect</p>
-            <h2 id="contact-title">Looking for an<br /><em>intern?</em></h2>
+            <h2 id="contact-title">From curiosity<br /><em>to contribution.</em></h2>
             <p>Second-year B.Tech student at VNRVJIET (SGPA 9.48/10) and SYNTH VISION Hackathon Finalist, seeking software development and technical internship opportunities. Reach out directly through any of the channels below.</p>
           </div>
 
