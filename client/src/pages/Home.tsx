@@ -8,7 +8,6 @@ import {
   ChevronDown,
   Clock3,
   Code2,
-  Copy,
   Cpu,
   Download,
   ExternalLink,
@@ -245,14 +244,7 @@ function Home() {
   const [messages, setMessages] = useState<ChatMessage[]>([initialMessage]);
   const [draft, setDraft] = useState("");
   const [chatTyping, setChatTyping] = useState(false);
-  const [copiedBio, setCopiedBio] = useState(false);
   const assistant = trpc.assistant.chat.useMutation();
-
-  const handleCopyBio = () => {
-    navigator.clipboard.writeText(profile.summary);
-    setCopiedBio(true);
-    setTimeout(() => setCopiedBio(false), 2000);
-  };
 
   const navItems = useMemo(
     () => [
@@ -434,17 +426,8 @@ function Home() {
                   <span className="bio-chip"><Zap size={13} /> Open for Internships</span>
                 </div>
                 <div className="bio-card-footer">
-                  <button
-                    type="button"
-                    className={`copy-bio-button ${copiedBio ? "is-copied" : ""}`}
-                    onClick={handleCopyBio}
-                    aria-label="Copy profile summary to clipboard"
-                    title="Copy profile summary to clipboard"
-                  >
-                    {copiedBio ? <Check size={14} /> : <Copy size={14} />}
-                    {copiedBio ? "Copied to Clipboard!" : "Copy Summary"}
-                  </button>
-                  <a className="text-link" href="#contact">Start a conversation <ArrowUpRight size={16} /></a>
+                  <span className="bio-footer-note"><Sparkles size={14} /> Explore by signal</span>
+                  <div className="bio-footer-links"><a className="text-link" href="#projects">Trace the builds <ArrowUpRight size={16} /></a><a className="text-link" href="#contact">Find the right fit <ArrowUpRight size={16} /></a></div>
                 </div>
               </article>
             </div>
@@ -458,35 +441,35 @@ function Home() {
         </section>
 
         <section className="section-wrap content-section skills-section" aria-labelledby="skills-title">
-          <SectionHeading id="skills-title" index="02 /" eyebrow="Capability map" title="The stack behind the signal." body="Core strengths in programming languages, data structures, web technologies, and hands-on microcontroller prototyping." />
+          <SectionHeading id="skills-title" index="02 /" eyebrow="Capability map" title="The tools I turn into momentum." body="A practical technical stack across programming, problem solving, web fundamentals, and embedded systems—plus the habits that shape how I show up while learning and building." />
           <div className="skills-grid">
             <div className="skill-panel"><div className="panel-label"><Layers3 size={17} /> Technical / craft</div>{technicalSkills.map(skill => <div className="skill-row" key={skill.label}><div className="skill-row-top"><span>{skill.label}</span><span>{skill.signal}</span></div><div className="skill-rule" aria-hidden="true"><span /></div></div>)}</div>
-            <div className="skill-panel soft-panel"><div className="panel-label"><Zap size={17} /> How I show up</div><div className="soft-skill-list">{softSkills.map(skill => <span key={skill}><Check size={14} /> {skill}</span>)}</div><div className="skill-footnote">Curious by default. Analytical under constraints. Always driven to solve practical problems.</div></div>
+            <div className="skill-panel soft-panel"><div className="panel-label"><Zap size={17} /> How I show up</div><p className="panel-intro">I bring a curious, hands-on approach: understand the problem, build a working path, test the idea, and keep learning from the result.</p><div className="soft-skill-list">{softSkills.map(skill => <span key={skill}><Check size={14} /> {skill}</span>)}</div><div className="skill-footnote">Curious by default. Analytical under constraints. Always driven to solve practical problems.</div></div>
           </div>
         </section>
 
         <section className="section-wrap content-section" id="work" aria-labelledby="work-title">
-          <SectionHeading id="work-title" index="03 /" eyebrow="Selected practice" title="Proof of practice, not just potential." body="Hands-on milestones from embedded-systems projects, competitive programming, and technical hackathons." />
+          <SectionHeading id="work-title" index="03 /" eyebrow="Selected practice" title="Proof of practice, not just potential." body="A closer look at how coursework becomes action: embedded-systems projects, coding-platform practice, and a technical hackathon finale." />
           <div className="timeline">{experience.map((item, index) => <article className="timeline-item" key={item.role}><div className="timeline-marker"><span>0{index + 1}</span></div><div className="timeline-content"><div className="timeline-top"><span className="period">{item.period}</span><span className="company">{item.company}</span></div><h3>{item.role}</h3><p>{item.description}</p><div className="outcome-list">{item.outcomes.map(outcome => <span key={outcome}><CheckCircle2 size={14} /> {outcome}</span>)}</div></div></article>)}</div>
         </section>
 
         <section className="section-wrap content-section education-section" aria-labelledby="education-title">
-          <div className="split-heading"><SectionHeading id="education-title" index="04 /" eyebrow="Academic foundation" title="A record built on consistency." /><span className="section-side-note">B.Tech in IoT at VNRVJIET<br />SGPA 9.48/10 · Strong record.</span></div>
+          <div className="split-heading"><SectionHeading id="education-title" index="04 /" eyebrow="Academic foundation" title="A record built on consistency." /><span className="section-side-note">Learning by building<br />B.Tech in IoT · SGPA 9.48/10.</span></div>
           <div className="education-grid">{education.map(item => <article className="education-card" key={item.title}><div className="education-year">{item.year}</div><GraduationCap size={23} /><h3>{item.title}</h3><p className="education-school">{item.school}</p><p>{item.detail}</p></article>)}</div>
         </section>
 
         <section className="section-wrap content-section project-section" id="projects" aria-labelledby="projects-title">
-          <SectionHeading id="projects-title" index="05 /" eyebrow="Selected projects" title="From sensors to software." body="Selected builds spanning embedded systems, wireless control, sensors, and problem solving." />
+          <SectionHeading id="projects-title" index="05 /" eyebrow="Selected projects" title="When theory meets a working build." body="Selected projects showing how I move from a technical idea to a tangible system across sensors, wireless control, embedded hardware, and problem solving." />
           <div className="project-list">{projects.map(project => <article className={`project-card ${project.tone}`} key={project.title}><div className="project-visual"><div className="visual-window"><div className="visual-window-bar"><span /><span /><span /></div><div className="visual-lines"><b /><b /><b /><i /><i /></div></div><span className="project-number">{project.number}</span></div><div className="project-body"><div className="project-type">{project.type}</div><h3>{project.title}</h3><p>{project.description}</p><p className="project-detail">{project.detail}</p><div className="project-tags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div><div className="project-footer"><strong>{project.metric}</strong><span className="project-badge">{project.badge}</span></div></div></article>)}</div>
         </section>
 
         <section className="section-wrap content-section recognitions-section" aria-labelledby="recognitions-title">
-          <div className="recognitions-head"><SectionHeading id="recognitions-title" index="06 /" eyebrow="Key achievements" title="Signals worth noticing." /><p>Highlights from the SYNTH VISION Hackathon finale conducted by Krithomedh, competitive coding platforms, and a strong academic record.</p></div>
+          <div className="recognitions-head"><SectionHeading id="recognitions-title" index="06 /" eyebrow="Key achievements" title="Signals worth noticing." /><p>Highlights from the SYNTH VISION Hackathon finale conducted by Krithomedh, regular LeetCode and CodeChef practice, and a strong academic record.</p></div>
           <div className="recognition-list">{recognitions.map((item, index) => <div className="recognition-row" key={item.label}><span className="recognition-index">0{index + 1}</span><Award size={20} /><strong>{item.label}</strong><span>{item.detail}</span><ArrowUpRight size={17} /></div>)}</div>
         </section>
 
         <section className="section-wrap content-section testimonial-section" aria-labelledby="testimonial-title">
-          <SectionHeading id="testimonial-title" index="07 /" eyebrow="Resume evidence" title="The details behind the signal." />
+          <SectionHeading id="testimonial-title" index="07 /" eyebrow="Resume evidence" title="The details behind the signal." body="A compact read on the academic, technical, and hands-on evidence that shapes this early-career profile." />
           <div className="testimonial-grid">{evidenceNotes.map(item => <blockquote key={`${item.name}-${item.role}`}><Quote size={26} /><p>“{item.quote}”</p><footer><strong>{item.name}</strong><span>{item.role}</span></footer></blockquote>)}</div>
         </section>
 
@@ -494,7 +477,7 @@ function Home() {
           <div className="contact-intro">
             <p className="eyebrow">08 / Direct Connect</p>
             <h2 id="contact-title">From curiosity<br /><em>to contribution.</em></h2>
-            <p>Second-year B.Tech student at VNRVJIET (SGPA 9.48/10) and SYNTH VISION Hackathon Finalist, seeking software development and technical internship opportunities. Reach out directly through any of the channels below.</p>
+            <p>Second-year B.Tech student at VNRVJIET (SGPA 9.48/10) and SYNTH VISION Hackathon Finalist, seeking software development and technical internship opportunities. With foundations in Java, C++, data structures, web fundamentals, and IoT hardware, I am looking for a place to keep learning by contributing to practical systems.</p>
             <div className="contact-quick-grid" aria-label="Quick profile fit">
               <div className="contact-quick-card"><span>Open to</span><strong>Software development & technical internships</strong></div>
               <div className="contact-quick-card"><span>Strong in</span><strong>Java · C++ · Data Structures</strong></div>

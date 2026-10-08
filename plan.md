@@ -27,8 +27,9 @@ A single-page personal resume portfolio for recruiters, technical selection team
 - Enable the existing switchable `ThemeProvider` and persist the theme preference in local storage.
 - Add a public `assistant.chat` tRPC mutation backed by the managed `invokeLLM` helper as a narrow intent classifier. The returned intent selects a fixed response from `shared/profileFacts.ts`, so AI classification cannot introduce unsupported employers, metrics, dates, or project details.
 - Build the floating assistant in the page with suggested prompts, message timestamps, typing state, clear-history control, escape-to-close, and a compact mobile layout. If the server call is unavailable, provide the same shared fact response locally rather than leaving the visitor with an empty state.
+- Keep the profile summary action area focused on topic-based routes (`Trace the builds` and `Find the right fit`) instead of clipboard-copy or generic conversation prompts.
 - Use a display-only Contact section with the supplied phone, email, LinkedIn, GitHub, LeetCode, CodeChef, location, internship focus, and academic details; do not collect visitor-entered information.
-- Add a profile-photo block with initials and a clear label rather than inventing a real likeness. Reuse the supplied resume PDF at `/resume.pdf` for view and download actions.
+- Add a profile-photo block with a flat, animated LS monogram, live circuit signals, and a clear label rather than inventing a real likeness. Reuse the supplied resume PDF at `/resume.pdf` for view and download actions.
 - Add a recruiter snapshot strip and correct the achievement label to `SYNTH VISION`, including the supplied Krithomedh organizer attribution.
 - Enrich every major section with resume-grounded context: a three-part About focus map, a complete technical skill breakdown, deeper project explanations, expanded strengths, and an additional technical-evidence card.
 - Add `public/manus-routes.json`, metadata, and descriptive initial body content for the public root route.

@@ -279,8 +279,8 @@ h1 em, .contact-intro h2 em {
   font-size: 88px;
   font-weight: 800;
   letter-spacing: -.12em;
-  transform: translateX(-7px) translateZ(18px) rotate(-4deg);
-  text-shadow: 5px 7px 0 rgba(1, 84, 93, .55), 10px 12px 0 rgba(60, 31, 113, .32);
+  transform: translateX(-7px) rotate(-4deg);
+  text-shadow: none;
   filter: drop-shadow(0 0 35px rgba(0, 245, 160, 0.45));
   animation: monogram-float 4.8s ease-in-out infinite;
 }
@@ -419,6 +419,9 @@ h1 em, .contact-intro h2 em {
 .bio-chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); color: var(--text); font-size: 11px; font-family: 'Space Mono', monospace; }
 .bio-chip svg { color: var(--lime); }
 .bio-card-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin-top: 24px; }
+.bio-footer-note { display: inline-flex; align-items: center; gap: 7px; color: var(--muted); font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .4px; }
+.bio-footer-note svg { color: var(--lime); }
+.bio-footer-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 16px; }
 .copy-bio-button { display: inline-flex; align-items: center; gap: 7px; padding: 9px 15px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--text); font-family: 'Space Mono', monospace; font-size: 10.5px; cursor: pointer; transition: all .2s ease; }
 .copy-bio-button:hover { border-color: var(--lime); background: color-mix(in srgb, var(--lime) 14%, var(--surface)); }
 .copy-bio-button.is-copied { border-color: transparent; background: linear-gradient(135deg, #00f5a0 0%, #00d9f5 100%); color: #070e1b; font-weight: 800; }
@@ -456,6 +459,7 @@ h1 em, .contact-intro h2 em {
 }
 .panel-label { display: flex; align-items: center; gap: 9px; margin-bottom: 31px; color: var(--text); }
 .panel-label svg { color: var(--lime); }
+.panel-intro { margin: -10px 0 24px; color: var(--muted); font-size: 13px; line-height: 1.65; }
 .skill-row { margin-bottom: 22px; }
 .skill-row-top { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 9px; color: var(--text); font-size: 13px; font-weight: 600; }
 .skill-row-top span:last-child { color: var(--muted); font-family: 'Space Mono', monospace; font-size: 10px; }
@@ -812,7 +816,7 @@ h1 em, .contact-intro h2 em {
 @keyframes float-glow { 0% { transform: translateY(0px) scale(1); } 100% { transform: translateY(-40px) scale(1.08); } }
 @keyframes float-glow-rev { 0% { transform: translateY(0px) scale(1); } 100% { transform: translateY(35px) scale(1.06); } }
 @keyframes pulse-dot { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.15); opacity: .85; } }
-@keyframes monogram-float { 0%, 100% { transform: translateX(-7px) translateZ(18px) rotate(-4deg); } 50% { transform: translateX(-7px) translateY(-5px) translateZ(24px) rotate(-1deg); } }
+@keyframes monogram-float { 0%, 100% { transform: translateX(-7px) rotate(-4deg); } 50% { transform: translateX(-7px) translateY(-5px) rotate(-1deg); } }
 @keyframes signal-float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-8px) rotate(6deg); } }
 @keyframes scanline { 0%, 100% { top: 14%; opacity: .25; } 50% { top: 82%; opacity: .85; } }
 
