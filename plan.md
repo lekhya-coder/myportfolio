@@ -16,7 +16,7 @@ A single-page personal resume portfolio for recruiters, technical selection team
 - **Typography system:** `DM Sans` for readable UI and body copy, paired with `Space Mono` for labels, dates, metrics, and the wordmark. Headlines use tight tracking and a clear 48–72px desktop scale; body copy stays in a 15–18px readable range.
 - **Brand essence:** a focused, evidence-led professional profile that helps a hiring team understand fit in under two minutes. Personality: **precise, thoughtful, quietly ambitious**.
 - **Brand voice:** clear, warm, and specific; no inflated claims. Example lines: “I turn complex product problems into calm, useful systems.” and “Ask the assistant for a faster route through the work.”
-- **Wordmark & logo:** a small `LS /` monogram block with a lime slash, paired with a compact two-line wordmark instead of a generic text logo.
+- **Wordmark & logo:** a compact 3D `LS /` monogram badge with layered depth and a small circuit icon, paired with a two-line wordmark instead of a generic text logo.
 - **Signature brand color:** `#C7F36B` electric lime, used only for actions, focus states, availability, and the portfolio's editorial rule system.
 
 ## Implementation approach

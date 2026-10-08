@@ -129,8 +129,10 @@ button { border: 0; cursor: pointer; }
   backdrop-filter: blur(20px);
   transition: border-color .3s ease;
 }
-.wordmark { display: inline-flex; align-items: center; gap: 11px; flex: 0 0 auto; }
+.wordmark { display: inline-flex; align-items: center; gap: 11px; flex: 0 0 auto; perspective: 600px; }
 .wordmark-mark {
+  position: relative;
+  isolation: isolate;
   display: grid;
   place-items: center;
   width: 40px;
@@ -143,17 +145,22 @@ button { border: 0; cursor: pointer; }
   font-weight: 800;
   letter-spacing: -1px;
   box-shadow: 0 4px 18px rgba(0, 245, 160, 0.35);
-  transition: transform .25s ease, box-shadow .25s ease;
+  transform-style: preserve-3d;
+  transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease;
 }
+.wordmark-mark::before { position: absolute; z-index: -2; inset: 5px -5px -5px 5px; border-radius: 10px; content: ''; background: linear-gradient(135deg, #06785d, #075c7a 55%, #4c1d95); opacity: .62; transform: translateZ(-12px); filter: blur(.2px); }
+.wordmark-mark::after { position: absolute; z-index: 0; inset: 3px; border: 1px solid rgba(255, 255, 255, .35); border-radius: 6px; content: ''; pointer-events: none; transform: translateZ(7px); }
 :root:not(.dark) .wordmark-mark {
   background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
   color: #ffffff;
   box-shadow: 0 4px 18px rgba(79, 70, 229, 0.28);
 }
-.wordmark-mark span { color: rgba(7, 14, 27, 0.6); }
-:root:not(.dark) .wordmark-mark span { color: rgba(255, 255, 255, 0.7); }
+.wordmark-mark-core { position: relative; z-index: 2; transform: translateZ(10px); }
+.wordmark-mark-slash { position: absolute; z-index: 2; right: 5px; bottom: 3px; color: rgba(7, 14, 27, 0.6); font-size: 10px; transform: translateZ(12px); }
+.wordmark-mark-icon { position: absolute; z-index: 3; top: 5px; right: 5px; color: rgba(7, 14, 27, 0.7); stroke-width: 2.5; transform: translateZ(14px); }
+:root:not(.dark) .wordmark-mark-slash, :root:not(.dark) .wordmark-mark-icon { color: rgba(255, 255, 255, 0.78); }
 .wordmark:hover .wordmark-mark {
-  transform: scale(1.06) rotate(-3deg);
+  transform: scale(1.08) rotateY(-12deg) rotateX(8deg) rotateZ(-3deg) translateY(-2px);
   box-shadow: 0 6px 24px rgba(0, 245, 160, 0.55);
 }
 .wordmark-text { display: flex; flex-direction: column; color: var(--text); font-family: 'Space Mono', monospace; font-size: 12.5px; font-weight: 700; letter-spacing: -.45px; line-height: 1; }

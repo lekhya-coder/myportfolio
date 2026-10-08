@@ -9,6 +9,7 @@ import {
   Clock3,
   Code2,
   Copy,
+  Cpu,
   Download,
   ExternalLink,
   Github,
@@ -331,7 +332,7 @@ function Home() {
       <div className="ambient-orb ambient-orb-two" aria-hidden="true" />
       <header className="site-header">
         <a className="wordmark" href="#top" aria-label="Back to the top of the portfolio">
-          <span className="wordmark-mark">LS<span>/</span></span>
+          <span className="wordmark-mark"><span className="wordmark-mark-core">LS</span><span className="wordmark-mark-slash">/</span><Cpu className="wordmark-mark-icon" size={11} aria-hidden="true" /></span>
           <span className="wordmark-text">Lekhya Sahiti<small>portfolio / 2026</small></span>
         </a>
         <nav className={`main-nav ${menuOpen ? "is-open" : ""}`} aria-label="Primary navigation">
