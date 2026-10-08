@@ -515,7 +515,6 @@ function Home() {
             <form className="contact-form-card" onSubmit={handleContactSubmit} noValidate>
               <div className="contact-form-header">
                 <div>
-                  <span className="detail-label">Recruiter note</span>
                   <h3>Start a conversation.</h3>
                 </div>
                 <MessageCircle size={19} aria-hidden="true" />
