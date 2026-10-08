@@ -501,7 +501,7 @@ function Home() {
 
         <section className="section-wrap content-section testimonial-section" aria-labelledby="testimonial-title">
           <SectionHeading id="testimonial-title" index="07 /" eyebrow="Resume evidence" title="Academic & technical highlights." />
-          <div className="testimonial-grid">{evidenceNotes.map(item => <blockquote key={item.name}><Quote size={26} /><p>“{item.quote}”</p><footer><strong>{item.name}</strong><span>{item.role}</span></footer></blockquote>)}</div>
+          <div className="testimonial-grid">{evidenceNotes.map(item => <blockquote key={`${item.name}-${item.role}`}><Quote size={26} /><p>“{item.quote}”</p><footer><strong>{item.name}</strong><span>{item.role}</span></footer></blockquote>)}</div>
         </section>
 
         <section className="section-wrap contact-section" id="contact" aria-labelledby="contact-title">
