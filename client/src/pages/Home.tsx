@@ -134,6 +134,7 @@ const projects = [
     metric: "Underground soil monitoring",
     badge: "Resume project",
     detail: "A practical build centered on sensing soil conditions below the surface and connecting sensor readings to microcontroller-based monitoring.",
+    category: "Embedded & IoT",
     tone: "project-slate",
   },
   {
@@ -146,6 +147,7 @@ const projects = [
     metric: "Wireless movement control",
     badge: "Resume project",
     detail: "A connected hardware build that combines NodeMCU, Wi-Fi control, and robotics fundamentals into a remotely operated car.",
+    category: "Wireless Control",
     tone: "project-lime",
   },
   {
@@ -158,9 +160,17 @@ const projects = [
     metric: "Active coding practice",
     badge: "Coding practice",
     detail: "Ongoing practice in C++ and Java through data structures, algorithms, and problem-solving challenges on coding platforms.",
+    category: "Problem Solving",
     tone: "project-ink",
   },
 ];
+
+const projectFilters = [
+  { id: "all", label: "All signals" },
+  { id: "Embedded & IoT", label: "Embedded & IoT" },
+  { id: "Wireless Control", label: "Wireless control" },
+  { id: "Problem Solving", label: "Problem solving" },
+] as const;
 
 const recognitions = [
   { label: "SYNTH VISION Hackathon Finalist", detail: "Conducted by Krithomedh · Reached the final round and gained experience building and presenting a technical solution under time constraints" },
@@ -244,7 +254,13 @@ function Home() {
   const [messages, setMessages] = useState<ChatMessage[]>([initialMessage]);
   const [draft, setDraft] = useState("");
   const [chatTyping, setChatTyping] = useState(false);
+  const [projectFilter, setProjectFilter] = useState<(typeof projectFilters)[number]["id"]>("all");
   const assistant = trpc.assistant.chat.useMutation();
+
+  const visibleProjects = useMemo(
+    () => projectFilter === "all" ? projects : projects.filter(project => project.category === projectFilter),
+    [projectFilter],
+  );
 
   const navItems = useMemo(
     () => [
@@ -460,7 +476,8 @@ function Home() {
 
         <section className="section-wrap content-section project-section" id="projects" aria-labelledby="projects-title">
           <SectionHeading id="projects-title" index="05 /" eyebrow="Selected projects" title="When theory meets a working build." body="Selected projects showing how I move from a technical idea to a tangible system across sensors, wireless control, embedded hardware, and problem solving." />
-          <div className="project-list">{projects.map(project => <article className={`project-card ${project.tone}`} key={project.title}><div className="project-visual"><div className="visual-window"><div className="visual-window-bar"><span /><span /><span /></div><div className="visual-lines"><b /><b /><b /><i /><i /></div></div><span className="project-number">{project.number}</span></div><div className="project-body"><div className="project-type">{project.type}</div><h3>{project.title}</h3><p>{project.description}</p><p className="project-detail">{project.detail}</p><div className="project-tags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div><div className="project-footer"><strong>{project.metric}</strong><span className="project-badge">{project.badge}</span></div></div></article>)}</div>
+          <div className="project-showcase-toolbar"><div className="project-filter-list" role="tablist" aria-label="Filter projects by practice area">{projectFilters.map(filter => <button key={filter.id} type="button" role="tab" aria-selected={projectFilter === filter.id} className={projectFilter === filter.id ? "is-active" : ""} onClick={() => setProjectFilter(filter.id)}>{filter.label}</button>)}</div><span className="project-count" aria-live="polite">Showing {visibleProjects.length} of {projects.length} builds</span></div>
+          <div className="project-list">{visibleProjects.map(project => <article className={`project-card ${project.tone}`} key={project.title}><div className="project-visual"><div className="visual-window"><div className="visual-window-bar"><span /><span /><span /></div><div className="visual-lines"><b /><b /><b /><i /><i /></div></div><span className="project-number">{project.number}</span></div><div className="project-body"><div className="project-type">{project.type}</div><h3>{project.title}</h3><p>{project.description}</p><p className="project-detail">{project.detail}</p><div className="project-tags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div><div className="project-footer"><strong>{project.metric}</strong><span className="project-badge">{project.badge}</span></div></div></article>)}</div>
         </section>
 
         <section className="section-wrap content-section recognitions-section" aria-labelledby="recognitions-title">

@@ -12,6 +12,7 @@
 - [x] The selected-practice timeline distinguishes project work, coding-platform practice, and hackathon participation rather than presenting unsupported employment history.
 - [x] The education section presents the B.Tech in IoT, VNRVJIET, 2nd Year status, SGPA 9.48/10, and supplied coursework areas.
 - [x] The projects section presents the Underground Soil Moisture Detection System, NodeMCU Wi-Fi Controlled Smart Car, and algorithmic practice with descriptive visual placeholders and supplied technologies; it does not invent live-demo or repository URLs that were not supplied.
+- [x] The project showcase provides accessible dynamic filters for All signals, Embedded & IoT, Wireless control, and Problem solving, and updates the visible build count as the selected filter changes.
 - [x] The achievements section identifies the SYNTH VISION Hackathon finalist experience, explicitly noting it was conducted by Krithomedh, alongside coding-platform practice and the SGPA 9.48/10 academic record.
 - [x] The evidence section is labeled as resume evidence and academic/technical highlights, not as third-party testimonials.
 

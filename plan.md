@@ -32,6 +32,7 @@ A single-page personal resume portfolio for recruiters, technical selection team
 - Add a profile-photo block with a flat, animated LS monogram, live circuit signals, and a clear label rather than inventing a real likeness. Reuse the supplied resume PDF at `/resume.pdf` for view and download actions.
 - Add a recruiter snapshot strip and correct the achievement label to `SYNTH VISION`, including the supplied Krithomedh organizer attribution.
 - Enrich every major section with resume-grounded context: a three-part About focus map, a complete technical skill breakdown, deeper project explanations, expanded strengths, and an additional technical-evidence card.
+- Add a dynamic project showcase with accessible filter tabs for All signals, Embedded & IoT, Wireless control, and Problem solving, plus an animated live result count.
 - Add `public/manus-routes.json`, metadata, and descriptive initial body content for the public root route.
 
 ## Project structure
