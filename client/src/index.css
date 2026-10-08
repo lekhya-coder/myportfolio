@@ -583,6 +583,10 @@ h1 em, .contact-intro h2 em {
 .contact-section { display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); gap: 54px; padding-top: 72px; padding-bottom: 84px; border-top: 1px solid var(--line); align-items: start; }
 .contact-intro h2 { margin-bottom: 20px; font-size: clamp(3rem, 6vw, 5.3rem); font-weight: 700; letter-spacing: -.08em; line-height: .9; }
 .contact-intro > p:not(.eyebrow) { max-width: 420px; color: var(--muted); font-size: 15px; line-height: 1.7; }
+.contact-quick-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; max-width: 420px; margin-top: 28px; }
+.contact-quick-card { min-height: 86px; padding: 13px 14px; border: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 82%, transparent); border-radius: 10px; }
+.contact-quick-card span { display: block; margin-bottom: 8px; color: var(--lime); font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .55px; text-transform: uppercase; }
+.contact-quick-card strong { display: block; color: var(--text); font-size: 11px; line-height: 1.45; }
 .contact-side { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
 .contact-form-card { padding: 22px; border: 1px solid var(--line-strong); background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); }
 .contact-form-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 20px; }

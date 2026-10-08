@@ -509,6 +509,12 @@ function Home() {
             <p className="eyebrow">08 / Direct Connect</p>
             <h2 id="contact-title">From curiosity<br /><em>to contribution.</em></h2>
             <p>Second-year B.Tech student at VNRVJIET (SGPA 9.48/10) and SYNTH VISION Hackathon Finalist, seeking software development and technical internship opportunities. Reach out directly through any of the channels below.</p>
+            <div className="contact-quick-grid" aria-label="Quick profile fit">
+              <div className="contact-quick-card"><span>Open to</span><strong>Software development & technical internships</strong></div>
+              <div className="contact-quick-card"><span>Strong in</span><strong>Java · C++ · Data Structures</strong></div>
+              <div className="contact-quick-card"><span>Builds with</span><strong>IoT · Sensors · NodeMCU</strong></div>
+              <div className="contact-quick-card"><span>Based at</span><strong>VNRVJIET · Hyderabad</strong></div>
+            </div>
           </div>
 
           <div className="contact-side">
