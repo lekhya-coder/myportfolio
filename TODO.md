@@ -9,6 +9,7 @@
 ## Resume-grounded evidence
 - [x] The About section presents the supplied profile summary, career goal, strengths, academic record, and interest in software development, AI, problem solving, and embedded systems.
 - [x] The technical section lists C, C++, Java, Data Structures, Problem Solving, HTML, CSS, JavaScript, NodeMCU, sensors, microcontrollers, and IoT using qualitative practice signals rather than invented numeric ratings.
+- [x] The Technical toolkit and How I show up areas use responsive descriptive boxes with short context paragraphs instead of table-like rows.
 - [x] The selected-practice timeline distinguishes project work, coding-platform practice, and hackathon participation rather than presenting unsupported employment history.
 - [x] The education section presents the B.Tech in IoT, VNRVJIET, 2nd Year status, SGPA 9.48/10, and supplied coursework areas.
 - [x] The projects section presents the Underground Soil Moisture Detection System, NodeMCU Wi-Fi Controlled Smart Car, and algorithmic practice with descriptive visual placeholders and supplied technologies; it does not invent live-demo or repository URLs that were not supplied.
@@ -20,6 +21,7 @@
 - [x] The final Contact section is display-only and does not collect visitor-entered name, email, subject, or message data.
 - [x] The Contact section displays direct email, phone, LinkedIn, GitHub, LeetCode, CodeChef, location, internship focus, core strengths, and academic details.
 - [x] A floating resume assistant opens from the bottom-right, supports suggested questions, timestamps, typing state, clear history, Escape-to-close, and responsive layout.
+- [x] The open resume assistant provides direct View resume and Download PDF actions linked to the supplied `/resume.pdf`.
 - [x] The assistant classifies ambiguous questions with the managed AI service but returns only fixed responses from a shared resume-grounded fact source; it does not forward chat history into future classification turns or echo unsupported generated facts.
 
 ## Delivery quality

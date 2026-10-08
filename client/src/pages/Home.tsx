@@ -62,23 +62,23 @@ const profile = {
 };
 
 const technicalSkills = [
-  { label: "C & C++", signal: "Coursework + practice" },
-  { label: "Java", signal: "Coursework + practice" },
-  { label: "Data Structures & Problem Solving", signal: "Active practice" },
-  { label: "HTML, CSS & JavaScript", signal: "Web fundamentals" },
-  { label: "NodeMCU & Microcontrollers", signal: "Hands-on projects" },
-  { label: "Sensors & IoT", signal: "Embedded applications" },
+  { label: "C & C++", signal: "Coursework + practice", detail: "Programming foundations used for logic building, algorithmic practice, and technical problem solving." },
+  { label: "Java", signal: "Coursework + practice", detail: "Object-oriented programming foundation strengthened through regular coding and coursework." },
+  { label: "Data Structures & Problem Solving", signal: "Active practice", detail: "A steady practice loop across algorithms, coding challenges, and breaking complex problems into steps." },
+  { label: "HTML, CSS & JavaScript", signal: "Web fundamentals", detail: "Frontend fundamentals for shaping clear interfaces and understanding how web experiences come together." },
+  { label: "NodeMCU & Microcontrollers", signal: "Hands-on projects", detail: "Hardware-facing practice through connected builds, control logic, and microcontroller interfacing." },
+  { label: "Sensors & IoT", signal: "Embedded applications", detail: "Applying sensor readings and IoT concepts to practical monitoring and connected systems." },
 ];
 
 const softSkills = [
-  "Rapid problem solving",
-  "Algorithmic thinking",
-  "SYNTH VISION Hackathon Finalist",
-  "Sensor & hardware prototyping",
-  "Academic consistency (SGPA 9.48)",
-  "Curious & fast learner",
-  "Technical presentation",
-  "Hands-on prototyping",
+  { title: "Rapid problem solving", detail: "Breaks complex tasks into smaller steps and works toward practical solutions." },
+  { title: "Algorithmic thinking", detail: "Builds logic through regular C++ and Java data-structures practice." },
+  { title: "Hackathon finalist", detail: "SYNTH VISION finalist experience shaped a faster build, test, and present rhythm." },
+  { title: "Sensor & hardware prototyping", detail: "Learns by connecting concepts to microcontrollers, sensors, and working builds." },
+  { title: "Academic consistency", detail: "Maintains a strong technical academic record with SGPA 9.48 / 10." },
+  { title: "Curious & fast learner", detail: "Explores new ideas with a practical mindset and an eagerness to keep improving." },
+  { title: "Technical presentation", detail: "Comfortable explaining the intent and working direction behind a technical solution." },
+  { title: "Hands-on prototyping", detail: "Prefers turning a concept into something observable, testable, and useful." },
 ];
 
 const experience = [
@@ -459,8 +459,8 @@ function Home() {
         <section className="section-wrap content-section skills-section" aria-labelledby="skills-title">
           <SectionHeading id="skills-title" index="02 /" eyebrow="Capability map" title="The tools I turn into momentum." body="A practical technical stack across programming, problem solving, web fundamentals, and embedded systems—plus the habits that shape how I show up while learning and building." />
           <div className="skills-grid">
-            <div className="skill-panel"><div className="panel-label panel-label-stack"><Layers3 size={17} /><span>Technical toolkit<small>Languages · logic · hardware</small></span></div>{technicalSkills.map(skill => <div className="skill-row" key={skill.label}><div className="skill-row-top"><span>{skill.label}</span><span>{skill.signal}</span></div><div className="skill-rule" aria-hidden="true"><span /></div></div>)}</div>
-            <div className="skill-panel soft-panel"><div className="panel-label"><Zap size={17} /> How I show up</div><p className="panel-intro">I bring a curious, hands-on approach: understand the problem, build a working path, test the idea, and keep learning from the result.</p><div className="soft-skill-list">{softSkills.map(skill => <span key={skill}><Check size={14} /> {skill}</span>)}</div><div className="skill-footnote">Curious by default. Analytical under constraints. Always driven to solve practical problems.</div></div>
+            <div className="skill-panel"><div className="panel-label panel-label-stack"><Layers3 size={17} /><span>Technical toolkit<small>Languages · logic · hardware</small></span></div><div className="toolkit-grid">{technicalSkills.map(skill => <article className="toolkit-card" key={skill.label}><div className="toolkit-card-top"><strong>{skill.label}</strong><span>{skill.signal}</span></div><p>{skill.detail}</p></article>)}</div></div>
+            <div className="skill-panel soft-panel"><div className="panel-label"><Zap size={17} /> How I show up</div><p className="panel-intro">I bring a curious, hands-on approach: understand the problem, build a working path, test the idea, and keep learning from the result.</p><div className="showup-grid">{softSkills.map(skill => <article className="showup-card" key={skill.title}><div><Check size={14} /><strong>{skill.title}</strong></div><p>{skill.detail}</p></article>)}</div><div className="skill-footnote">Curious by default. Analytical under constraints. Always driven to solve practical problems.</div></div>
           </div>
         </section>
 
@@ -575,7 +575,7 @@ function Home() {
       <footer className="site-footer"><span>© 2026 Vinjamuri Lekhya Sahiti. Built with intention.</span><a href="#top">Back to top <ArrowDown size={14} className="rotate-up" /></a></footer>
 
       <button className={`chat-launcher ${chatOpen ? "is-open" : ""}`} type="button" onClick={() => setChatOpen(open => !open)} aria-label={chatOpen ? "Close resume assistant" : "Open resume assistant"} aria-expanded={chatOpen}><span className="chat-launcher-icon">{chatOpen ? <X size={20} /> : <MessageCircle size={21} />}</span><span className="chat-launcher-copy"><strong>Ask the assistant</strong><small>Quick route through the work</small></span></button>
-      {chatOpen ? <aside className="chat-panel" aria-label="Resume assistant" aria-live="polite"><div className="chat-header"><div className="chat-title"><span className="chat-avatar"><Bot size={18} /></span><div><strong>Portfolio assistant</strong><span><span className="status-dot" /> Online · for {profile.name}</span></div></div><div className="chat-header-actions"><button type="button" className="chat-icon" onClick={clearChat} title="Clear chat history" aria-label="Clear chat history"><Trash2 size={15} /></button><button type="button" className="chat-icon" onClick={() => setChatOpen(false)} title="Close assistant" aria-label="Close assistant"><X size={17} /></button></div></div><div className="chat-messages">{messages.map(message => <div className={`chat-message ${message.role}`} key={message.id}><div className="chat-bubble"><Streamdown>{message.content}</Streamdown></div><span className="chat-time">{message.timestamp}</span></div>)}{chatTyping ? <div className="chat-message assistant"><div className="chat-bubble typing"><i /><i /><i /></div><span className="chat-time">Thinking...</span></div> : null}</div>{messages.length === 1 ? <div className="chat-suggestions"><span>Try asking</span>{suggestedQuestions.map(question => <button key={question} type="button" onClick={() => askAssistant(question)}>{question}<ChevronDown size={13} className="suggestion-arrow" /></button>)}</div> : null}<form className="chat-input" onSubmit={event => { event.preventDefault(); void askAssistant(draft); }}><input value={draft} onChange={event => setDraft(event.target.value)} placeholder="Ask about the work..." aria-label="Ask the portfolio assistant" /><button type="submit" disabled={!draft.trim() || chatTyping} aria-label="Send question"><Send size={17} /></button></form></aside> : null}
+      {chatOpen ? <aside className="chat-panel" aria-label="Resume assistant" aria-live="polite"><div className="chat-header"><div className="chat-title"><span className="chat-avatar"><Bot size={18} /></span><div><strong>Portfolio assistant</strong><span><span className="status-dot" /> Online · for {profile.name}</span></div></div><div className="chat-header-actions"><button type="button" className="chat-icon" onClick={clearChat} title="Clear chat history" aria-label="Clear chat history"><Trash2 size={15} /></button><button type="button" className="chat-icon" onClick={() => setChatOpen(false)} title="Close assistant" aria-label="Close assistant"><X size={17} /></button></div></div><div className="chat-resume-actions" aria-label="Resume actions"><a href="/resume.pdf" target="_blank" rel="noreferrer"><ExternalLink size={13} /> View resume</a><a href="/resume.pdf" download="Vinjamuri_Lekhya_Sahiti_Resume.pdf"><Download size={13} /> Download PDF</a></div><div className="chat-messages">{messages.map(message => <div className={`chat-message ${message.role}`} key={message.id}><div className="chat-bubble"><Streamdown>{message.content}</Streamdown></div><span className="chat-time">{message.timestamp}</span></div>)}{chatTyping ? <div className="chat-message assistant"><div className="chat-bubble typing"><i /><i /><i /></div><span className="chat-time">Thinking...</span></div> : null}</div>{messages.length === 1 ? <div className="chat-suggestions"><span>Try asking</span>{suggestedQuestions.map(question => <button key={question} type="button" onClick={() => askAssistant(question)}>{question}<ChevronDown size={13} className="suggestion-arrow" /></button>)}</div> : null}<form className="chat-input" onSubmit={event => { event.preventDefault(); void askAssistant(draft); }}><input value={draft} onChange={event => setDraft(event.target.value)} placeholder="Ask about the work..." aria-label="Ask the portfolio assistant" /><button type="submit" disabled={!draft.trim() || chatTyping} aria-label="Send question"><Send size={17} /></button></form></aside> : null}
     </div>
   );
 }
