@@ -30,7 +30,7 @@ import {
   X,
   Zap,
 } from "lucide-react";
-import { type FormEvent, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Streamdown } from "streamdown";
 import { answerForIntent } from "@shared/profileFacts";
 import { useTheme } from "../contexts/ThemeContext";
@@ -234,39 +234,12 @@ function Home() {
   const [draft, setDraft] = useState("");
   const [chatTyping, setChatTyping] = useState(false);
   const [copiedBio, setCopiedBio] = useState(false);
-  const [contactForm, setContactForm] = useState({ name: "", email: "", subject: "", message: "" });
-  const [contactErrors, setContactErrors] = useState<Record<string, string>>({});
-  const [contactStatus, setContactStatus] = useState<"idle" | "ready">("idle");
   const assistant = trpc.assistant.chat.useMutation();
 
   const handleCopyBio = () => {
     navigator.clipboard.writeText(profile.summary);
     setCopiedBio(true);
     setTimeout(() => setCopiedBio(false), 2000);
-  };
-
-  const updateContactField = (field: keyof typeof contactForm, value: string) => {
-    setContactForm(current => ({ ...current, [field]: value }));
-    setContactErrors(current => ({ ...current, [field]: "" }));
-    setContactStatus("idle");
-  };
-
-  const handleContactSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const errors: Record<string, string> = {};
-    if (contactForm.name.trim().length < 2) errors.name = "Please enter your name.";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactForm.email.trim())) errors.email = "Please enter a valid email.";
-    if (contactForm.subject.trim().length < 3) errors.subject = "Please add a short subject.";
-    if (contactForm.message.trim().length < 10) errors.message = "Please add at least 10 characters.";
-    setContactErrors(errors);
-    if (Object.keys(errors).length > 0) return;
-
-    setContactStatus("ready");
-    const params = new URLSearchParams({
-      subject: contactForm.subject.trim(),
-      body: `Name: ${contactForm.name.trim()}\nEmail: ${contactForm.email.trim()}\n\n${contactForm.message.trim()}`,
-    });
-    window.location.href = `mailto:${profile.email}?${params.toString()}`;
   };
 
   const navItems = useMemo(
@@ -518,41 +491,6 @@ function Home() {
           </div>
 
           <div className="contact-side">
-            <form className="contact-form-card" onSubmit={handleContactSubmit} noValidate>
-              <div className="contact-form-header">
-                <div>
-                  <h3>Start a conversation.</h3>
-                </div>
-                <MessageCircle size={19} aria-hidden="true" />
-              </div>
-              <div className="contact-form-grid">
-                <label className="contact-field">
-                  <span>Name</span>
-                  <input value={contactForm.name} onChange={event => updateContactField("name", event.target.value)} aria-invalid={Boolean(contactErrors.name)} aria-describedby={contactErrors.name ? "contact-name-error" : undefined} autoComplete="name" />
-                  {contactErrors.name ? <small id="contact-name-error" className="field-error">{contactErrors.name}</small> : null}
-                </label>
-                <label className="contact-field">
-                  <span>Email</span>
-                  <input type="email" value={contactForm.email} onChange={event => updateContactField("email", event.target.value)} aria-invalid={Boolean(contactErrors.email)} aria-describedby={contactErrors.email ? "contact-email-error" : undefined} autoComplete="email" />
-                  {contactErrors.email ? <small id="contact-email-error" className="field-error">{contactErrors.email}</small> : null}
-                </label>
-                <label className="contact-field contact-field-wide">
-                  <span>Subject</span>
-                  <input value={contactForm.subject} onChange={event => updateContactField("subject", event.target.value)} aria-invalid={Boolean(contactErrors.subject)} aria-describedby={contactErrors.subject ? "contact-subject-error" : undefined} />
-                  {contactErrors.subject ? <small id="contact-subject-error" className="field-error">{contactErrors.subject}</small> : null}
-                </label>
-                <label className="contact-field contact-field-wide">
-                  <span>Message</span>
-                  <textarea rows={4} value={contactForm.message} onChange={event => updateContactField("message", event.target.value)} aria-invalid={Boolean(contactErrors.message)} aria-describedby={contactErrors.message ? "contact-message-error" : undefined} />
-                  {contactErrors.message ? <small id="contact-message-error" className="field-error">{contactErrors.message}</small> : null}
-                </label>
-              </div>
-              <div className="contact-form-footer">
-                <button className="contact-submit" type="submit"><Send size={15} /> Prepare email</button>
-                {contactStatus === "ready" ? <span className="form-success" role="status"><Check size={14} /> Email draft prepared</span> : <span className="form-note">Opens your email client</span>}
-              </div>
-            </form>
-
             <div className="contact-channels-grid">
             <a className="channel-card" href={`mailto:${profile.email}`}>
               <div className="channel-icon"><Mail size={20} /></div>

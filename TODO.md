@@ -16,8 +16,8 @@
 - [x] The evidence section is labeled as resume evidence and academic/technical highlights, not as third-party testimonials.
 
 ## Contact and assistant
-- [x] The Contact section includes validated name, email, subject, and message fields with inline errors; valid submission prepares a prefilled email to 25071A6962@vnrvjiet.in and clearly explains that it opens the visitor's email client.
-- [x] The Contact section includes direct email, phone, LinkedIn, GitHub, LeetCode, CodeChef, and location links/details.
+- [x] The final Contact section is display-only and does not collect visitor-entered name, email, subject, or message data.
+- [x] The Contact section displays direct email, phone, LinkedIn, GitHub, LeetCode, CodeChef, location, internship focus, core strengths, and academic details.
 - [x] A floating resume assistant opens from the bottom-right, supports suggested questions, timestamps, typing state, clear history, Escape-to-close, and responsive layout.
 - [x] The assistant classifies ambiguous questions with the managed AI service but returns only fixed responses from a shared resume-grounded fact source; it does not forward chat history into future classification turns or echo unsupported generated facts.
 

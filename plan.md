@@ -27,7 +27,7 @@ A single-page personal resume portfolio for recruiters, technical selection team
 - Enable the existing switchable `ThemeProvider` and persist the theme preference in local storage.
 - Add a public `assistant.chat` tRPC mutation backed by the managed `invokeLLM` helper as a narrow intent classifier. The returned intent selects a fixed response from `shared/profileFacts.ts`, so AI classification cannot introduce unsupported employers, metrics, dates, or project details.
 - Build the floating assistant in the page with suggested prompts, message timestamps, typing state, clear-history control, escape-to-close, and a compact mobile layout. If the server call is unavailable, provide the same shared fact response locally rather than leaving the visitor with an empty state.
-- Add a validated contact form with accessible labels, inline errors, and a prefilled `mailto:` handoff to the supplied email address; the page also exposes direct phone, email, LinkedIn, GitHub, LeetCode, and CodeChef links.
+- Use a display-only Contact section with the supplied phone, email, LinkedIn, GitHub, LeetCode, CodeChef, location, internship focus, and academic details; do not collect visitor-entered information.
 - Add a profile-photo block with initials and a clear label rather than inventing a real likeness. Reuse the supplied resume PDF at `/resume.pdf` for view and download actions.
 - Add a recruiter snapshot strip and correct the achievement label to `SYNTH VISION`, including the supplied Krithomedh organizer attribution.
 - Add `public/manus-routes.json`, metadata, and descriptive initial body content for the public root route.
@@ -35,7 +35,7 @@ A single-page personal resume portfolio for recruiters, technical selection team
 ## Project structure
 
 - `client/src/App.tsx` — app shell, theme provider, error boundary, and route table.
-- `client/src/pages/Home.tsx` — editable profile data, page sections, interactions, chatbot panel, and contact validation.
+- `client/src/pages/Home.tsx` — editable profile data, page sections, interactions, chatbot panel, and display-only contact details.
 - `client/src/index.css` — design tokens, responsive layout, dark mode, animations, accessibility states, and component styling.
 - `server/routers.ts` — public `assistant.chat` mutation with AI intent classification and fixed safe responses.
 - `client/index.html` — title, description, social metadata, and font loading.
