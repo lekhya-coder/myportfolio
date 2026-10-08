@@ -20,7 +20,17 @@ describe("resume assistant intent routing", () => {
 
   it("exposes direct resume links in the resume answer", () => {
     const answer = answerForIntent("resume");
-    expect(answer).toContain("/resume.pdf");
-    expect(answer).toContain("view the resume PDF");
+    expect(answer).toContain("View resume");
+    expect(answer).toContain("Download PDF");
+    expect(answer).not.toContain("](");
+    expect(answer).not.toContain("[blocked]");
+  });
+
+  it("keeps contact details readable without blocked link markup", () => {
+    const answer = answerForIntent("contact");
+    expect(answer).toContain("linkedin.com/in/lekhya-vinjamuri");
+    expect(answer).toContain("github.com/lekhya-coder");
+    expect(answer).not.toContain("](");
+    expect(answer).not.toContain("[blocked]");
   });
 });

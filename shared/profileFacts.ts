@@ -21,11 +21,11 @@ export const assistantResponses: Record<AssistantIntent, string> = {
   achievements:
     "### Achievements and practice\n\n- **SYNTH VISION Hackathon Finalist:** The hackathon was conducted by Krithomedh; Lekhya reached the final round and gained experience building and presenting a technical solution under time constraints.\n- **Coding practice:** Active problem-solving practice through LeetCode (`VLekhya`) and CodeChef (`lekhya_sahi_27`).\n- **Academic record:** SGPA **9.48 / 10** at VNRVJIET.",
   contact:
-    "### Contact\n\n- **Email:** 25071A6962@vnrvjiet.in\n- **Phone:** +91 80742 86134\n- **LinkedIn:** [linkedin.com/in/lekhya-vinjamuri](https://linkedin.com/in/lekhya-vinjamuri)\n- **GitHub:** [github.com/lekhya-coder](https://github.com/lekhya-coder)\n- **LeetCode:** [leetcode.com/u/VLekhya](https://leetcode.com/u/VLekhya)\n- **CodeChef:** [codechef.com/users/lekhya_sahi_27](https://codechef.com/users/lekhya_sahi_27)\n- **Location:** Hyderabad, India · VNRVJIET",
+    "### Contact\n\n- **Email:** 25071A6962@vnrvjiet.in\n- **Phone:** +91 80742 86134\n- **LinkedIn:** linkedin.com/in/lekhya-vinjamuri\n- **GitHub:** github.com/lekhya-coder\n- **LeetCode:** leetcode.com/u/VLekhya\n- **CodeChef:** codechef.com/users/lekhya_sahi_27\n- **Location:** Hyderabad, India · VNRVJIET",
   availability:
     "### Internship availability\n\nVinjamuri Lekhya Sahiti is seeking **software development and technical internship opportunities**. She is building experience across Java, C++, Data Structures, embedded systems, IoT, and problem solving.",
   resume:
-    "### Resume\n\nUse the buttons in this assistant to open the resume or download it as a PDF. You can also [view the resume PDF here](/resume.pdf) or [open the resume file for download](/resume.pdf).",
+    "### Resume\n\nUse the **View resume** button above to open the supplied PDF in a new tab, or use **Download PDF** to save it directly.",
   unknown:
     "I can answer questions about Lekhya's resume-grounded profile, skills, projects, education, achievements, availability, contact details, and resume. I don't have a reliable answer for that question in the supplied resume; please use the Contact section for anything more specific.",
 };
