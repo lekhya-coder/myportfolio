@@ -237,6 +237,50 @@ function generateAssistantAnswer(userPrompt: string): string {
   return intentsForQuestion(userPrompt).map(answerForIntent).join("\n\n");
 }
 
+type AvatarMood = "idle" | "listening" | "thinking" | "happy";
+
+function InteractiveAvatar({ mood }: { mood: AvatarMood }) {
+  const moodCopy = {
+    idle: "Ready when you are",
+    listening: "I’m reading that…",
+    thinking: "Finding the right signal…",
+    happy: "Here’s what I found",
+  }[mood];
+
+  return (
+    <div className={`assistant-avatar-card avatar-${mood}`} aria-label={`Interactive portfolio avatar: ${moodCopy}`}>
+      <div className="assistant-avatar-stage">
+        <span className="assistant-avatar-orbit orbit-a" aria-hidden="true" />
+        <span className="assistant-avatar-orbit orbit-b" aria-hidden="true" />
+        <svg className="assistant-avatar" viewBox="0 0 160 160" role="img" aria-hidden="true">
+          <defs>
+            <linearGradient id="avatarBody" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stopColor="var(--lime)" />
+              <stop offset="1" stopColor="var(--accent-violet)" />
+            </linearGradient>
+            <linearGradient id="avatarFace" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stopColor="var(--surface)" />
+              <stop offset="1" stopColor="var(--surface-2)" />
+            </linearGradient>
+          </defs>
+          <path className="avatar-shadow" d="M38 136c8-20 22-29 42-29s34 9 42 29" />
+          <path className="avatar-body" d="M43 137c3-22 15-35 37-35s34 13 37 35" fill="url(#avatarBody)" />
+          <path className="avatar-neck" d="M69 105v14h22v-14" fill="url(#avatarFace)" />
+          <path className="avatar-face" d="M48 49c0-19 12-32 32-32s32 13 32 32v25c0 19-14 31-32 31S48 93 48 74Z" fill="url(#avatarFace)" />
+          <path className="avatar-hair" d="M47 61c-3-30 9-45 34-45 22 0 35 12 32 44l-10-14c-13 7-29 8-47 0Z" fill="var(--navy)" />
+          <path className="avatar-eye avatar-eye-left" d={mood === "happy" ? "M59 67q6 7 12 0" : mood === "thinking" ? "M59 68h11" : "M59 68q6-5 11 0"} />
+          <path className="avatar-eye avatar-eye-right" d={mood === "happy" ? "M89 67q6 7 12 0" : mood === "thinking" ? "M89 68h11" : "M89 68q6-5 11 0"} />
+          <path className="avatar-mouth" d={mood === "happy" ? "M70 84q10 10 20 0" : mood === "thinking" ? "M74 86h12" : "M75 84q5 4 10 0"} />
+          <circle className="avatar-cheek" cx="57" cy="79" r="3" />
+          <circle className="avatar-cheek" cx="103" cy="79" r="3" />
+          <path className="avatar-spark" d="M126 30v14M119 37h14" />
+        </svg>
+      </div>
+      <div className="assistant-avatar-copy"><span><i /> AVATAR SIGNAL</span><strong>{moodCopy}</strong><small>Inspired by <a href="https://avatars.bible-strong.app/" target="_blank" rel="noreferrer">Bible Strong Avatar Lab</a></small></div>
+    </div>
+  );
+}
+
 function Home() {
   const { theme, toggleTheme } = useTheme();
   const [activeSection, setActiveSection] = useState("top");
@@ -252,6 +296,7 @@ function Home() {
     () => projectFilter === "all" ? projects : projects.filter(project => project.category === projectFilter),
     [projectFilter],
   );
+  const avatarMood: AvatarMood = chatTyping ? "thinking" : draft.trim() ? "listening" : messages.length > 1 ? "happy" : "idle";
 
   const navItems = useMemo(
     () => [
@@ -566,7 +611,7 @@ function Home() {
       <footer className="site-footer"><span>© 2026 Vinjamuri Lekhya Sahiti. Built with intention.</span><a href="#top">Back to top <ArrowDown size={14} className="rotate-up" /></a></footer>
 
       <button className={`chat-launcher ${chatOpen ? "is-open" : ""}`} type="button" onClick={() => setChatOpen(open => !open)} aria-label={chatOpen ? "Close resume assistant" : "Open resume assistant"} aria-expanded={chatOpen}><span className="chat-launcher-icon">{chatOpen ? <X size={20} /> : <MessageCircle size={21} />}</span><span className="chat-launcher-copy"><strong>Ask the assistant</strong><small>Quick route through the work</small></span></button>
-      {chatOpen ? <aside className="chat-panel" aria-label="Resume assistant" aria-live="polite"><div className="chat-header"><div className="chat-title"><span className="chat-avatar"><Bot size={18} /></span><div><strong>Portfolio assistant</strong><span><span className="status-dot" /> Online · for {profile.name}</span></div></div><div className="chat-header-actions"><button type="button" className="chat-icon" onClick={clearChat} title="Clear chat history" aria-label="Clear chat history"><Trash2 size={15} /></button><button type="button" className="chat-icon" onClick={() => setChatOpen(false)} title="Close assistant" aria-label="Close assistant"><X size={17} /></button></div></div><div className="chat-messages">{messages.map(message => <div className={`chat-message ${message.role}`} key={message.id}><div className="chat-bubble"><Streamdown>{message.content}</Streamdown>{message.showResumeActions ? <div className="chat-inline-resume-actions" aria-label="Resume actions"><a href="/resume.pdf" target="_blank" rel="noreferrer"><ExternalLink size={13} /> View resume</a><a href="/resume.pdf" download="Vinjamuri_Lekhya_Sahiti_Resume.pdf"><Download size={13} /> Download PDF</a></div> : null}</div><span className="chat-time">{message.timestamp}</span></div>)}{chatTyping ? <div className="chat-message assistant"><div className="chat-bubble typing"><i /><i /><i /></div><span className="chat-time">Thinking...</span></div> : null}</div>{messages.length === 1 ? <div className="chat-suggestions"><span>Try asking</span>{suggestedQuestions.map(question => <button key={question} type="button" onClick={() => askAssistant(question)}>{question}<ChevronDown size={13} className="suggestion-arrow" /></button>)}</div> : null}<form className="chat-input" onSubmit={event => { event.preventDefault(); void askAssistant(draft); }}><input value={draft} onChange={event => setDraft(event.target.value)} placeholder="Ask about the work..." aria-label="Ask the portfolio assistant" /><button type="submit" disabled={!draft.trim() || chatTyping} aria-label="Send question"><Send size={17} /></button></form></aside> : null}
+      {chatOpen ? <aside className="chat-panel" aria-label="Resume assistant" aria-live="polite"><div className="chat-header"><div className="chat-title"><span className="chat-avatar"><Bot size={18} /></span><div><strong>Portfolio assistant</strong><span><span className="status-dot" /> Online · for {profile.name}</span></div></div><div className="chat-header-actions"><button type="button" className="chat-icon" onClick={clearChat} title="Clear chat history" aria-label="Clear chat history"><Trash2 size={15} /></button><button type="button" className="chat-icon" onClick={() => setChatOpen(false)} title="Close assistant" aria-label="Close assistant"><X size={17} /></button></div></div><InteractiveAvatar mood={avatarMood} /><div className="chat-messages">{messages.map(message => <div className={`chat-message ${message.role}`} key={message.id}><div className="chat-bubble"><Streamdown>{message.content}</Streamdown>{message.showResumeActions ? <div className="chat-inline-resume-actions" aria-label="Resume actions"><a href="/resume.pdf" target="_blank" rel="noreferrer"><ExternalLink size={13} /> View resume</a><a href="/resume.pdf" download="Vinjamuri_Lekhya_Sahiti_Resume.pdf"><Download size={13} /> Download PDF</a></div> : null}</div><span className="chat-time">{message.timestamp}</span></div>)}{chatTyping ? <div className="chat-message assistant"><div className="chat-bubble typing"><i /><i /><i /></div><span className="chat-time">Thinking...</span></div> : null}</div>{messages.length === 1 ? <div className="chat-suggestions"><span>Try asking</span>{suggestedQuestions.map(question => <button key={question} type="button" onClick={() => askAssistant(question)}>{question}<ChevronDown size={13} className="suggestion-arrow" /></button>)}</div> : null}<form className="chat-input" onSubmit={event => { event.preventDefault(); void askAssistant(draft); }}><input value={draft} onChange={event => setDraft(event.target.value)} placeholder="Ask about the work..." aria-label="Ask the portfolio assistant" /><button type="submit" disabled={!draft.trim() || chatTyping} aria-label="Send question"><Send size={17} /></button></form></aside> : null}
     </div>
   );
 }
