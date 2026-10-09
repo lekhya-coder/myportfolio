@@ -3,7 +3,7 @@
 ## Recruiter-facing portfolio experience
 - [x] The website provides a polished, responsive single-page interface with a navy/white/charcoal palette, electric accent color, readable typography, smooth scrolling, subtle motion, visible focus states, and mobile navigation.
 - [x] The sticky navigation exposes Overview, About, Experience, Projects, and Contact sections, with a light/dark mode toggle, social/profile links, back-to-top action, and accessible labels.
-- [x] The hero introduces Vinjamuri Lekhya Sahiti as a second-year B.Tech student in Internet of Things at VNRVJIET, highlights SGPA 9.48/10 and internship availability, and provides resume view, resume download, and contact actions.
+- [x] The hero introduces Vinjamuri Lekhya Sahiti as a second-year B.Tech student in Internet of Things at VNRVJIET, highlights CGPA 9.48/10 and internship availability, and provides resume view, resume download, and contact actions.
 - [x] The recruiter snapshot strip summarizes current focus, core practice, hands-on IoT work, and academic standing without claiming unsupported proficiency scores.
 
 ## Resume-grounded evidence
@@ -11,10 +11,10 @@
 - [x] The technical section lists C, C++, Java, Data Structures, Problem Solving, HTML, CSS, JavaScript, NodeMCU, sensors, microcontrollers, and IoT using qualitative practice signals rather than invented numeric ratings.
 - [x] The Technical toolkit and How I show up areas use responsive descriptive boxes with short context paragraphs instead of table-like rows.
 - [x] The selected-practice timeline distinguishes project work, coding-platform practice, and hackathon participation rather than presenting unsupported employment history.
-- [x] The education section presents the B.Tech in IoT, VNRVJIET, 2nd Year status, SGPA 9.48/10, and supplied coursework areas.
+- [x] The education section presents the B.Tech in IoT, VNRVJIET, 2nd Year status, CGPA 9.48/10, and supplied coursework areas.
 - [x] The projects section presents the Underground Soil Moisture Detection System, NodeMCU Wi-Fi Controlled Smart Car, and algorithmic practice with descriptive visual placeholders and supplied technologies; it does not invent live-demo or repository URLs that were not supplied.
 - [x] The project showcase provides accessible dynamic filters for All signals, Embedded & IoT, Wireless control, and Problem solving, and updates the visible build count as the selected filter changes.
-- [x] The achievements section identifies the SYNTH VISION Hackathon finalist experience, explicitly noting it was conducted by Krithomedh, alongside coding-platform practice and the SGPA 9.48/10 academic record.
+- [x] The achievements section identifies the SYNTH VISION Hackathon finalist experience, explicitly noting it was conducted by Krithomedh, alongside coding-platform practice and the CGPA 9.48/10 academic record.
 - [x] The evidence section is labeled as resume evidence and academic/technical highlights, not as third-party testimonials.
 
 ## Contact and assistant

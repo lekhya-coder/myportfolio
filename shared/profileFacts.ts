@@ -11,15 +11,15 @@ export type AssistantIntent =
 
 export const assistantResponses: Record<AssistantIntent, string> = {
   profile:
-    "### Profile summary\n\nVinjamuri Lekhya Sahiti is an aspiring **Software Engineer** pursuing a **B.Tech in Internet of Things (IoT)** at **VNR Vignana Jyothi Institute of Engineering & Technology**, with a strong academic record (**SGPA: 9.48/10**). She is skilled in **C, C++, Java, Data Structures, Problem Solving, and web technologies**, with experience developing IoT-based projects that demonstrate practical implementation and analytical skills.\n\nShe is eager to contribute to software development teams, build efficient and scalable solutions, apply technical knowledge to real-world challenges, and continue growing as a software professional.",
+    "### Profile summary\n\nVinjamuri Lekhya Sahiti is an aspiring **Software Engineer** pursuing a **B.Tech in Internet of Things (IoT)** at **VNR Vignana Jyothi Institute of Engineering & Technology**, with a strong academic record (**CGPA: 9.48/10**). She is skilled in **C, C++, Java, Data Structures, Problem Solving, and web technologies**, with experience developing IoT-based projects that demonstrate practical implementation and analytical skills.\n\nShe is eager to contribute to software development teams, build efficient and scalable solutions, apply technical knowledge to real-world challenges, and continue growing as a software professional.",
   skills:
     "### Technical skills\n\n- **Programming:** C, C++, and Java\n- **Core practice:** Data Structures and Problem Solving\n- **Web fundamentals:** HTML, CSS, and JavaScript\n- **IoT and embedded systems:** NodeMCU, sensors, and microcontrollers\n- **Interests:** Software development, AI, and problem solving",
   projects:
     "### Selected projects\n\n- **Underground Soil Moisture Detection System:** An IoT-based system for monitoring underground soil moisture levels using sensors, microcontrollers, and embedded-systems fundamentals.\n- **NodeMCU Wi-Fi Controlled Smart Car:** A smart car controlled wirelessly over Wi-Fi using NodeMCU.\n\nShe also practices Data Structures and algorithmic problem solving in C++ and Java through LeetCode and CodeChef.",
   education:
-    "### Academic background\n\n- **Degree:** B.Tech in Internet of Things (IoT)\n- **Year:** 2nd Year\n- **Institution:** VNR Vignana Jyothi Institute of Engineering & Technology (VNRVJIET)\n- **Academic performance:** SGPA **9.48 / 10**\n- **Relevant study:** Programming fundamentals in C, C++, and Java; Data Structures; and IoT / embedded-systems coursework",
+    "### Academic background\n\n- **Degree:** B.Tech in Internet of Things (IoT)\n- **Year:** 2nd Year\n- **Institution:** VNR Vignana Jyothi Institute of Engineering & Technology (VNRVJIET)\n- **Academic performance:** CGPA **9.48 / 10**\n- **Relevant study:** Programming fundamentals in C, C++, and Java; Data Structures; and IoT / embedded-systems coursework",
   achievements:
-    "### Achievements and practice\n\n- **SYNTH VISION Hackathon Finalist:** The hackathon was conducted by Krithomedh; Lekhya reached the final round and gained experience building and presenting a technical solution under time constraints.\n- **Coding practice:** Active problem-solving practice through LeetCode (`VLekhya`) and CodeChef (`lekhya_sahi_27`).\n- **Academic record:** SGPA **9.48 / 10** at VNRVJIET.",
+    "### Achievements and practice\n\n- **SYNTH VISION Hackathon Finalist:** The hackathon was conducted by Krithomedh; Lekhya reached the final round and gained experience building and presenting a technical solution under time constraints.\n- **Coding practice:** Active problem-solving practice through LeetCode (`VLekhya`) and CodeChef (`lekhya_sahi_27`).\n- **Academic record:** CGPA **9.48 / 10** at VNRVJIET.",
   contact:
     "### Contact\n\n- **Email:** 25071A6962@vnrvjiet.in\n- **Phone:** +91 80742 86134\n- **LinkedIn:** linkedin.com/in/lekhya-vinjamuri\n- **GitHub:** github.com/lekhya-coder\n- **LeetCode:** leetcode.com/u/VLekhya\n- **CodeChef:** codechef.com/users/lekhya_sahi_27\n- **Location:** Hyderabad, India · VNRVJIET",
   availability:
@@ -34,15 +34,21 @@ export function answerForIntent(intent: string): string {
   return assistantResponses[intent as AssistantIntent] ?? assistantResponses.unknown;
 }
 
-export function intentForQuestion(question: string): AssistantIntent {
+export function intentsForQuestion(question: string): AssistantIntent[] {
   const q = question.toLowerCase().trim();
-  if (/resume|cv|download|view.*(resume|cv)|pdf/.test(q)) return "resume";
-  if (/intern|hire|job|availab|opportunit|open to work|recruit/.test(q)) return "availability";
-  if (/contact|email|phone|linkedin|github|leetcode|codechef|reach|reach out|get in touch|call|message/.test(q)) return "contact";
-  if (/project|built|build|worked|work experience|experience|soil|moisture|car|nodemcu|wi-?fi|hardware|embedded/.test(q)) return "projects";
-  if (/skill|language|tech|stack|java|c\+\+|\bc\b|dsa|data structure|html|css|javascript|microcontroller|sensor|iot/.test(q)) return "skills";
-  if (/education|college|university|sgpa|cgpa|gpa|vnrvjiet|study|degree|year|coursework|academic/.test(q)) return "education";
-  if (/hackathon|achievement|award|competition|contest|synthe|vision|finalist|coding practice|leetcode|codechef/.test(q)) return "achievements";
-  if (/summary|bio|profile|background|about( me)?|who (is|are)|introduce|\b(hello|hi|hey)\b/.test(q)) return "profile";
-  return "unknown";
+  const matched: AssistantIntent[] = [];
+  const add = (intent: AssistantIntent, pattern: RegExp) => { if (pattern.test(q)) matched.push(intent); };
+  add("resume", /resume|cv|download|view.*(resume|cv)|pdf/);
+  add("availability", /intern|hire|job|availab|opportunit|open to work|recruit/);
+  add("contact", /contact|email|phone|linkedin|github|leetcode|codechef|reach|reach out|get in touch|call|message/);
+  add("projects", /project|built|build|worked|work experience|experience|soil|moisture|car|nodemcu|wi-?fi|hardware|embedded/);
+  add("skills", /skill|language|tech|stack|java|c\+\+|\bc\b|dsa|data structure|html|css|javascript|microcontroller|sensor|iot/);
+  add("education", /education|college|university|cgpa|cgpa|gpa|vnrvjiet|study|degree|year|coursework|academic/);
+  add("achievements", /hackathon|achievement|award|competition|contest|synthe|vision|finalist|coding practice|leetcode|codechef/);
+  add("profile", /summary|bio|profile|background|about( me)?|who (is|are)|introduce|\b(hello|hi|hey)\b/);
+  return matched.length ? [...new Set(matched)] : ["unknown"];
+}
+
+export function intentForQuestion(question: string): AssistantIntent {
+  return intentsForQuestion(question)[0];
 }

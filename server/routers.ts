@@ -1,5 +1,5 @@
 import { COOKIE_NAME } from "@shared/const";
-import { answerForIntent, intentForQuestion, type AssistantIntent } from "../shared/profileFacts";
+import { answerForIntent, intentsForQuestion, type AssistantIntent } from "../shared/profileFacts";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { invokeLLM } from "./_core/llm";
 import { systemRouter } from "./_core/systemRouter";
@@ -25,7 +25,7 @@ profile, skills, projects, education, achievements, contact, availability, resum
 Use profile for a bio, introduction, background, or greeting.
 Use skills for technologies, programming languages, or capabilities.
 Use projects for projects, things built, embedded systems, soil moisture, smart car, or NodeMCU.
-Use education for degree, college, institution, year, or SGPA.
+Use education for degree, college, institution, year, or CGPA.
 Use achievements for hackathons, finalist status, coding platforms, or accomplishments.
 Use contact for email, phone, LinkedIn, GitHub, LeetCode, CodeChef, or how to reach her.
 Use availability for internships, hiring, opportunities, or whether she is open to work.
@@ -33,9 +33,9 @@ Use resume for questions about viewing or downloading the PDF resume.
 Use unknown when the question cannot be answered from the supplied resume topics.
 `;
 
-async function classifyIntent(question: string): Promise<AssistantIntent> {
-  const heuristic = intentForQuestion(question);
-  if (heuristic !== "unknown") return heuristic;
+async function classifyIntents(question: string): Promise<AssistantIntent[]> {
+  const heuristic = intentsForQuestion(question);
+  if (!(heuristic.length === 1 && heuristic[0] === "unknown")) return heuristic;
 
   try {
     const result = await invokeLLM({
@@ -47,12 +47,12 @@ async function classifyIntent(question: string): Promise<AssistantIntent> {
     });
     const raw = result.choices?.[0]?.message?.content;
     const token = typeof raw === "string" ? raw.trim().toLowerCase().replace(/[^a-z]/g, "") : "";
-    if (allowedIntents.includes(token as AssistantIntent)) return token as AssistantIntent;
+    if (allowedIntents.includes(token as AssistantIntent)) return [token as AssistantIntent];
   } catch {
     // Use the safe unknown response when the managed LLM is unavailable.
   }
 
-  return "unknown";
+  return ["unknown"];
 }
 
 export const appRouter = router({
@@ -69,8 +69,8 @@ export const appRouter = router({
     chat: publicProcedure
       .input(z.object({ question: z.string().trim().min(1).max(800) }))
       .mutation(async ({ input }) => {
-        const intent = await classifyIntent(input.question);
-        return { answer: answerForIntent(intent) };
+        const intents = await classifyIntents(input.question);
+        return { answer: intents.map(answerForIntent).join("\n\n") };
       }),
   }),
 });

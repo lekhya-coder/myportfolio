@@ -32,7 +32,7 @@ import {
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Streamdown } from "streamdown";
-import { answerForIntent, intentForQuestion } from "@shared/profileFacts";
+import { answerForIntent, intentForQuestion, intentsForQuestion } from "@shared/profileFacts";
 import { useTheme } from "../contexts/ThemeContext";
 import { trpc } from "../lib/trpc";
 
@@ -47,9 +47,9 @@ type ChatMessage = {
 const profile = {
   name: "Vinjamuri Lekhya Sahiti",
   title: "IoT & Software Developer · B.Tech Student",
-  eyebrow: "B.Tech in Internet of Things (IoT) · SGPA 9.48/10 · SYNTH VISION Finalist",
+  eyebrow: "B.Tech in Internet of Things (IoT) · CGPA 9.48/10 · SYNTH VISION Finalist",
   intro:
-    "Second-year B.Tech student in Internet of Things at VNRVJIET with a strong academic record (SGPA 9.48/10) and a keen interest in software development, AI, and problem solving. Building foundations in Java, C++, and Data Structures through embedded-systems projects, hackathons, and regular coding practice.",
+    "Second-year B.Tech student in Internet of Things at VNRVJIET with a strong academic record (CGPA 9.48/10) and a keen interest in software development, AI, and problem solving. Building foundations in Java, C++, and Data Structures through embedded-systems projects, hackathons, and regular coding practice.",
   location: "Hyderabad, India · VNRVJIET",
   email: "25071A6962@vnrvjiet.in",
   phone: "+91 80742 86134",
@@ -59,7 +59,7 @@ const profile = {
   leetcode: "https://leetcode.com/u/VLekhya",
   codechef: "https://www.codechef.com/users/lekhya_sahi_27",
   summary:
-    "Second-year B.Tech student in Internet of Things at VNRVJIET with a strong academic record (SGPA 9.48/10) and a keen interest in software development, AI, and problem solving. Building foundations in Java, C++, and Data Structures through embedded-systems projects, hackathons, and regular coding practice. Seeking software development and technical internship opportunities.",
+    "Second-year B.Tech student in Internet of Things at VNRVJIET with a strong academic record (CGPA 9.48/10) and a keen interest in software development, AI, and problem solving. Building foundations in Java, C++, and Data Structures through embedded-systems projects, hackathons, and regular coding practice. Seeking software development and technical internship opportunities.",
 };
 
 const technicalSkills = [
@@ -76,7 +76,7 @@ const softSkills = [
   { title: "Algorithmic thinking", detail: "Builds logic through regular C++ and Java data-structures practice." },
   { title: "Hackathon finalist", detail: "SYNTH VISION finalist experience shaped a faster build, test, and present rhythm." },
   { title: "Sensor & hardware prototyping", detail: "Learns by connecting concepts to microcontrollers, sensors, and working builds." },
-  { title: "Academic consistency", detail: "Maintains a strong technical academic record with SGPA 9.48 / 10." },
+  { title: "Academic consistency", detail: "Maintains a strong technical academic record with CGPA 9.48 / 10." },
   { title: "Curious & fast learner", detail: "Explores new ideas with a practical mindset and an eagerness to keep improving." },
   { title: "Technical presentation", detail: "Comfortable explaining the intent and working direction behind a technical solution." },
   { title: "Hands-on prototyping", detail: "Prefers turning a concept into something observable, testable, and useful." },
@@ -114,7 +114,7 @@ const education = [
     year: "2nd Year",
     title: "B.Tech — Internet of Things (IoT)",
     school: "VNR Vignana Jyothi Institute of Engineering & Technology (VNRVJIET)",
-    detail: "SGPA: 9.48 / 10 · Academic focus: programming fundamentals (C, C++, Java), data structures, IoT, and embedded-systems coursework.",
+    detail: "CGPA: 9.48 / 10 · Academic focus: programming fundamentals (C, C++, Java), data structures, IoT, and embedded-systems coursework.",
   },
   {
     year: "Continuous",
@@ -175,7 +175,7 @@ const projectFilters = [
 
 const recognitions = [
   { label: "SYNTH VISION Hackathon Finalist", detail: "Conducted by Krithomedh · Reached the final round and gained experience building and presenting a technical solution under time constraints" },
-  { label: "Academic Excellence — SGPA 9.48 / 10", detail: "VNRVJIET · Strong academic record in technical coursework" },
+  { label: "Academic Excellence — CGPA 9.48 / 10", detail: "VNRVJIET · Strong academic record in technical coursework" },
   { label: "Active Competitive Programming Profiles", detail: "LeetCode (VLekhya) & CodeChef (lekhya_sahi_27) algorithmic practice" },
   { label: "Embedded Systems & Hardware Projects", detail: "Built projects for underground soil moisture monitoring and Wi-Fi controlled robotics" },
 ];
@@ -187,7 +187,7 @@ const evidenceNotes = [
     role: "Embedded systems project work",
   },
   {
-    quote: "A 9.48 / 10 SGPA, SYNTH VISION Hackathon finalist experience, and regular coding practice describe a focused student profile.",
+    quote: "A 9.48 / 10 CGPA, SYNTH VISION Hackathon finalist experience, and regular coding practice describe a focused student profile.",
     name: "Resume evidence",
     role: "VNRVJIET · B.Tech in IoT",
   },
@@ -202,7 +202,7 @@ const suggestedQuestions = [
   "Tell me about yourself",
   "What are your core technical skills?",
   "Tell me about your projects",
-  "What is your academic background and SGPA?",
+  "What is your academic background and CGPA?",
   "Tell me about your coding achievements",
   "How can I get in touch with you?",
   "Can I view or download your resume?",
@@ -212,7 +212,7 @@ const initialMessage: ChatMessage = {
   id: "welcome",
   role: "assistant",
   content:
-    "Hi — I’m the assistant for Vinjamuri Lekhya Sahiti. Ask me about her skills in C++, Java, and embedded systems, projects like the Soil Moisture Detector or Wi-Fi Smart Car, the SYNTH VISION Hackathon conducted by Krithomedh, or her academic record (SGPA 9.48)!",
+    "Hi — I’m the assistant for Vinjamuri Lekhya Sahiti. Ask me about her skills in C++, Java, and embedded systems, projects like the Soil Moisture Detector or Wi-Fi Smart Car, the SYNTH VISION Hackathon conducted by Krithomedh, or her academic record (CGPA 9.48)!",
   timestamp: "Now",
 };
 
@@ -234,7 +234,7 @@ function SectionHeading({ id, index, eyebrow, title, body }: { id?: string; inde
 }
 
 function generateAssistantAnswer(userPrompt: string): string {
-  return answerForIntent(intentForQuestion(userPrompt));
+  return intentsForQuestion(userPrompt).map(answerForIntent).join("\n\n");
 }
 
 function Home() {
@@ -378,7 +378,7 @@ function Home() {
             </div>
             <div className="hero-meta">
               <span><MapPin size={14} /> {profile.location}</span>
-              <span><GraduationCap size={14} /> SGPA: 9.48 / 10 · 2nd Year</span>
+              <span><GraduationCap size={14} /> CGPA: 9.48 / 10 · 2nd Year</span>
               <span><Mail size={14} /> {profile.email}</span>
             </div>
           </div>
@@ -398,7 +398,7 @@ function Home() {
           <div className="proof-card"><span>01 / Current focus</span><strong>Software development & technical internships</strong></div>
           <div className="proof-card"><span>02 / Core practice</span><strong>Java · C++ · Data Structures</strong></div>
           <div className="proof-card"><span>03 / Hands-on</span><strong>IoT · Sensors · Microcontrollers</strong></div>
-          <div className="proof-card"><span>04 / Academic</span><strong>VNRVJIET · 2nd Year · SGPA 9.48</strong></div>
+          <div className="proof-card"><span>04 / Academic</span><strong>VNRVJIET · 2nd Year · CGPA 9.48</strong></div>
         </section>
 
         <section className="marquee-band" aria-label="Professional focus areas">
@@ -412,11 +412,11 @@ function Home() {
               <article className="bio-card" aria-label="Professional summary">
                 <div className="bio-card-header">
                   <span className="bio-badge-tag"><Sparkles size={13} /> Profile Summary</span>
-                  <span className="bio-sgpa-pill">SGPA 9.48 / 10</span>
+                  <span className="bio-cgpa-pill">CGPA 9.48 / 10</span>
                 </div>
                 <div className="bio-body-text">
                   <p>
-                    Aspiring <strong>Software Engineer</strong> pursuing a <strong>B.Tech in Internet of Things (IoT)</strong> at <strong>VNR Vignana Jyothi Institute of Engineering &amp; Technology</strong>, with a strong academic record (<span className="highlight-text">SGPA: 9.48/10</span>).
+                    Aspiring <strong>Software Engineer</strong> pursuing a <strong>B.Tech in Internet of Things (IoT)</strong> at <strong>VNR Vignana Jyothi Institute of Engineering &amp; Technology</strong>, with a strong academic record (<span className="highlight-text">CGPA: 9.48/10</span>).
                   </p>
                   <p>
                     Skilled in <strong>C, C++, Java, Data Structures, Problem Solving, and web technologies</strong>. Experienced in developing IoT-based projects, demonstrating practical implementation and analytical skills.
@@ -428,7 +428,7 @@ function Home() {
                 <div className="bio-chips">
                   <span className="bio-chip"><Trophy size={13} /> SYNTH VISION Finalist</span>
                   <span className="bio-chip"><GraduationCap size={13} /> VNRVJIET · 2nd Year B.Tech</span>
-                  <span className="bio-chip"><Award size={13} /> SGPA 9.48 / 10</span>
+                  <span className="bio-chip"><Award size={13} /> CGPA 9.48 / 10</span>
                   <span className="bio-chip"><Code2 size={13} /> Java · C++ · DSA</span>
                   <span className="bio-chip"><Zap size={13} /> Open for Internships</span>
                 </div>
@@ -441,7 +441,7 @@ function Home() {
             <div className="about-details">
                   <div><span className="detail-label">Career goal</span><p>Seeking software development and technical internship opportunities to build practical technology solutions, apply core data structures, embedded system principles, and algorithmic thinking to grow as an engineer.</p></div>
                   <div className="about-focus-grid"><div><span>01</span><strong>Software foundations</strong><p>Java, C++, data structures, algorithms, and web fundamentals.</p></div><div><span>02</span><strong>Embedded practice</strong><p>NodeMCU, sensors, microcontrollers, and IoT project work.</p></div><div><span>03</span><strong>Growth mindset</strong><p>Hackathons, coding platforms, and a steady focus on practical problem solving.</p></div></div>
-                  <div><span className="detail-label">Strengths</span><div className="tag-list">{["Data Structures & Algorithms", "SYNTH VISION Finalist", "Embedded Systems & Prototyping", "Rapid Problem Solving", "Academic Rigor (SGPA 9.48)", "Microcontroller Firmware"].map(tag => <span className="tag" key={tag}>{tag}</span>)}</div></div>
+                  <div><span className="detail-label">Strengths</span><div className="tag-list">{["Data Structures & Algorithms", "SYNTH VISION Finalist", "Embedded Systems & Prototyping", "Rapid Problem Solving", "Academic Rigor (CGPA 9.48)", "Microcontroller Firmware"].map(tag => <span className="tag" key={tag}>{tag}</span>)}</div></div>
               <div className="quote-callout"><Quote size={22} /><p>Practical engineering starts with solid fundamentals and the curiosity to build.</p></div>
             </div>
           </div>
@@ -461,7 +461,7 @@ function Home() {
         </section>
 
         <section className="section-wrap content-section education-section" aria-labelledby="education-title">
-          <div className="split-heading"><SectionHeading id="education-title" index="04 /" eyebrow="Academic foundation" title="A record built on consistency." /><span className="section-side-note">Learning by building<br />B.Tech in IoT · SGPA 9.48/10.</span></div>
+          <div className="split-heading"><SectionHeading id="education-title" index="04 /" eyebrow="Academic foundation" title="A record built on consistency." /><span className="section-side-note">Learning by building<br />B.Tech in IoT · CGPA 9.48/10.</span></div>
           <div className="education-grid">{education.map(item => <article className="education-card" key={item.title}><div className="education-year">{item.year}</div><GraduationCap size={23} /><h3>{item.title}</h3><p className="education-school">{item.school}</p><p>{item.detail}</p></article>)}</div>
         </section>
 
@@ -485,7 +485,7 @@ function Home() {
           <div className="contact-intro">
             <p className="eyebrow">08 / Direct Connect</p>
             <h2 id="contact-title">From curiosity<br /><em>to contribution.</em></h2>
-            <p>Second-year B.Tech student at VNRVJIET (SGPA 9.48/10) and SYNTH VISION Hackathon Finalist, seeking software development and technical internship opportunities. With foundations in Java, C++, data structures, web fundamentals, and IoT hardware, I am looking for a place to keep learning by contributing to practical systems.</p>
+            <p>Second-year B.Tech student at VNRVJIET (CGPA 9.48/10) and SYNTH VISION Hackathon Finalist, seeking software development and technical internship opportunities. With foundations in Java, C++, data structures, web fundamentals, and IoT hardware, I am looking for a place to keep learning by contributing to practical systems.</p>
             <div className="contact-quick-grid" aria-label="Quick profile fit">
               <div className="contact-quick-card"><span>Open to</span><strong>Software development & technical internships</strong></div>
               <div className="contact-quick-card"><span>Strong in</span><strong>Java · C++ · Data Structures</strong></div>
@@ -556,7 +556,7 @@ function Home() {
                 <span className="channel-label">Campus & Location</span>
                 <strong className="channel-value">{profile.location}</strong>
               </div>
-              <span className="channel-meta">B.Tech Engineering · SGPA 9.48 / 10</span>
+              <span className="channel-meta">B.Tech Engineering · CGPA 9.48 / 10</span>
             </div>
             </div>
           </div>
