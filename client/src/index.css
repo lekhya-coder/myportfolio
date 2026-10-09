@@ -798,7 +798,8 @@ h1 em, .contact-intro h2 em {
 .assistant-avatar-orbit.orbit-a { width: 68px; height: 24px; transform: rotate(-27deg); animation: avatar-orbit 5s linear infinite; }
 .assistant-avatar-orbit.orbit-b { width: 25px; height: 70px; transform: rotate(29deg); animation: avatar-orbit 7s linear infinite reverse; }
 .avatar-body, .avatar-face, .avatar-hair, .avatar-neck { transition: transform .25s ease; transform-origin: 80px 80px; }
-.avatar-eye, .avatar-mouth { fill: none; stroke: var(--text); stroke-linecap: round; stroke-width: 3; transition: d .2s ease; }
+.avatar-eye { fill: none; stroke: var(--text); stroke-linecap: round; stroke-width: 3; transform: translate(var(--look-x, 0px), var(--look-y, 0px)); transform-box: fill-box; transform-origin: center; transition: d .2s ease, transform .16s ease-out; }
+.avatar-mouth { fill: none; stroke: var(--text); stroke-linecap: round; stroke-width: 3; transition: d .2s ease; }
 .avatar-cheek { fill: color-mix(in srgb, var(--accent-cyan) 55%, transparent); }
 .avatar-shadow { fill: none; stroke: color-mix(in srgb, var(--text) 18%, transparent); stroke-linecap: round; stroke-width: 4; }
 .avatar-spark { fill: none; stroke: var(--lime); stroke-linecap: round; stroke-width: 2; animation: avatar-spark 2.4s ease-in-out infinite; }

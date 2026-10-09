@@ -30,7 +30,7 @@ import {
   X,
   Zap,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
 import { Streamdown } from "streamdown";
 import { answerForIntent, intentForQuestion, intentsForQuestion } from "@shared/profileFacts";
 import { useTheme } from "../contexts/ThemeContext";
@@ -239,7 +239,7 @@ function generateAssistantAnswer(userPrompt: string): string {
 
 type AvatarMood = "idle" | "listening" | "thinking" | "happy";
 
-function InteractiveAvatar({ mood, variant = "chat" }: { mood: AvatarMood; variant?: "chat" | "hero" }) {
+function InteractiveAvatar({ mood, variant = "chat", look = { x: 0, y: 0 } }: { mood: AvatarMood; variant?: "chat" | "hero"; look?: { x: number; y: number } }) {
   const moodCopy = variant === "hero" ? {
     idle: "LS signal online",
     listening: "Tracking your next idea",
@@ -257,7 +257,7 @@ function InteractiveAvatar({ mood, variant = "chat" }: { mood: AvatarMood; varia
       <div className="assistant-avatar-stage">
         <span className="assistant-avatar-orbit orbit-a" aria-hidden="true" />
         <span className="assistant-avatar-orbit orbit-b" aria-hidden="true" />
-        <svg className="assistant-avatar" viewBox="0 0 160 160" role="img" aria-hidden="true">
+        <svg className="assistant-avatar" style={{ "--look-x": `${look.x}px`, "--look-y": `${look.y}px` } as CSSProperties} viewBox="0 0 160 160" role="img" aria-hidden="true">
           <defs>
             <linearGradient id="avatarBody" x1="0" x2="1" y1="0" y2="1">
               <stop offset="0" stopColor="var(--lime)" />
@@ -294,6 +294,7 @@ function Home() {
   const [messages, setMessages] = useState<ChatMessage[]>([initialMessage]);
   const [draft, setDraft] = useState("");
   const [chatTyping, setChatTyping] = useState(false);
+  const [heroLook, setHeroLook] = useState({ x: 0, y: 0 });
   const [projectFilter, setProjectFilter] = useState<(typeof projectFilters)[number]["id"]>("all");
   const assistant = trpc.assistant.chat.useMutation();
 
@@ -343,6 +344,13 @@ function Home() {
   };
 
   const clearChat = () => setMessages([initialMessage]);
+
+  const trackHeroCursor = (event: ReactPointerEvent<HTMLElement>) => {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - bounds.left) / bounds.width) * 2 - 1;
+    const y = ((event.clientY - bounds.top) / bounds.height) * 2 - 1;
+    setHeroLook({ x: Math.max(-1, Math.min(1, x)) * 4, y: Math.max(-1, Math.min(1, y)) * 3 });
+  };
 
   const askAssistant = async (question: string) => {
     const cleanQuestion = question.trim();
@@ -432,7 +440,7 @@ function Home() {
               <span><Mail size={14} /> {profile.email}</span>
             </div>
           </div>
-          <div className="hero-visual" aria-label="Profile of Vinjamuri Lekhya Sahiti">
+          <div className="hero-visual" aria-label="Profile of Vinjamuri Lekhya Sahiti" onPointerMove={trackHeroCursor} onPointerLeave={() => setHeroLook({ x: 0, y: 0 })}>
             <div className="orbit orbit-one" aria-hidden="true" />
             <div className="orbit orbit-two" aria-hidden="true" />
             <div className="profile-card">
@@ -442,7 +450,7 @@ function Home() {
             <div className="floating-note floating-note-top"><Sparkles size={15} /><span>Building with<br /><strong>Sensors & Code</strong></span></div>
             <div className="floating-note floating-note-bottom"><span>Currently exploring</span><strong>AI & Embedded Systems</strong></div>
             <div className="hero-avatar-widget">
-              <InteractiveAvatar mood={avatarMood} variant="hero" />
+              <InteractiveAvatar mood={avatarMood} variant="hero" look={heroLook} />
               <button className="hero-avatar-cta" type="button" onClick={() => setChatOpen(true)}><MessageCircle size={12} /> Open the full assistant</button>
             </div>
           </div>
