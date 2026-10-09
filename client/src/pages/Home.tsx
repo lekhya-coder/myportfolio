@@ -246,7 +246,6 @@ function Home() {
   const [draft, setDraft] = useState("");
   const [chatTyping, setChatTyping] = useState(false);
   const [projectFilter, setProjectFilter] = useState<(typeof projectFilters)[number]["id"]>("all");
-  const [liveProjectText, setLiveProjectText] = useState("");
   const assistant = trpc.assistant.chat.useMutation();
 
   const visibleProjects = useMemo(
@@ -286,30 +285,6 @@ function Home() {
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, []);
-
-  useEffect(() => {
-    const lines = projects.map(project => `${project.title} // ${project.detail}`);
-    let lineIndex = 0;
-    let characterIndex = 0;
-    let timeout: ReturnType<typeof setTimeout>;
-    const typeNext = () => {
-      const line = lines[lineIndex];
-      characterIndex += 1;
-      setLiveProjectText(line.slice(0, characterIndex));
-      if (characterIndex >= line.length) {
-        timeout = setTimeout(() => {
-          lineIndex = (lineIndex + 1) % lines.length;
-          characterIndex = 0;
-          setLiveProjectText("");
-          typeNext();
-        }, 2100);
-      } else {
-        timeout = setTimeout(typeNext, 34);
-      }
-    };
-    timeout = setTimeout(typeNext, 500);
-    return () => clearTimeout(timeout);
   }, []);
 
   const jumpTo = (id: string) => {
@@ -492,10 +467,6 @@ function Home() {
 
         <section className="section-wrap content-section project-section" id="projects" aria-labelledby="projects-title">
           <SectionHeading id="projects-title" index="05 /" eyebrow="Selected projects" title="When theory meets a working build." body="Selected projects showing how I move from a technical idea to a tangible system across sensors, wireless control, embedded hardware, and problem solving." />
-          <div className="project-live-signal" aria-label="Live project build detail">
-            <div className="project-live-mark" aria-hidden="true"><span className="project-live-ring project-live-ring-one" /><span className="project-live-ring project-live-ring-two" /><Code2 size={34} /><b>LS</b><i /></div>
-            <div className="project-live-copy"><div className="project-live-label"><span className="status-dot" /> live build log <span>typing context</span></div><p><span>{liveProjectText}</span><span className="typing-caret" aria-hidden="true" /></p></div>
-          </div>
           <div className="project-showcase-toolbar"><div className="project-filter-list" role="tablist" aria-label="Filter projects by practice area">{projectFilters.map(filter => <button key={filter.id} type="button" role="tab" aria-selected={projectFilter === filter.id} className={projectFilter === filter.id ? "is-active" : ""} onClick={() => setProjectFilter(filter.id)}>{filter.label}</button>)}</div><span className="project-count" aria-live="polite">Showing {visibleProjects.length} of {projects.length} builds</span></div>
           <div className="project-list">{visibleProjects.map(project => <article className={`project-card ${project.tone}`} key={project.title}><div className="project-visual"><div className="visual-window"><div className="visual-window-bar"><span /><span /><span /></div><div className="visual-code-screen"><span className="visual-code-prompt">&gt; live_build / {project.number}</span><strong className="visual-code-title">{project.title}</strong><span className="visual-code-detail">{project.detail}</span><span className="visual-code-caret" aria-hidden="true" /></div></div><span className="project-number">{project.number}</span></div><div className="project-body"><div className="project-type">{project.type}</div><h3>{project.title}</h3><p>{project.description}</p><p className="project-detail">{project.detail}</p><div className="project-tags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div><div className="project-footer"><strong>{project.metric}</strong><span className="project-badge">{project.badge}</span></div></div></article>)}</div>
         </section>
