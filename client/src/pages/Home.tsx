@@ -239,8 +239,13 @@ function generateAssistantAnswer(userPrompt: string): string {
 
 type AvatarMood = "idle" | "listening" | "thinking" | "happy";
 
-function InteractiveAvatar({ mood }: { mood: AvatarMood }) {
-  const moodCopy = {
+function InteractiveAvatar({ mood, variant = "chat" }: { mood: AvatarMood; variant?: "chat" | "hero" }) {
+  const moodCopy = variant === "hero" ? {
+    idle: "LS signal online",
+    listening: "Tracking your next idea",
+    thinking: "Compiling a sharper answer",
+    happy: "Build signal: clear",
+  }[mood] : {
     idle: "Ready when you are",
     listening: "I’m reading that…",
     thinking: "Finding the right signal…",
@@ -276,7 +281,7 @@ function InteractiveAvatar({ mood }: { mood: AvatarMood }) {
           <path className="avatar-spark" d="M126 30v14M119 37h14" />
         </svg>
       </div>
-      <div className="assistant-avatar-copy"><span><i /> AVATAR SIGNAL</span><strong>{moodCopy}</strong><small>Inspired by <a href="https://avatars.bible-strong.app/" target="_blank" rel="noreferrer">Bible Strong Avatar Lab</a></small></div>
+      <div className="assistant-avatar-copy"><span><i /> {variant === "hero" ? "LS / INTERFACE" : "AVATAR SIGNAL"}</span><strong>{moodCopy}</strong><small>{variant === "hero" ? "A living layer of the portfolio" : <>Inspired by <a href="https://avatars.bible-strong.app/" target="_blank" rel="noreferrer">Bible Strong Avatar Lab</a></>}</small></div>
     </div>
   );
 }
@@ -436,6 +441,10 @@ function Home() {
             </div>
             <div className="floating-note floating-note-top"><Sparkles size={15} /><span>Building with<br /><strong>Sensors & Code</strong></span></div>
             <div className="floating-note floating-note-bottom"><span>Currently exploring</span><strong>AI & Embedded Systems</strong></div>
+            <div className="hero-avatar-widget">
+              <InteractiveAvatar mood={avatarMood} variant="hero" />
+              <button className="hero-avatar-cta" type="button" onClick={() => setChatOpen(true)}><MessageCircle size={12} /> Open the full assistant</button>
+            </div>
           </div>
         </section>
 
