@@ -11,7 +11,7 @@ export type AssistantIntent =
 
 export const assistantResponses: Record<AssistantIntent, string> = {
   profile:
-    "### Profile summary\n\nVinjamuri Lekhya Sahiti is a second-year **B.Tech student in Internet of Things (IoT)** at **VNRVJIET** with an **SGPA of 9.48 / 10**. She is interested in software development, AI, and problem solving, and is building foundations in Java, C++, and Data Structures through embedded-systems projects, hackathons, and coding practice.\n\nShe is seeking software development and technical internship opportunities.",
+    "### Profile summary\n\nVinjamuri Lekhya Sahiti is an aspiring **Software Engineer** pursuing a **B.Tech in Internet of Things (IoT)** at **VNR Vignana Jyothi Institute of Engineering & Technology**, with a strong academic record (**SGPA: 9.48/10**). She is skilled in **C, C++, Java, Data Structures, Problem Solving, and web technologies**, with experience developing IoT-based projects that demonstrate practical implementation and analytical skills.\n\nShe is eager to contribute to software development teams, build efficient and scalable solutions, apply technical knowledge to real-world challenges, and continue growing as a software professional.",
   skills:
     "### Technical skills\n\n- **Programming:** C, C++, and Java\n- **Core practice:** Data Structures and Problem Solving\n- **Web fundamentals:** HTML, CSS, and JavaScript\n- **IoT and embedded systems:** NodeMCU, sensors, and microcontrollers\n- **Interests:** Software development, AI, and problem solving",
   projects:
@@ -38,7 +38,7 @@ export function intentForQuestion(question: string): AssistantIntent {
   const q = question.toLowerCase().trim();
   if (/resume|cv|download|view.*(resume|cv)|pdf/.test(q)) return "resume";
   if (/intern|hire|job|availab|opportunit|open to work|recruit/.test(q)) return "availability";
-  if (/contact|email|phone|linkedin|github|leetcode|codechef|reach|call|message/.test(q)) return "contact";
+  if (/contact|email|phone|linkedin|github|leetcode|codechef|reach|reach out|get in touch|call|message/.test(q)) return "contact";
   if (/project|built|build|worked|work experience|experience|soil|moisture|car|nodemcu|wi-?fi|hardware|embedded/.test(q)) return "projects";
   if (/skill|language|tech|stack|java|c\+\+|\bc\b|dsa|data structure|html|css|javascript|microcontroller|sensor|iot/.test(q)) return "skills";
   if (/education|college|university|sgpa|cgpa|gpa|vnrvjiet|study|degree|year|coursework|academic/.test(q)) return "education";

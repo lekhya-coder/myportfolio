@@ -416,13 +416,13 @@ function Home() {
                 </div>
                 <div className="bio-body-text">
                   <p>
-                    Second-year <strong>B.Tech student</strong> at <strong>VNRVJIET</strong> with a strong academic record (<span className="highlight-text">SGPA 9.48/10</span>) and a keen interest in <strong>software development</strong>, <strong>AI</strong>, and <strong>problem solving</strong>.
+                    Aspiring <strong>Software Engineer</strong> pursuing a <strong>B.Tech in Internet of Things (IoT)</strong> at <strong>VNR Vignana Jyothi Institute of Engineering &amp; Technology</strong>, with a strong academic record (<span className="highlight-text">SGPA: 9.48/10</span>).
                   </p>
                   <p>
-                    Currently building solid foundations in <strong>Java</strong>, <strong>C++</strong>, and <strong>Data Structures</strong>, and applying them through hands-on <strong>embedded systems, microcontrollers, and sensor telemetry</strong> projects.
+                    Skilled in <strong>C, C++, Java, Data Structures, Problem Solving, and web technologies</strong>. Experienced in developing IoT-based projects, demonstrating practical implementation and analytical skills.
                   </p>
                   <p>
-                    Regularly participates in hackathons and coding challenges, including reaching the final round of the <strong>SYNTH VISION Hackathon conducted by Krithomedh</strong>. Seeking <strong>software development and technical internship opportunities</strong> to build practical technology solutions and grow as a programmer.
+                    Eager to contribute to software development teams, build efficient and scalable solutions, and apply technical knowledge to real-world challenges while continuously learning and growing as a software professional.
                   </p>
                 </div>
                 <div className="bio-chips">

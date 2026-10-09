@@ -9,6 +9,7 @@ describe("resume assistant intent routing", () => {
     expect(intentForQuestion("What is your education and SGPA?")).toBe("education");
     expect(intentForQuestion("What hackathon did you reach the finals of?")).toBe("achievements");
     expect(intentForQuestion("How can I contact you?")).toBe("contact");
+    expect(intentForQuestion("How can I get in touch with you?")).toBe("contact");
     expect(intentForQuestion("Are you available for an internship?")).toBe("availability");
     expect(intentForQuestion("Can I view and download your resume PDF?")).toBe("resume");
   });
@@ -32,5 +33,11 @@ describe("resume assistant intent routing", () => {
     expect(answer).toContain("github.com/lekhya-coder");
     expect(answer).not.toContain("](");
     expect(answer).not.toContain("[blocked]");
+  });
+
+  it("uses the supplied professional profile wording", () => {
+    const answer = answerForIntent("profile");
+    expect(answer).toContain("Aspiring **Software Engineer**");
+    expect(answer).toContain("SGPA: 9.48/10");
   });
 });
