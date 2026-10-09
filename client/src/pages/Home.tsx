@@ -41,6 +41,7 @@ type ChatMessage = {
   role: "assistant" | "user";
   content: string;
   timestamp: string;
+  showResumeActions?: boolean;
 };
 
 const profile = {
@@ -316,7 +317,7 @@ function Home() {
       if (response?.answer?.trim()) {
         setMessages(current => [
           ...current,
-          { id: `${Date.now()}-assistant`, role: "assistant", content: response.answer, timestamp: timestamp() },
+          { id: `${Date.now()}-assistant`, role: "assistant", content: response.answer, timestamp: timestamp(), showResumeActions: intentForQuestion(cleanQuestion) === "resume" },
         ]);
         setChatTyping(false);
         return;
@@ -330,7 +331,7 @@ function Home() {
     const smartAnswer = generateAssistantAnswer(cleanQuestion);
     setMessages(current => [
       ...current,
-      { id: `${Date.now()}-assistant`, role: "assistant", content: smartAnswer, timestamp: timestamp() },
+      { id: `${Date.now()}-assistant`, role: "assistant", content: smartAnswer, timestamp: timestamp(), showResumeActions: intentForQuestion(cleanQuestion) === "resume" },
     ]);
     setChatTyping(false);
   };
@@ -565,7 +566,7 @@ function Home() {
       <footer className="site-footer"><span>© 2026 Vinjamuri Lekhya Sahiti. Built with intention.</span><a href="#top">Back to top <ArrowDown size={14} className="rotate-up" /></a></footer>
 
       <button className={`chat-launcher ${chatOpen ? "is-open" : ""}`} type="button" onClick={() => setChatOpen(open => !open)} aria-label={chatOpen ? "Close resume assistant" : "Open resume assistant"} aria-expanded={chatOpen}><span className="chat-launcher-icon">{chatOpen ? <X size={20} /> : <MessageCircle size={21} />}</span><span className="chat-launcher-copy"><strong>Ask the assistant</strong><small>Quick route through the work</small></span></button>
-      {chatOpen ? <aside className="chat-panel" aria-label="Resume assistant" aria-live="polite"><div className="chat-header"><div className="chat-title"><span className="chat-avatar"><Bot size={18} /></span><div><strong>Portfolio assistant</strong><span><span className="status-dot" /> Online · for {profile.name}</span></div></div><div className="chat-header-actions"><button type="button" className="chat-icon" onClick={clearChat} title="Clear chat history" aria-label="Clear chat history"><Trash2 size={15} /></button><button type="button" className="chat-icon" onClick={() => setChatOpen(false)} title="Close assistant" aria-label="Close assistant"><X size={17} /></button></div></div><div className="chat-resume-actions" aria-label="Resume actions"><a href="/resume.pdf" target="_blank" rel="noreferrer"><ExternalLink size={13} /> View resume</a><a href="/resume.pdf" download="Vinjamuri_Lekhya_Sahiti_Resume.pdf"><Download size={13} /> Download PDF</a></div><div className="chat-messages">{messages.map(message => <div className={`chat-message ${message.role}`} key={message.id}><div className="chat-bubble"><Streamdown>{message.content}</Streamdown></div><span className="chat-time">{message.timestamp}</span></div>)}{chatTyping ? <div className="chat-message assistant"><div className="chat-bubble typing"><i /><i /><i /></div><span className="chat-time">Thinking...</span></div> : null}</div>{messages.length === 1 ? <div className="chat-suggestions"><span>Try asking</span>{suggestedQuestions.map(question => <button key={question} type="button" onClick={() => askAssistant(question)}>{question}<ChevronDown size={13} className="suggestion-arrow" /></button>)}</div> : null}<form className="chat-input" onSubmit={event => { event.preventDefault(); void askAssistant(draft); }}><input value={draft} onChange={event => setDraft(event.target.value)} placeholder="Ask about the work..." aria-label="Ask the portfolio assistant" /><button type="submit" disabled={!draft.trim() || chatTyping} aria-label="Send question"><Send size={17} /></button></form></aside> : null}
+      {chatOpen ? <aside className="chat-panel" aria-label="Resume assistant" aria-live="polite"><div className="chat-header"><div className="chat-title"><span className="chat-avatar"><Bot size={18} /></span><div><strong>Portfolio assistant</strong><span><span className="status-dot" /> Online · for {profile.name}</span></div></div><div className="chat-header-actions"><button type="button" className="chat-icon" onClick={clearChat} title="Clear chat history" aria-label="Clear chat history"><Trash2 size={15} /></button><button type="button" className="chat-icon" onClick={() => setChatOpen(false)} title="Close assistant" aria-label="Close assistant"><X size={17} /></button></div></div><div className="chat-messages">{messages.map(message => <div className={`chat-message ${message.role}`} key={message.id}><div className="chat-bubble"><Streamdown>{message.content}</Streamdown>{message.showResumeActions ? <div className="chat-inline-resume-actions" aria-label="Resume actions"><a href="/resume.pdf" target="_blank" rel="noreferrer"><ExternalLink size={13} /> View resume</a><a href="/resume.pdf" download="Vinjamuri_Lekhya_Sahiti_Resume.pdf"><Download size={13} /> Download PDF</a></div> : null}</div><span className="chat-time">{message.timestamp}</span></div>)}{chatTyping ? <div className="chat-message assistant"><div className="chat-bubble typing"><i /><i /><i /></div><span className="chat-time">Thinking...</span></div> : null}</div>{messages.length === 1 ? <div className="chat-suggestions"><span>Try asking</span>{suggestedQuestions.map(question => <button key={question} type="button" onClick={() => askAssistant(question)}>{question}<ChevronDown size={13} className="suggestion-arrow" /></button>)}</div> : null}<form className="chat-input" onSubmit={event => { event.preventDefault(); void askAssistant(draft); }}><input value={draft} onChange={event => setDraft(event.target.value)} placeholder="Ask about the work..." aria-label="Ask the portfolio assistant" /><button type="submit" disabled={!draft.trim() || chatTyping} aria-label="Send question"><Send size={17} /></button></form></aside> : null}
     </div>
   );
 }
