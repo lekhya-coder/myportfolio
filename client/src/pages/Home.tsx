@@ -2,7 +2,6 @@ import {
   ArrowDown,
   ArrowUpRight,
   Award,
-  Bot,
   Check,
   CheckCircle2,
   ChevronDown,
@@ -30,9 +29,11 @@ import {
   X,
   Zap,
 } from "lucide-react";
-import { useEffect, useMemo, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
+import type { LucideIcon } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import { Streamdown } from "streamdown";
 import { answerForIntent, intentForQuestion, intentsForQuestion } from "@shared/profileFacts";
+import { InteractiveAvatar, type AvatarMood } from "../components/InteractiveAvatar";
 import { ProjectTypingTitle } from "../components/ProjectTypingTitle";
 import { useTheme } from "../contexts/ThemeContext";
 import { trpc } from "../lib/trpc";
@@ -45,12 +46,19 @@ type ChatMessage = {
   showResumeActions?: boolean;
 };
 
+type IntroPhase = "visible" | "exiting" | "closed";
+type ScrollingSkill = { label: string; Icon: LucideIcon; logoSrc?: string };
+const INTRO_GREETING = "Hello, I'm";
+const INTRO_AUTO_DISMISS_MS = 3600;
+const INTRO_EXIT_MS = 780;
+const INTRO_GREETING_INTERVAL_MS = 86;
+
 const profile = {
   name: "Vinjamuri Lekhya Sahiti",
   title: "IoT & Software Developer · B.Tech Student",
-  eyebrow: "B.Tech in Internet of Things (IoT) · CGPA 9.48/10 · SYNTH VISION Finalist",
+  eyebrow: "B.Tech in Internet of Things (IoT) · SYNTH VISION Finalist",
   intro:
-    "Second-year B.Tech student in Internet of Things at VNRVJIET with a strong academic record (CGPA 9.48/10) and a keen interest in software development, AI, and problem solving. Building foundations in Java, C++, and Data Structures through embedded-systems projects, hackathons, and regular coding practice.",
+    "Second-year B.Tech student in Internet of Things at VNRVJIET with a strong academic foundation and a keen interest in software development, AI, and problem solving. Building foundations in Java, C++, and Data Structures through embedded-systems projects, hackathons, and regular coding practice.",
   location: "Hyderabad, India · VNRVJIET",
   email: "25071A6962@vnrvjiet.in",
   phone: "+91 80742 86134",
@@ -60,7 +68,7 @@ const profile = {
   leetcode: "https://leetcode.com/u/VLekhya",
   codechef: "https://www.codechef.com/users/lekhya_sahi_27",
   summary:
-    "Second-year B.Tech student in Internet of Things at VNRVJIET with a strong academic record (CGPA 9.48/10) and a keen interest in software development, AI, and problem solving. Building foundations in Java, C++, and Data Structures through embedded-systems projects, hackathons, and regular coding practice. Seeking software development and technical internship opportunities.",
+    "Second-year B.Tech student in Internet of Things at VNRVJIET with a strong academic foundation and a keen interest in software development, AI, and problem solving. Building foundations in Java, C++, and Data Structures through embedded-systems projects, hackathons, and regular coding practice. Seeking software development and technical internship opportunities.",
 };
 
 const technicalSkills = [
@@ -72,12 +80,30 @@ const technicalSkills = [
   { label: "Sensors & IoT", signal: "Embedded applications", detail: "Applying sensor readings and IoT concepts to practical monitoring and connected systems." },
 ];
 
+const scrollingSkills: ScrollingSkill[] = [
+  { label: "C & C++", Icon: Code2, logoSrc: "/skill-logos/cplusplus.svg" },
+  { label: "Java", Icon: Code2, logoSrc: "/skill-logos/java.svg" },
+  { label: "Data Structures", Icon: Layers3 },
+  { label: "HTML5", Icon: Code2, logoSrc: "/skill-logos/html5.svg" },
+  { label: "CSS3", Icon: Code2, logoSrc: "/skill-logos/css3.svg" },
+  { label: "JavaScript", Icon: Code2, logoSrc: "/skill-logos/javascript.svg" },
+  { label: "NodeMCU", Icon: Cpu },
+  { label: "Sensors & IoT", Icon: Cpu },
+  { label: "Microcontrollers", Icon: Cpu },
+  { label: "Problem Solving", Icon: Zap },
+];
+
+const scrollingSkillLanes = [
+  { direction: "forward", skills: scrollingSkills },
+  { direction: "reverse", skills: [...scrollingSkills].reverse() },
+] as const;
+
 const softSkills = [
   { title: "Rapid problem solving", detail: "Breaks complex tasks into smaller steps and works toward practical solutions." },
   { title: "Algorithmic thinking", detail: "Builds logic through regular C++ and Java data-structures practice." },
   { title: "Hackathon finalist", detail: "SYNTH VISION finalist experience shaped a faster build, test, and present rhythm." },
   { title: "Sensor & hardware prototyping", detail: "Learns by connecting concepts to microcontrollers, sensors, and working builds." },
-  { title: "Academic consistency", detail: "Maintains a strong technical academic record with CGPA 9.48 / 10." },
+  { title: "Academic consistency", detail: "Maintains steady academic progress alongside hands-on technical practice." },
   { title: "Curious & fast learner", detail: "Explores new ideas with a practical mindset and an eagerness to keep improving." },
   { title: "Technical presentation", detail: "Comfortable explaining the intent and working direction behind a technical solution." },
   { title: "Hands-on prototyping", detail: "Prefers turning a concept into something observable, testable, and useful." },
@@ -176,7 +202,7 @@ const projectFilters = [
 
 const recognitions = [
   { label: "SYNTH VISION Hackathon Finalist", detail: "Conducted by Krithomedh · Reached the final round and gained experience building and presenting a technical solution under time constraints" },
-  { label: "Academic Excellence — CGPA 9.48 / 10", detail: "VNRVJIET · Strong academic record in technical coursework" },
+  { label: "Academic Excellence", detail: "VNRVJIET · Strong academic record in technical coursework" },
   { label: "Active Competitive Programming Profiles", detail: "LeetCode (VLekhya) & CodeChef (lekhya_sahi_27) algorithmic practice" },
   { label: "Embedded Systems & Hardware Projects", detail: "Built projects for underground soil moisture monitoring and Wi-Fi controlled robotics" },
 ];
@@ -188,7 +214,7 @@ const evidenceNotes = [
     role: "Embedded systems project work",
   },
   {
-    quote: "A 9.48 / 10 CGPA, SYNTH VISION Hackathon finalist experience, and regular coding practice describe a focused student profile.",
+    quote: "Consistent academic effort, SYNTH VISION Hackathon finalist experience, and regular coding practice describe a focused student profile.",
     name: "Resume evidence",
     role: "VNRVJIET · B.Tech in IoT",
   },
@@ -203,7 +229,7 @@ const suggestedQuestions = [
   "Tell me about yourself",
   "What are your core technical skills?",
   "Tell me about your projects",
-  "What is your academic background and CGPA?",
+  "Tell me about your academic background",
   "Tell me about your coding achievements",
   "How can I get in touch with you?",
   "Can I view or download your resume?",
@@ -213,7 +239,7 @@ const initialMessage: ChatMessage = {
   id: "welcome",
   role: "assistant",
   content:
-    "Hi — I’m the assistant for Vinjamuri Lekhya Sahiti. Ask me about her skills in C++, Java, and embedded systems, projects like the Soil Moisture Detector or Wi-Fi Smart Car, the SYNTH VISION Hackathon conducted by Krithomedh, or her academic record (CGPA 9.48)!",
+    "Hey — I’m Lekhya’s animated portfolio avatar. Ask me about her skills, IoT projects, academic record, achievements, internship availability, or how to get in touch. I’ll keep my answers grounded in the portfolio and resume.",
   timestamp: "Now",
 };
 
@@ -238,63 +264,25 @@ function generateAssistantAnswer(userPrompt: string): string {
   return intentsForQuestion(userPrompt).map(answerForIntent).join("\n\n");
 }
 
-type AvatarMood = "idle" | "listening" | "thinking" | "happy";
-
-function InteractiveAvatar({ mood, variant = "chat", look = { x: 0, y: 0 } }: { mood: AvatarMood; variant?: "chat" | "hero"; look?: { x: number; y: number } }) {
-  const moodCopy = variant === "hero" ? {
-    idle: "LS signal online",
-    listening: "Tracking your next idea",
-    thinking: "Compiling a sharper answer",
-    happy: "Build signal: clear",
-  }[mood] : {
-    idle: "Ready when you are",
-    listening: "I’m reading that…",
-    thinking: "Finding the right signal…",
-    happy: "Here’s what I found",
-  }[mood];
-
-  return (
-    <div className={`assistant-avatar-card avatar-${mood}`} aria-label={`Interactive portfolio avatar: ${moodCopy}`}>
-      <div className="assistant-avatar-stage">
-        <span className="assistant-avatar-orbit orbit-a" aria-hidden="true" />
-        <span className="assistant-avatar-orbit orbit-b" aria-hidden="true" />
-        <svg className="assistant-avatar" style={{ "--look-x": `${look.x}px`, "--look-y": `${look.y}px` } as CSSProperties} viewBox="0 0 160 160" role="img" aria-hidden="true">
-          <defs>
-            <linearGradient id="avatarBody" x1="0" x2="1" y1="0" y2="1">
-              <stop offset="0" stopColor="var(--lime)" />
-              <stop offset="1" stopColor="var(--accent-violet)" />
-            </linearGradient>
-            <linearGradient id="avatarFace" x1="0" x2="1" y1="0" y2="1">
-              <stop offset="0" stopColor="var(--surface)" />
-              <stop offset="1" stopColor="var(--surface-2)" />
-            </linearGradient>
-          </defs>
-          <path className="avatar-shadow" d="M38 136c8-20 22-29 42-29s34 9 42 29" />
-          <path className="avatar-body" d="M43 137c3-22 15-35 37-35s34 13 37 35" fill="url(#avatarBody)" />
-          <path className="avatar-neck" d="M69 105v14h22v-14" fill="url(#avatarFace)" />
-          <path className="avatar-face" d="M48 49c0-19 12-32 32-32s32 13 32 32v25c0 19-14 31-32 31S48 93 48 74Z" fill="url(#avatarFace)" />
-          <path className="avatar-hair" d="M47 61c-3-30 9-45 34-45 22 0 35 12 32 44l-10-14c-13 7-29 8-47 0Z" fill="var(--navy)" />
-          <path className="avatar-eye avatar-eye-left" d={mood === "happy" ? "M59 67q6 7 12 0" : mood === "thinking" ? "M59 68h11" : "M59 68q6-5 11 0"} />
-          <path className="avatar-eye avatar-eye-right" d={mood === "happy" ? "M89 67q6 7 12 0" : mood === "thinking" ? "M89 68h11" : "M89 68q6-5 11 0"} />
-          <path className="avatar-mouth" d={mood === "happy" ? "M70 84q10 10 20 0" : mood === "thinking" ? "M74 86h12" : "M75 84q5 4 10 0"} />
-          <circle className="avatar-cheek" cx="57" cy="79" r="3" />
-          <circle className="avatar-cheek" cx="103" cy="79" r="3" />
-          <path className="avatar-spark" d="M126 30v14M119 37h14" />
-        </svg>
-      </div>
-      <div className="assistant-avatar-copy"><span><i /> {variant === "hero" ? "LS / INTERFACE" : "AVATAR SIGNAL"}</span><strong>{moodCopy}</strong><small>{variant === "hero" ? "A living layer of the portfolio" : <>Inspired by <a href="https://avatars.bible-strong.app/" target="_blank" rel="noreferrer">Bible Strong Avatar Lab</a></>}</small></div>
-    </div>
-  );
-}
-
 function Home() {
   const { theme, toggleTheme } = useTheme();
+  const [introPhase, setIntroPhase] = useState<IntroPhase>("visible");
+  const introOpen = introPhase !== "closed";
+  const [typedGreeting, setTypedGreeting] = useState("");
+  const introEnterRef = useRef<HTMLButtonElement>(null);
+  const introSkipRef = useRef<HTMLButtonElement>(null);
+  const heroTitleRef = useRef<HTMLHeadingElement>(null);
+  const dismissIntro = useCallback(
+    () => setIntroPhase(current => current === "visible" ? "exiting" : current),
+    [],
+  );
   const [activeSection, setActiveSection] = useState("top");
   const [menuOpen, setMenuOpen] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([initialMessage]);
   const [draft, setDraft] = useState("");
   const [chatTyping, setChatTyping] = useState(false);
+  const [assistantConfused, setAssistantConfused] = useState(false);
   const [heroLook, setHeroLook] = useState({ x: 0, y: 0 });
   const [projectFilter, setProjectFilter] = useState<(typeof projectFilters)[number]["id"]>("all");
   const assistant = trpc.assistant.chat.useMutation();
@@ -303,7 +291,15 @@ function Home() {
     () => projectFilter === "all" ? projects : projects.filter(project => project.category === projectFilter),
     [projectFilter],
   );
-  const avatarMood: AvatarMood = chatTyping ? "thinking" : draft.trim() ? "listening" : messages.length > 1 ? "happy" : "idle";
+  const avatarMood: AvatarMood = chatTyping
+    ? "thinking"
+    : draft.trim()
+      ? "listening"
+      : assistantConfused
+        ? "confused"
+        : messages.length > 1
+          ? "happy"
+          : "idle";
 
   const navItems = useMemo(
     () => [
@@ -315,6 +311,66 @@ function Home() {
     ] as const,
     []
   );
+
+  useEffect(() => {
+    if (introPhase === "closed") {
+      heroTitleRef.current?.focus({ preventScroll: true });
+      return;
+    }
+
+    if (introPhase === "visible") introEnterRef.current?.focus();
+    const timeout = introPhase === "visible"
+      ? window.setTimeout(dismissIntro, INTRO_AUTO_DISMISS_MS)
+      : undefined;
+    const onIntroKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && introPhase === "visible") {
+        dismissIntro();
+      } else if (event.key === "Tab") {
+        const firstControl = introEnterRef.current;
+        const lastControl = introSkipRef.current;
+        if (event.shiftKey && document.activeElement === firstControl) {
+          event.preventDefault();
+          lastControl?.focus();
+        } else if (!event.shiftKey && document.activeElement === lastControl) {
+          event.preventDefault();
+          firstControl?.focus();
+        }
+      }
+    };
+    window.addEventListener("keydown", onIntroKeyDown);
+    return () => {
+      if (timeout !== undefined) window.clearTimeout(timeout);
+      window.removeEventListener("keydown", onIntroKeyDown);
+    };
+  }, [introPhase, dismissIntro]);
+
+  useEffect(() => {
+    if (introPhase !== "visible") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setTypedGreeting(INTRO_GREETING);
+      return;
+    }
+
+    let characterIndex = 0;
+    setTypedGreeting("");
+    const intervalId = window.setInterval(() => {
+      characterIndex += 1;
+      setTypedGreeting(INTRO_GREETING.slice(0, characterIndex));
+      if (characterIndex >= INTRO_GREETING.length) window.clearInterval(intervalId);
+    }, INTRO_GREETING_INTERVAL_MS);
+    return () => window.clearInterval(intervalId);
+  }, [introPhase]);
+
+  useEffect(() => {
+    if (introPhase !== "exiting") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setIntroPhase("closed");
+      return;
+    }
+
+    const timeout = window.setTimeout(() => setIntroPhase("closed"), INTRO_EXIT_MS);
+    return () => window.clearTimeout(timeout);
+  }, [introPhase]);
 
   useEffect(() => {
     const sections = navItems.map(([id]) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
@@ -344,7 +400,11 @@ function Home() {
     setMenuOpen(false);
   };
 
-  const clearChat = () => setMessages([initialMessage]);
+  const clearChat = () => {
+    setMessages([initialMessage]);
+    setDraft("");
+    setAssistantConfused(false);
+  };
 
   const trackHeroCursor = (event: ReactPointerEvent<HTMLElement>) => {
     const bounds = event.currentTarget.getBoundingClientRect();
@@ -356,9 +416,11 @@ function Home() {
   const askAssistant = async (question: string) => {
     const cleanQuestion = question.trim();
     if (!cleanQuestion || chatTyping) return;
+    const unknownQuestion = intentForQuestion(cleanQuestion) === "unknown";
     const userMessage: ChatMessage = { id: `${Date.now()}-user`, role: "user", content: cleanQuestion, timestamp: timestamp() };
     setMessages(current => [...current, userMessage]);
     setDraft("");
+    setAssistantConfused(false);
     setChatTyping(true);
 
     try {
@@ -378,6 +440,7 @@ function Home() {
           ...current,
           { id: `${Date.now()}-assistant`, role: "assistant", content: response.answer, timestamp: timestamp(), showResumeActions: intentForQuestion(cleanQuestion) === "resume" },
         ]);
+        setAssistantConfused(unknownQuestion);
         setChatTyping(false);
         return;
       }
@@ -392,6 +455,7 @@ function Home() {
       ...current,
       { id: `${Date.now()}-assistant`, role: "assistant", content: smartAnswer, timestamp: timestamp(), showResumeActions: intentForQuestion(cleanQuestion) === "resume" },
     ]);
+    setAssistantConfused(unknownQuestion);
     setChatTyping(false);
   };
 
@@ -399,6 +463,30 @@ function Home() {
     <div className="site-shell" id="top">
       <div className="ambient-orb ambient-orb-one" aria-hidden="true" />
       <div className="ambient-orb ambient-orb-two" aria-hidden="true" />
+      {introOpen ? (
+        <div className={`intro-overlay ${introPhase === "exiting" ? "is-exiting" : ""}`} role="dialog" aria-modal="true" aria-labelledby="intro-title" aria-describedby="intro-description">
+          <div className="intro-card">
+            <div className="intro-card-top">
+              <span className="intro-mark" aria-hidden="true">LS<span>/</span></span>
+              <span className="intro-index"><i /> PERSONAL PORTFOLIO · 2026</span>
+            </div>
+            <p className="intro-greeting"><span className="intro-greeting-live" aria-hidden="true">{typedGreeting}<span className="intro-typing-caret" /></span><span className="intro-sr-only">{INTRO_GREETING}</span></p>
+            <h2 id="intro-title" className="intro-title">Vinjamuri<br /><span>Lekhya Sahiti</span></h2>
+            <p id="intro-description" className="intro-description">A second-year B.Tech student in Internet of Things at VNRVJIET, building practical solutions with hardware, logic, and code.</p>
+            <div className="intro-details">
+              <span><MapPin size={14} /> Hyderabad, India · VNRVJIET</span>
+              <span><Zap size={14} /> Software development & technical internships</span>
+            </div>
+            <div className="intro-actions">
+              <button ref={introEnterRef} className="button button-primary intro-enter" type="button" onClick={dismissIntro}>Explore my portfolio <ArrowDown size={15} /></button>
+              <button ref={introSkipRef} className="intro-skip" type="button" onClick={dismissIntro}>Skip intro</button>
+            </div>
+            <div className="intro-progress" aria-hidden="true"><span /></div>
+            <p className="intro-auto-copy" aria-live="polite">Opening the portfolio…</p>
+          </div>
+        </div>
+      ) : null}
+      <div className={`portfolio-content ${introOpen ? "is-blocked" : "is-ready"}`} aria-hidden={introOpen} inert={introOpen}>
       <header className="site-header">
         <a className="wordmark" href="#top" aria-label="Back to the top of the portfolio">
           <span className="wordmark-mark"><span className="wordmark-mark-core">LS</span><span className="wordmark-mark-slash">/</span><Cpu className="wordmark-mark-icon" size={11} aria-hidden="true" /></span>
@@ -427,7 +515,7 @@ function Home() {
           <div className="hero-copy">
             <div className="availability"><span className="status-dot" /> {profile.availability}</div>
             <p className="hero-kicker">{profile.eyebrow}</p>
-            <h1 id="hero-title">Hello, I'm<br /><em>Vinjamuri Lekhya Sahiti</em></h1>
+            <h1 id="hero-title" ref={heroTitleRef} tabIndex={-1}>Hello, I'm<br /><em>Vinjamuri Lekhya Sahiti</em></h1>
             <p className="hero-tagline">Building practical solutions with <strong>hardware, logic & code</strong>.</p>
             <p className="hero-intro">{profile.intro}</p>
             <div className="hero-actions">
@@ -437,7 +525,7 @@ function Home() {
             </div>
             <div className="hero-meta">
               <span><MapPin size={14} /> {profile.location}</span>
-              <span><GraduationCap size={14} /> CGPA: 9.48 / 10 · 2nd Year</span>
+              <span><GraduationCap size={14} /> 2nd Year · B.Tech in IoT</span>
               <span><Mail size={14} /> {profile.email}</span>
             </div>
           </div>
@@ -452,7 +540,7 @@ function Home() {
             <div className="floating-note floating-note-bottom"><span>Currently exploring</span><strong>AI & Embedded Systems</strong></div>
             <div className="hero-avatar-widget">
               <InteractiveAvatar mood={avatarMood} variant="hero" look={heroLook} />
-              <button className="hero-avatar-cta" type="button" onClick={() => setChatOpen(true)}><MessageCircle size={12} /> Open the full assistant</button>
+              <button className="hero-avatar-cta" type="button" onClick={() => setChatOpen(true)}><MessageCircle size={12} /> Chat with the avatar</button>
             </div>
           </div>
         </section>
@@ -461,7 +549,7 @@ function Home() {
           <div className="proof-card"><span>01 / Current focus</span><strong>Software development & technical internships</strong></div>
           <div className="proof-card"><span>02 / Core practice</span><strong>Java · C++ · Data Structures</strong></div>
           <div className="proof-card"><span>03 / Hands-on</span><strong>IoT · Sensors · Microcontrollers</strong></div>
-          <div className="proof-card"><span>04 / Academic</span><strong>VNRVJIET · 2nd Year · CGPA 9.48</strong></div>
+          <div className="proof-card"><span>04 / Academic</span><strong>VNRVJIET · 2nd Year B.Tech</strong></div>
         </section>
 
         <section className="marquee-band" aria-label="Professional focus areas">
@@ -475,11 +563,10 @@ function Home() {
               <article className="bio-card" aria-label="Professional summary">
                 <div className="bio-card-header">
                   <span className="bio-badge-tag"><Sparkles size={13} /> Profile Summary</span>
-                  <span className="bio-cgpa-pill">CGPA 9.48 / 10</span>
                 </div>
                 <div className="bio-body-text">
                   <p>
-                    Aspiring <strong>Software Engineer</strong> pursuing a <strong>B.Tech in Internet of Things (IoT)</strong> at <strong>VNR Vignana Jyothi Institute of Engineering &amp; Technology</strong>, with a strong academic record (<span className="highlight-text">CGPA: 9.48/10</span>).
+                    Aspiring <strong>Software Engineer</strong> pursuing a <strong>B.Tech in Internet of Things (IoT)</strong> at <strong>VNR Vignana Jyothi Institute of Engineering &amp; Technology</strong>, with a strong academic record.
                   </p>
                   <p>
                     Skilled in <strong>C, C++, Java, Data Structures, Problem Solving, and web technologies</strong>. Experienced in developing IoT-based projects, demonstrating practical implementation and analytical skills.
@@ -491,7 +578,6 @@ function Home() {
                 <div className="bio-chips">
                   <span className="bio-chip"><Trophy size={13} /> SYNTH VISION Finalist</span>
                   <span className="bio-chip"><GraduationCap size={13} /> VNRVJIET · 2nd Year B.Tech</span>
-                  <span className="bio-chip"><Award size={13} /> CGPA 9.48 / 10</span>
                   <span className="bio-chip"><Code2 size={13} /> Java · C++ · DSA</span>
                   <span className="bio-chip"><Zap size={13} /> Open for Internships</span>
                 </div>
@@ -500,11 +586,19 @@ function Home() {
                   <div className="bio-footer-links"><a className="text-link" href="#projects">Trace the builds <ArrowUpRight size={16} /></a><a className="text-link" href="#contact">Find the right fit <ArrowUpRight size={16} /></a></div>
                 </div>
               </article>
+              <div className="quick-connect" aria-label="Quick connect">
+                <div className="quick-connect-heading"><strong>Quick connect</strong><span>Reach me directly</span></div>
+                <div className="quick-connect-links">
+                  <a href={`mailto:${profile.email}`}><Mail size={16} /> Email <ArrowUpRight size={13} /></a>
+                  <a href={profile.linkedin} target="_blank" rel="noreferrer"><Linkedin size={16} /> LinkedIn <ArrowUpRight size={13} /></a>
+                  <a href={profile.github} target="_blank" rel="noreferrer"><Github size={16} /> GitHub <ArrowUpRight size={13} /></a>
+                </div>
+              </div>
             </div>
             <div className="about-details">
                   <div><span className="detail-label">Career goal</span><p>Seeking software development and technical internship opportunities to build practical technology solutions, apply core data structures, embedded system principles, and algorithmic thinking to grow as an engineer.</p></div>
                   <div className="about-focus-grid"><div><span>01</span><strong>Software foundations</strong><p>Java, C++, data structures, algorithms, and web fundamentals.</p></div><div><span>02</span><strong>Embedded practice</strong><p>NodeMCU, sensors, microcontrollers, and IoT project work.</p></div><div><span>03</span><strong>Growth mindset</strong><p>Hackathons, coding platforms, and a steady focus on practical problem solving.</p></div></div>
-                  <div><span className="detail-label">Strengths</span><div className="tag-list">{["Data Structures & Algorithms", "SYNTH VISION Finalist", "Embedded Systems & Prototyping", "Rapid Problem Solving", "Academic Rigor (CGPA 9.48)", "Microcontroller Firmware"].map(tag => <span className="tag" key={tag}>{tag}</span>)}</div></div>
+                  <div><span className="detail-label">Strengths</span><div className="tag-list">{["Data Structures & Algorithms", "SYNTH VISION Finalist", "Embedded Systems & Prototyping", "Rapid Problem Solving", "Academic Consistency", "Microcontroller Firmware"].map(tag => <span className="tag" key={tag}>{tag}</span>)}</div></div>
               <div className="quote-callout"><Quote size={22} /><p>Practical engineering starts with solid fundamentals and the curiosity to build.</p></div>
             </div>
           </div>
@@ -512,6 +606,26 @@ function Home() {
 
         <section className="section-wrap content-section skills-section" aria-labelledby="skills-title">
           <SectionHeading id="skills-title" index="02 /" eyebrow="Capability map" title="The tools I turn into momentum." body="A practical technical stack across programming, problem solving, web fundamentals, and embedded systems—plus the habits that shape how I show up while learning and building." />
+          <div className="skills-marquee" role="region" aria-label="Scrolling skills logos">
+            {scrollingSkillLanes.map((lane, laneIndex) => (
+              <div className={`skills-marquee-lane skills-marquee-lane-${lane.direction}`} key={lane.direction} aria-hidden={laneIndex === 1 ? true : undefined}>
+                <div className={`skills-marquee-track skills-marquee-track-${lane.direction}`}>
+                  {[0, 1].map(copy => (
+                    <ul className="skills-marquee-group" key={copy} aria-hidden={copy === 1 ? true : undefined}>
+                      {lane.skills.map(({ label, Icon, logoSrc }) => (
+                        <li className="skills-marquee-item" key={label}>
+                          <span className="skills-marquee-mark" aria-hidden="true">
+                            {logoSrc ? <img src={logoSrc} alt="" /> : <Icon size={24} strokeWidth={1.8} />}
+                          </span>
+                          <span className="skills-marquee-label">{label}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
           <div className="skills-grid">
             <div className="skill-panel"><div className="panel-label panel-label-stack"><Layers3 size={17} /><span>Technical toolkit<small>Languages · logic · hardware</small></span></div><div className="toolkit-grid">{technicalSkills.map(skill => <article className="toolkit-card" key={skill.label}><div className="toolkit-card-top"><strong>{skill.label}</strong><span>{skill.signal}</span></div><p>{skill.detail}</p></article>)}</div></div>
             <div className="skill-panel soft-panel"><div className="panel-label"><Zap size={17} /> How I show up</div><p className="panel-intro">I bring a curious, hands-on approach: understand the problem, build a working path, test the idea, and keep learning from the result.</p><div className="showup-grid">{softSkills.map(skill => <article className="showup-card" key={skill.title}><div><Check size={14} /><strong>{skill.title}</strong></div><p>{skill.detail}</p></article>)}</div><div className="skill-footnote">Curious by default. Analytical under constraints. Always driven to solve practical problems.</div></div>
@@ -524,7 +638,7 @@ function Home() {
         </section>
 
         <section className="section-wrap content-section education-section" aria-labelledby="education-title">
-          <div className="split-heading"><SectionHeading id="education-title" index="04 /" eyebrow="Academic foundation" title="A record built on consistency." /><span className="section-side-note">Learning by building<br />B.Tech in IoT · CGPA 9.48/10.</span></div>
+          <div className="split-heading"><SectionHeading id="education-title" index="04 /" eyebrow="Academic foundation" title="A record built on consistency." /><span className="section-side-note">Learning by building<br />B.Tech in IoT · VNRVJIET.</span></div>
           <div className="education-grid">{education.map(item => <article className="education-card" key={item.title}><div className="education-year">{item.year}</div><GraduationCap size={23} /><h3>{item.title}</h3><p className="education-school">{item.school}</p><p>{item.detail}</p></article>)}</div>
         </section>
 
@@ -539,8 +653,7 @@ function Home() {
                     <div className="visual-window-bar"><span /><span /><span /></div>
                     <div className="visual-code-screen">
                       <span className="visual-code-prompt">&gt; live_build / {project.number}</span>
-                      <ProjectTypingTitle title={project.title} delayMs={projectIndex * 160} />
-                      <span className="visual-code-detail">{project.detail}</span>
+                      <ProjectTypingTitle active={!introOpen} title={project.title} detail={project.detail} delayMs={projectIndex * 160} />
                     </div>
                   </div>
                   <span className="project-number">{project.number}</span>
@@ -575,7 +688,7 @@ function Home() {
           <div className="contact-intro">
             <p className="eyebrow">08 / Direct Connect</p>
             <h2 id="contact-title">From curiosity<br /><em>to contribution.</em></h2>
-            <p>Second-year B.Tech student at VNRVJIET (CGPA 9.48/10) and SYNTH VISION Hackathon Finalist, seeking software development and technical internship opportunities. With foundations in Java, C++, data structures, web fundamentals, and IoT hardware, I am looking for a place to keep learning by contributing to practical systems.</p>
+            <p>Second-year B.Tech student at VNRVJIET and SYNTH VISION Hackathon Finalist, seeking software development and technical internship opportunities. With foundations in Java, C++, data structures, web fundamentals, and IoT hardware, I am looking for a place to keep learning by contributing to practical systems.</p>
             <div className="contact-quick-grid" aria-label="Quick profile fit">
               <div className="contact-quick-card"><span>Open to</span><strong>Software development & technical internships</strong></div>
               <div className="contact-quick-card"><span>Strong in</span><strong>Java · C++ · Data Structures</strong></div>
@@ -646,17 +759,93 @@ function Home() {
                 <span className="channel-label">Campus & Location</span>
                 <strong className="channel-value">{profile.location}</strong>
               </div>
-              <span className="channel-meta">B.Tech Engineering · CGPA 9.48 / 10</span>
+              <span className="channel-meta">B.Tech · Internet of Things</span>
             </div>
             </div>
           </div>
         </section>
       </main>
 
-      <footer className="site-footer"><span>© 2026 Vinjamuri Lekhya Sahiti. Built with intention.</span><a href="#top">Back to top <ArrowDown size={14} className="rotate-up" /></a></footer>
+      <footer className="site-footer">
+        <span className="site-footer-copy">© 2026 Vinjamuri Lekhya Sahiti. This combined portfolio is licensed under AGPL-3.0-only.</span>
+        <nav className="site-footer-links" aria-label="Open-source notices">
+          <a href="/source-code.zip" download="lekhya-portfolio-source-agpl-3.0.zip">Source code <ExternalLink size={12} aria-hidden="true" /></a>
+          <a href="/LICENSE" rel="license">AGPL-3.0-only</a>
+          <a href="https://github.com/smontlouis/bible-strong-avatar-lab/tree/79fe9ba06e4874b11394b8e8a3f2c493c9d197ba" target="_blank" rel="noreferrer">Avatar Lab source <ExternalLink size={12} aria-hidden="true" /></a>
+        </nav>
+        <a href="#top">Back to top <ArrowDown size={14} className="rotate-up" /></a>
+      </footer>
 
-      <button className={`chat-launcher ${chatOpen ? "is-open" : ""}`} type="button" onClick={() => setChatOpen(open => !open)} aria-label={chatOpen ? "Close resume assistant" : "Open resume assistant"} aria-expanded={chatOpen}><span className="chat-launcher-icon">{chatOpen ? <X size={20} /> : <MessageCircle size={21} />}</span><span className="chat-launcher-copy"><strong>Ask the assistant</strong><small>Quick route through the work</small></span></button>
-      {chatOpen ? <aside className="chat-panel" aria-label="Resume assistant" aria-live="polite"><div className="chat-header"><div className="chat-title"><span className="chat-avatar"><Bot size={18} /></span><div><strong>Portfolio assistant</strong><span><span className="status-dot" /> Online · for {profile.name}</span></div></div><div className="chat-header-actions"><button type="button" className="chat-icon" onClick={clearChat} title="Clear chat history" aria-label="Clear chat history"><Trash2 size={15} /></button><button type="button" className="chat-icon" onClick={() => setChatOpen(false)} title="Close assistant" aria-label="Close assistant"><X size={17} /></button></div></div><InteractiveAvatar mood={avatarMood} /><div className="chat-messages">{messages.map(message => <div className={`chat-message ${message.role}`} key={message.id}><div className="chat-bubble"><Streamdown>{message.content}</Streamdown>{message.showResumeActions ? <div className="chat-inline-resume-actions" aria-label="Resume actions"><a href="/resume.pdf" target="_blank" rel="noreferrer"><ExternalLink size={13} /> View resume</a><a href="/resume.pdf" download="Vinjamuri_Lekhya_Sahiti_Resume.pdf"><Download size={13} /> Download PDF</a></div> : null}</div><span className="chat-time">{message.timestamp}</span></div>)}{chatTyping ? <div className="chat-message assistant"><div className="chat-bubble typing"><i /><i /><i /></div><span className="chat-time">Thinking...</span></div> : null}</div>{messages.length === 1 ? <div className="chat-suggestions"><span>Try asking</span>{suggestedQuestions.map(question => <button key={question} type="button" onClick={() => askAssistant(question)}>{question}<ChevronDown size={13} className="suggestion-arrow" /></button>)}</div> : null}<form className="chat-input" onSubmit={event => { event.preventDefault(); void askAssistant(draft); }}><input value={draft} onChange={event => setDraft(event.target.value)} placeholder="Ask about the work..." aria-label="Ask the portfolio assistant" /><button type="submit" disabled={!draft.trim() || chatTyping} aria-label="Send question"><Send size={17} /></button></form></aside> : null}
+      <button
+        className={`chat-launcher ${chatOpen ? "is-open" : ""}`}
+        type="button"
+        onClick={() => setChatOpen(open => !open)}
+        aria-label={chatOpen ? "Close portfolio chatbot" : "Chat with Lekhya’s avatar"}
+        aria-expanded={chatOpen}
+      >
+        <span className="chat-launcher-icon">
+          {chatOpen ? <X size={20} /> : <InteractiveAvatar mood={avatarMood} variant="launcher" followPointer />}
+        </span>
+        <span className="chat-launcher-copy">
+          <strong>Chat with the avatar</strong>
+          <small>Ask about Lekhya’s portfolio</small>
+        </span>
+      </button>
+      {chatOpen ? (
+        <aside className="chat-panel" aria-label="Chat with Lekhya’s portfolio avatar">
+          <div className="chat-header">
+            <div className="chat-title">
+              <span className="chat-avatar"><InteractiveAvatar mood={avatarMood} variant="launcher" /></span>
+              <div>
+                <strong>Lekhya’s avatar</strong>
+                <span><span className="status-dot" /> Portfolio guide · grounded answers</span>
+              </div>
+            </div>
+            <div className="chat-header-actions">
+              <button type="button" className="chat-icon" onClick={clearChat} disabled={chatTyping} title="Clear conversation" aria-label="Clear conversation"><Trash2 size={15} /></button>
+              <button type="button" className="chat-icon" onClick={() => setChatOpen(false)} title="Close chatbot" aria-label="Close chatbot"><X size={17} /></button>
+            </div>
+          </div>
+          <InteractiveAvatar mood={avatarMood} followPointer />
+          <div className="chat-messages" role="log" aria-label="Conversation with the portfolio avatar" aria-live="polite" aria-relevant="additions text">
+            {messages.map(message => (
+              <div className={`chat-message ${message.role}`} key={message.id}>
+                <div className="chat-bubble">
+                  <Streamdown>{message.content}</Streamdown>
+                  {message.showResumeActions ? (
+                    <div className="chat-inline-resume-actions" aria-label="Resume actions">
+                      <a href="/resume.pdf" target="_blank" rel="noreferrer"><ExternalLink size={13} /> View resume</a>
+                      <a href="/resume.pdf" download="Vinjamuri_Lekhya_Sahiti_Resume.pdf"><Download size={13} /> Download PDF</a>
+                    </div>
+                  ) : null}
+                </div>
+                <span className="chat-time">{message.timestamp}</span>
+              </div>
+            ))}
+            {chatTyping ? (
+              <div className="chat-message assistant">
+                <div className="chat-bubble typing"><i /><i /><i /></div>
+                <span className="chat-time">Thinking…</span>
+              </div>
+            ) : null}
+          </div>
+          {messages.length === 1 ? (
+            <div className="chat-suggestions">
+              <span>Try asking</span>
+              {suggestedQuestions.map(question => (
+                <button key={question} type="button" onClick={() => askAssistant(question)}>
+                  {question}<ChevronDown size={13} className="suggestion-arrow" />
+                </button>
+              ))}
+            </div>
+          ) : null}
+          <form className="chat-input" onSubmit={event => { event.preventDefault(); void askAssistant(draft); }}>
+            <input value={draft} onChange={event => setDraft(event.target.value)} placeholder="Ask about the portfolio…" aria-label="Ask Lekhya’s portfolio avatar" />
+            <button type="submit" disabled={!draft.trim() || chatTyping} aria-label="Send message"><Send size={17} /></button>
+          </form>
+        </aside>
+      ) : null}
+      </div>
     </div>
   );
 }

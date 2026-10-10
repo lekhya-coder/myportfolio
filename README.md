@@ -2,7 +2,7 @@
 
 > Building practical software and connected hardware through curiosity, steady practice, and problem-solving.
 
- **Resume:** [View PDF](https://lekhya-clyggkzk.manus.space/resume.pdf) · **Current live source:** [Download ZIP](https://lekhya-clyggkzk.manus.space/source-code.zip)
+**Live portfolio:** [lekhya-clyggkzk.manus.space](https://lekhya-clyggkzk.manus.space/) · **Resume:** [View PDF](https://lekhya-clyggkzk.manus.space/resume.pdf) · **Current live source:** [Download ZIP](https://lekhya-clyggkzk.manus.space/source-code.zip)
 
 This repository accompanies my portfolio website. The public site is the current deployed experience; its combined release source and license are also available from the live site because the deployed version includes the Avatar Lab runtime.
 
@@ -36,9 +36,12 @@ Ongoing C++ and Java practice through data structures, algorithms, and coding ch
 
 ## What the portfolio includes
 
+- **Opening title card:** A live-typed “Hello, I'm” greeting introduces the portfolio; Enter, Skip, or the short timed transition scrolls the card upward to reveal the page.
 - **Project showcase:** Three project cards with filters for All signals, Embedded & IoT, Wireless control, and Problem solving.
-- **Animated project marks:** Each terminal-style project title types on character by character, while the full project heading remains available as the accessible title.
+- **Animated project marks:** Each terminal-style card types its own project title and detail line character by character on entry, while the full copy remains available to assistive technology.
+- **Skills logo marquee:** Two circular-mark rows scroll in opposite directions, pause on hover, and become a static accessible list for reduced-motion users.
 - **Technical toolkit:** Programming, web, algorithm, microcontroller, sensor, and IoT skills presented with project-grounded context.
+- **Quick connect:** Email, LinkedIn, and GitHub links follow the profile summary.
 - **Resume actions:** Open the PDF in a new tab or download it directly.
 - **Responsive presentation:** A light/dark theme and layouts designed for desktop and mobile.
 
@@ -46,7 +49,7 @@ Ongoing C++ and Java practice through data structures, algorithms, and coding ch
 
 The floating text assistant answers questions about my profile, skills, projects, education, achievements, internship availability, contact information, and resume. It uses shared, resume-grounded answers; the managed AI is used only to classify questions that the local topic rules cannot confidently route. Unsupported questions receive a safe prompt to use the contact links.
 
-It reacts to typing and answer states, and its gaze follows the pointer while idle. Both the chatbot and the main portfolio avatar honor reduced-motion preferences.
+The animated mascot uses the official [Bible Strong Avatar Lab](https://github.com/smontlouis/bible-strong-avatar-lab) React runtime. It reacts to typing and answer states, and its gaze follows the pointer while idle. Both the chatbot and the main portfolio avatar honor reduced-motion preferences.
 
 ## Technology
 

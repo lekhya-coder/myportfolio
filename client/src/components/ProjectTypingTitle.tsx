@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
-const CHARACTER_INTERVAL_MS = 32;
+const CHARACTER_INTERVAL_MS = 30;
 
 function prefersReducedMotion(): boolean {
   return (
@@ -12,16 +12,21 @@ function prefersReducedMotion(): boolean {
 }
 
 type ProjectTypingTitleProps = {
+  active: boolean;
   title: string;
+  detail: string;
   delayMs?: number;
 };
 
-export function ProjectTypingTitle({ title, delayMs = 0 }: ProjectTypingTitleProps) {
+export function ProjectTypingTitle({ active, title, detail, delayMs = 0 }: ProjectTypingTitleProps) {
   const titleRef = useRef<HTMLSpanElement | null>(null);
   const [reducedMotion, setReducedMotion] = useState(prefersReducedMotion);
   const [isVisible, setIsVisible] = useState(false);
   const [visibleTitle, setVisibleTitle] = useState(() =>
     prefersReducedMotion() ? title : "",
+  );
+  const [visibleDetail, setVisibleDetail] = useState(() =>
+    prefersReducedMotion() ? detail : "",
   );
 
   useEffect(() => {
@@ -30,19 +35,23 @@ export function ProjectTypingTitle({ title, delayMs = 0 }: ProjectTypingTitlePro
     const mediaQuery = window.matchMedia(REDUCED_MOTION_QUERY);
     const updatePreference = () => {
       setReducedMotion(mediaQuery.matches);
-      if (mediaQuery.matches) setVisibleTitle(title);
+      if (mediaQuery.matches) {
+        setVisibleTitle(title);
+        setVisibleDetail(detail);
+      }
     };
 
     updatePreference();
     mediaQuery.addEventListener?.("change", updatePreference);
     return () => mediaQuery.removeEventListener?.("change", updatePreference);
-  }, [title]);
+  }, [detail, title]);
 
   useEffect(() => {
-    if (reducedMotion) {
-      setVisibleTitle(title);
+    if (!active) {
+      setIsVisible(false);
       return;
     }
+    if (reducedMotion) return;
 
     const element = titleRef.current;
     if (!element) return;
@@ -63,28 +72,41 @@ export function ProjectTypingTitle({ title, delayMs = 0 }: ProjectTypingTitlePro
 
     observer.observe(element);
     return () => observer.disconnect();
-  }, [reducedMotion, title]);
+  }, [active, reducedMotion, title]);
 
   useEffect(() => {
     if (reducedMotion) {
       setVisibleTitle(title);
+      setVisibleDetail(detail);
       return;
     }
-    if (!isVisible) {
+    if (!active || !isVisible) {
       setVisibleTitle("");
+      setVisibleDetail("");
       return;
     }
 
-    let characterIndex = 0;
+    let titleIndex = 0;
+    let detailIndex = 0;
     let intervalId: number | undefined;
     setVisibleTitle("");
+    setVisibleDetail("");
 
     const timeoutId = window.setTimeout(() => {
       intervalId = window.setInterval(() => {
-        characterIndex += 1;
-        setVisibleTitle(title.slice(0, characterIndex));
+        if (titleIndex < title.length) {
+          titleIndex += 1;
+          setVisibleTitle(title.slice(0, titleIndex));
+          return;
+        }
 
-        if (characterIndex >= title.length && intervalId !== undefined) {
+        if (detailIndex < detail.length) {
+          detailIndex += 1;
+          setVisibleDetail(detail.slice(0, detailIndex));
+          return;
+        }
+
+        if (intervalId !== undefined) {
           window.clearInterval(intervalId);
           intervalId = undefined;
         }
@@ -95,12 +117,22 @@ export function ProjectTypingTitle({ title, delayMs = 0 }: ProjectTypingTitlePro
       window.clearTimeout(timeoutId);
       if (intervalId !== undefined) window.clearInterval(intervalId);
     };
-  }, [delayMs, isVisible, reducedMotion, title]);
+  }, [active, delayMs, detail, isVisible, reducedMotion, title]);
+
+  const titleIsTyping = active && isVisible && !reducedMotion && visibleTitle.length < title.length;
+  const titleHasFinished = visibleTitle.length >= title.length;
 
   return (
-    <span ref={titleRef} className="visual-code-title" aria-hidden="true">
-      {visibleTitle}
-      <span className="visual-code-caret" aria-hidden="true" />
-    </span>
+    <>
+      <span ref={titleRef} className="visual-code-title" aria-hidden="true">
+        {visibleTitle}
+        {titleIsTyping ? <span className="visual-code-caret" /> : null}
+      </span>
+      <span className="visual-code-detail" aria-hidden="true">
+        <span className="visual-code-detail-prefix">→ </span>
+        {visibleDetail}
+        {active && isVisible && !reducedMotion && titleHasFinished ? <span className="visual-code-caret" /> : null}
+      </span>
+    </>
   );
 }
