@@ -33,6 +33,7 @@ import {
 import { useEffect, useMemo, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
 import { Streamdown } from "streamdown";
 import { answerForIntent, intentForQuestion, intentsForQuestion } from "@shared/profileFacts";
+import { ProjectTypingTitle } from "../components/ProjectTypingTitle";
 import { useTheme } from "../contexts/ThemeContext";
 import { trpc } from "../lib/trpc";
 
@@ -530,7 +531,34 @@ function Home() {
         <section className="section-wrap content-section project-section" id="projects" aria-labelledby="projects-title">
           <SectionHeading id="projects-title" index="05 /" eyebrow="Selected projects" title="When theory meets a working build." body="Selected projects showing how I move from a technical idea to a tangible system across sensors, wireless control, embedded hardware, and problem solving." />
           <div className="project-showcase-toolbar"><div className="project-filter-list" role="tablist" aria-label="Filter projects by practice area">{projectFilters.map(filter => <button key={filter.id} type="button" role="tab" aria-selected={projectFilter === filter.id} className={projectFilter === filter.id ? "is-active" : ""} onClick={() => setProjectFilter(filter.id)}>{filter.label}</button>)}</div><span className="project-count" aria-live="polite">Showing {visibleProjects.length} of {projects.length} builds</span></div>
-          <div className="project-list">{visibleProjects.map(project => <article className={`project-card ${project.tone}`} key={project.title}><div className="project-visual"><div className="visual-window"><div className="visual-window-bar"><span /><span /><span /></div><div className="visual-code-screen"><span className="visual-code-prompt">&gt; live_build / {project.number}</span><strong className="visual-code-title">{project.title}</strong><span className="visual-code-detail">{project.detail}</span><span className="visual-code-caret" aria-hidden="true" /></div></div><span className="project-number">{project.number}</span></div><div className="project-body"><div className="project-type">{project.type}</div><h3>{project.title}</h3><p>{project.description}</p><p className="project-detail">{project.detail}</p><div className="project-tags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div><div className="project-footer"><strong>{project.metric}</strong><span className="project-badge">{project.badge}</span></div></div></article>)}</div>
+          <div className="project-list">
+            {visibleProjects.map((project, projectIndex) => (
+              <article className={`project-card ${project.tone}`} key={project.title}>
+                <div className="project-visual" aria-hidden="true">
+                  <div className="visual-window">
+                    <div className="visual-window-bar"><span /><span /><span /></div>
+                    <div className="visual-code-screen">
+                      <span className="visual-code-prompt">&gt; live_build / {project.number}</span>
+                      <ProjectTypingTitle title={project.title} delayMs={projectIndex * 160} />
+                      <span className="visual-code-detail">{project.detail}</span>
+                    </div>
+                  </div>
+                  <span className="project-number">{project.number}</span>
+                </div>
+                <div className="project-body">
+                  <div className="project-type">{project.type}</div>
+                  <h3>{project.title}</h3>
+                  <p>{project.description}</p>
+                  <p className="project-detail">{project.detail}</p>
+                  <div className="project-tags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div>
+                  <div className="project-footer">
+                    <strong>{project.metric}</strong>
+                    <span className="project-badge">{project.badge}</span>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
         </section>
 
         <section className="section-wrap content-section recognitions-section" aria-labelledby="recognitions-title">
