@@ -47,8 +47,8 @@ A single-page personal resume portfolio for recruiters, technical selection team
 
 ## Requested interaction and connection refinements
 
-- Remove the separate opening overlay/card, its live-greeting typewriter, focus-trapping controls, timer, and upward transition; load the existing portfolio directly, keeping its normal on-page hero, navigation, theme, and section animations.
-- Under the Technical toolkit title “The tools I turn into momentum.”, show exactly two continuous horizontal lanes of verified skill logos/icons, directly before the explanatory copy and existing skill cards. Make the first lane travel left and the second right, following the supplied reference's circular-mark treatment. Keep the six skill cards unchanged, expose one semantic skills list while hiding duplicate loop content from assistive technology, pause both lanes on hover, and present one static list when reduced motion is preferred.
+- Restore the original live site's first-load introduction from its public source: type “Hello, I'm” live, show Lekhya's original profile details, and exit upward on Enter, Skip, or the original timed transition. Keep its original appearance, active site theme, controls, focus behavior, and reduced-motion support; do not redesign or retime it.
+- Preserve the original Technical toolkit order: section title and descriptive copy, then exactly two continuous rows of verified skill logos/icons, followed by the skill cards. The first row travels left and the second right. Keep both loops seamless, pause on hover, expose one semantic skills list while hiding duplicate loop content from assistive technology, and show one static list when reduced motion is preferred.
 - Place a compact Quick connect row immediately after the About section's Profile Summary card, using the verified public email, LinkedIn, and GitHub contact destinations.
 
 ## Project structure

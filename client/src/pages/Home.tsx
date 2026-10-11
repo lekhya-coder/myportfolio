@@ -30,7 +30,7 @@ import {
   Zap,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { useEffect, useMemo, useState, type PointerEvent as ReactPointerEvent } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import { Streamdown } from "streamdown";
 import { answerForIntent, intentForQuestion, intentsForQuestion } from "@shared/profileFacts";
 import { InteractiveAvatar, type AvatarMood } from "../components/InteractiveAvatar";
@@ -46,7 +46,12 @@ type ChatMessage = {
   showResumeActions?: boolean;
 };
 
+type IntroPhase = "visible" | "exiting" | "closed";
 type ScrollingSkill = { label: string; Icon: LucideIcon; logoSrc?: string };
+const INTRO_GREETING = "Hello, I'm";
+const INTRO_AUTO_DISMISS_MS = 3600;
+const INTRO_EXIT_MS = 780;
+const INTRO_GREETING_INTERVAL_MS = 86;
 
 const profile = {
   name: "Vinjamuri Lekhya Sahiti",
@@ -261,6 +266,16 @@ function generateAssistantAnswer(userPrompt: string): string {
 
 function Home() {
   const { theme, toggleTheme } = useTheme();
+  const [introPhase, setIntroPhase] = useState<IntroPhase>("visible");
+  const introOpen = introPhase !== "closed";
+  const [typedGreeting, setTypedGreeting] = useState("");
+  const introEnterRef = useRef<HTMLButtonElement>(null);
+  const introSkipRef = useRef<HTMLButtonElement>(null);
+  const heroTitleRef = useRef<HTMLHeadingElement>(null);
+  const dismissIntro = useCallback(
+    () => setIntroPhase(current => current === "visible" ? "exiting" : current),
+    [],
+  );
   const [activeSection, setActiveSection] = useState("top");
   const [menuOpen, setMenuOpen] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
@@ -296,6 +311,66 @@ function Home() {
     ] as const,
     []
   );
+
+  useEffect(() => {
+    if (introPhase === "closed") {
+      heroTitleRef.current?.focus({ preventScroll: true });
+      return;
+    }
+
+    if (introPhase === "visible") introEnterRef.current?.focus();
+    const timeout = introPhase === "visible"
+      ? window.setTimeout(dismissIntro, INTRO_AUTO_DISMISS_MS)
+      : undefined;
+    const onIntroKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && introPhase === "visible") {
+        dismissIntro();
+      } else if (event.key === "Tab") {
+        const firstControl = introEnterRef.current;
+        const lastControl = introSkipRef.current;
+        if (event.shiftKey && document.activeElement === firstControl) {
+          event.preventDefault();
+          lastControl?.focus();
+        } else if (!event.shiftKey && document.activeElement === lastControl) {
+          event.preventDefault();
+          firstControl?.focus();
+        }
+      }
+    };
+    window.addEventListener("keydown", onIntroKeyDown);
+    return () => {
+      if (timeout !== undefined) window.clearTimeout(timeout);
+      window.removeEventListener("keydown", onIntroKeyDown);
+    };
+  }, [introPhase, dismissIntro]);
+
+  useEffect(() => {
+    if (introPhase !== "visible") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setTypedGreeting(INTRO_GREETING);
+      return;
+    }
+
+    let characterIndex = 0;
+    setTypedGreeting("");
+    const intervalId = window.setInterval(() => {
+      characterIndex += 1;
+      setTypedGreeting(INTRO_GREETING.slice(0, characterIndex));
+      if (characterIndex >= INTRO_GREETING.length) window.clearInterval(intervalId);
+    }, INTRO_GREETING_INTERVAL_MS);
+    return () => window.clearInterval(intervalId);
+  }, [introPhase]);
+
+  useEffect(() => {
+    if (introPhase !== "exiting") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setIntroPhase("closed");
+      return;
+    }
+
+    const timeout = window.setTimeout(() => setIntroPhase("closed"), INTRO_EXIT_MS);
+    return () => window.clearTimeout(timeout);
+  }, [introPhase]);
 
   useEffect(() => {
     const sections = navItems.map(([id]) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
@@ -388,7 +463,30 @@ function Home() {
     <div className="site-shell" id="top">
       <div className="ambient-orb ambient-orb-one" aria-hidden="true" />
       <div className="ambient-orb ambient-orb-two" aria-hidden="true" />
-      <div className="portfolio-content">
+      {introOpen ? (
+        <div className={`intro-overlay ${introPhase === "exiting" ? "is-exiting" : ""}`} role="dialog" aria-modal="true" aria-labelledby="intro-title" aria-describedby="intro-description">
+          <div className="intro-card">
+            <div className="intro-card-top">
+              <span className="intro-mark" aria-hidden="true">LS<span>/</span></span>
+              <span className="intro-index"><i /> PERSONAL PORTFOLIO · 2026</span>
+            </div>
+            <p className="intro-greeting"><span className="intro-greeting-live" aria-hidden="true">{typedGreeting}<span className="intro-typing-caret" /></span><span className="intro-sr-only">{INTRO_GREETING}</span></p>
+            <h2 id="intro-title" className="intro-title">Vinjamuri<br /><span>Lekhya Sahiti</span></h2>
+            <p id="intro-description" className="intro-description">A second-year B.Tech student in Internet of Things at VNRVJIET, building practical solutions with hardware, logic, and code.</p>
+            <div className="intro-details">
+              <span><MapPin size={14} /> Hyderabad, India · VNRVJIET</span>
+              <span><Zap size={14} /> Software development & technical internships</span>
+            </div>
+            <div className="intro-actions">
+              <button ref={introEnterRef} className="button button-primary intro-enter" type="button" onClick={dismissIntro}>Explore my portfolio <ArrowDown size={15} /></button>
+              <button ref={introSkipRef} className="intro-skip" type="button" onClick={dismissIntro}>Skip intro</button>
+            </div>
+            <div className="intro-progress" aria-hidden="true"><span /></div>
+            <p className="intro-auto-copy" aria-live="polite">Opening the portfolio…</p>
+          </div>
+        </div>
+      ) : null}
+      <div className={`portfolio-content ${introOpen ? "is-blocked" : "is-ready"}`} aria-hidden={introOpen} inert={introOpen}>
       <header className="site-header">
         <a className="wordmark" href="#top" aria-label="Back to the top of the portfolio">
           <span className="wordmark-mark"><span className="wordmark-mark-core">LS</span><span className="wordmark-mark-slash">/</span><Cpu className="wordmark-mark-icon" size={11} aria-hidden="true" /></span>
@@ -417,7 +515,7 @@ function Home() {
           <div className="hero-copy">
             <div className="availability"><span className="status-dot" /> {profile.availability}</div>
             <p className="hero-kicker">{profile.eyebrow}</p>
-            <h1 id="hero-title">Hello, I'm<br /><em>Vinjamuri Lekhya Sahiti</em></h1>
+            <h1 id="hero-title" ref={heroTitleRef} tabIndex={-1}>Hello, I'm<br /><em>Vinjamuri Lekhya Sahiti</em></h1>
             <p className="hero-tagline">Building practical solutions with <strong>hardware, logic & code</strong>.</p>
             <p className="hero-intro">{profile.intro}</p>
             <div className="hero-actions">
@@ -507,7 +605,7 @@ function Home() {
         </section>
 
         <section className="section-wrap content-section skills-section" aria-labelledby="skills-title">
-          <SectionHeading id="skills-title" index="02 /" eyebrow="Capability map" title="The tools I turn into momentum." />
+          <SectionHeading id="skills-title" index="02 /" eyebrow="Capability map" title="The tools I turn into momentum." body="A practical technical stack across programming, problem solving, web fundamentals, and embedded systems—plus the habits that shape how I show up while learning and building." />
           <div className="skills-marquee" role="region" aria-label="Scrolling skills logos">
             {scrollingSkillLanes.map((lane, laneIndex) => (
               <div className={`skills-marquee-lane skills-marquee-lane-${lane.direction}`} key={lane.direction} aria-hidden={laneIndex === 1 ? true : undefined}>
@@ -528,7 +626,6 @@ function Home() {
               </div>
             ))}
           </div>
-          <p className="section-lede skills-section-lede">A practical technical stack across programming, problem solving, web fundamentals, and embedded systems—plus the habits that shape how I show up while learning and building.</p>
           <div className="skills-grid">
             <div className="skill-panel"><div className="panel-label panel-label-stack"><Layers3 size={17} /><span>Technical toolkit<small>Languages · logic · hardware</small></span></div><div className="toolkit-grid">{technicalSkills.map(skill => <article className="toolkit-card" key={skill.label}><div className="toolkit-card-top"><strong>{skill.label}</strong><span>{skill.signal}</span></div><p>{skill.detail}</p></article>)}</div></div>
             <div className="skill-panel soft-panel"><div className="panel-label"><Zap size={17} /> How I show up</div><p className="panel-intro">I bring a curious, hands-on approach: understand the problem, build a working path, test the idea, and keep learning from the result.</p><div className="showup-grid">{softSkills.map(skill => <article className="showup-card" key={skill.title}><div><Check size={14} /><strong>{skill.title}</strong></div><p>{skill.detail}</p></article>)}</div><div className="skill-footnote">Curious by default. Analytical under constraints. Always driven to solve practical problems.</div></div>
@@ -556,7 +653,7 @@ function Home() {
                     <div className="visual-window-bar"><span /><span /><span /></div>
                     <div className="visual-code-screen">
                       <span className="visual-code-prompt">&gt; live_build / {project.number}</span>
-                      <ProjectTypingTitle active title={project.title} detail={project.detail} delayMs={projectIndex * 160} />
+                      <ProjectTypingTitle active={!introOpen} title={project.title} detail={project.detail} delayMs={projectIndex * 160} />
                     </div>
                   </div>
                   <span className="project-number">{project.number}</span>
