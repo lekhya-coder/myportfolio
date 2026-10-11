@@ -486,7 +486,7 @@ function Home() {
           </div>
         </div>
       ) : null}
-      <div className={`portfolio-content ${introOpen ? "is-blocked" : "is-ready"}`} aria-hidden={introOpen} inert={introOpen}>
+      <div className={`portfolio-content ${introPhase === "visible" ? "is-blocked" : "is-ready"}`} aria-hidden={introOpen} inert={introOpen}>
       <header className="site-header">
         <a className="wordmark" href="#top" aria-label="Back to the top of the portfolio">
           <span className="wordmark-mark"><span className="wordmark-mark-core">LS</span><span className="wordmark-mark-slash">/</span><Cpu className="wordmark-mark-icon" size={11} aria-hidden="true" /></span>

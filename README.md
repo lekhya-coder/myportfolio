@@ -36,7 +36,7 @@ Ongoing C++ and Java practice through data structures, algorithms, and coding ch
 
 ## What the portfolio includes
 
-- **Opening title card:** Immediately on every page load and reload, a live-typed “Hello, I'm” greeting is the first screen, holds briefly, then slides upward to reveal the portfolio; Enter and Skip start the upward slide immediately.
+- **Opening title card:** Immediately on every page load and reload, a live-typed “Hello, I'm” greeting is the first screen. After a short hold, the card slides upward as the portfolio fades and rises in beneath it; Enter and Skip start the same smooth transition immediately.
 - **Project showcase:** Three project cards with filters for All signals, Embedded & IoT, Wireless control, and Problem solving.
 - **Animated project marks:** Each terminal-style card types its own project title and detail line character by character on entry, while the full copy remains available to assistive technology.
 - **Skills logo marquee:** Two circular-mark rows scroll in opposite directions, pause on hover, and become a static accessible list for reduced-motion users.
