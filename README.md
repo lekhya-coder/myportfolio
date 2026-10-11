@@ -2,7 +2,7 @@
 
 > Building practical software and connected hardware through curiosity, steady practice, and problem-solving.
 
-**Live portfolio:** [lekhya-dgkarbmr.manus.space](https://lekhya-dgkarbmr.manus.space/) · **Resume:** [View PDF](https://lekhya-dgkarbmr.manus.space/resume.pdf) · **Current live source:** [Download ZIP](https://lekhya-dgkarbmr.manus.space/source-code.zip)
+ **Resume:** [View PDF](https://lekhya-dgkarbmr.manus.space/resume.pdf) · **Current live source:** [Download ZIP](https://lekhya-dgkarbmr.manus.space/source-code.zip)
 
 This repository accompanies my portfolio website. The public site is the current deployed experience; its combined release source and license are also available from the live site because the deployed version includes the Avatar Lab runtime.
 
@@ -49,7 +49,7 @@ Ongoing C++ and Java practice through data structures, algorithms, and coding ch
 
 The floating text assistant launcher is labeled **Get to know Lekhya** and remains on the revealed portfolio on every page load. The hero entry button and chat-panel heading use the same name; the chatbot does not show an in-panel “Powered by Bible Strong Avatar Lab” line. It answers questions about my profile, skills, projects, education, achievements, internship availability, contact information, and resume. It uses shared, resume-grounded answers; the managed AI is used only to classify questions that the local topic rules cannot confidently route. Unsupported questions receive a safe prompt to use the contact links.
 
-The animated mascot uses the official [Bible Strong Avatar Lab](https://github.com/smontlouis/bible-strong-avatar-lab) React runtime. It reacts to typing and answer states, and its gaze follows the pointer while idle. Both the chatbot and the main portfolio avatar honor reduced-motion preferences.
+It reacts to typing and answer states, and its gaze follows the pointer while idle. Both the chatbot and the main portfolio avatar honor reduced-motion preferences.
 
 ## Technology
 
