@@ -468,14 +468,37 @@ function Home() {
           <div className="intro-card">
             <div className="intro-card-top">
               <span className="intro-mark" aria-hidden="true">LS<span>/</span></span>
-              <span className="intro-index"><i /> PERSONAL PORTFOLIO · 2026</span>
+              <span className="intro-index"><i /> SEEKING INTERNSHIPS</span>
             </div>
-            <p className="intro-greeting"><span className="intro-greeting-live" aria-hidden="true">{typedGreeting}<span className="intro-typing-caret" /></span><span className="intro-sr-only">{INTRO_GREETING}</span></p>
-            <h2 id="intro-title" className="intro-title">Vinjamuri<br /><span>Lekhya Sahiti</span></h2>
-            <p id="intro-description" className="intro-description">A second-year B.Tech student in Internet of Things at VNRVJIET, building practical solutions with hardware, logic, and code.</p>
-            <div className="intro-details">
-              <span><MapPin size={14} /> Hyderabad, India · VNRVJIET</span>
-              <span><Zap size={14} /> Software development & technical internships</span>
+            <div className="intro-layout">
+              <div className="intro-copy">
+                <p className="intro-greeting"><span className="intro-greeting-live" aria-hidden="true">{typedGreeting}<span className="intro-typing-caret" /></span><span className="intro-sr-only">{INTRO_GREETING}</span></p>
+                <h2 id="intro-title" className="intro-title">Vinjamuri<br /><span>Lekhya Sahiti</span></h2>
+                <p id="intro-description" className="intro-description">A second-year B.Tech student in Internet of Things at VNRVJIET, building practical solutions with hardware, logic, and code.</p>
+                <div className="intro-details">
+                  <span><MapPin size={14} /> Hyderabad, India · VNRVJIET</span>
+                  <span><Zap size={14} /> Software development & technical internships</span>
+                </div>
+              </div>
+              <aside className="intro-code-window" aria-hidden="true">
+                <div className="intro-code-toolbar">
+                  <span className="intro-code-dots"><i /><i /><i /></span>
+                  <span className="intro-code-file">lekhya-profile.ts</span>
+                  <span className="intro-code-live"><i /> LIVE</span>
+                </div>
+                <div className="intro-code-body">
+                  <p className="intro-code-line"><span className="intro-code-keyword">const</span> <span className="intro-code-variable">lekhya</span> = {"{"}</p>
+                  <p className="intro-code-line intro-code-indent"><span className="intro-code-property">name</span>: <span className="intro-code-string">"Lekhya Sahiti"</span>,</p>
+                  <p className="intro-code-line intro-code-indent"><span className="intro-code-property">degree</span>: <span className="intro-code-string">"B.Tech · IoT"</span>,</p>
+                  <p className="intro-code-line intro-code-indent"><span className="intro-code-property">campus</span>: <span className="intro-code-string">"VNRVJIET"</span>,</p>
+                  <p className="intro-code-line intro-code-indent"><span className="intro-code-property">focus</span>: [</p>
+                  <p className="intro-code-line intro-code-indent"><span className="intro-code-string">"Hardware", "Logic", "Code"</span></p>
+                  <p className="intro-code-line intro-code-indent">],</p>
+                  <p className="intro-code-line intro-code-indent"><span className="intro-code-property">location</span>: <span className="intro-code-string">"Hyderabad, India"</span></p>
+                  <p className="intro-code-line">{"}"};</p>
+                </div>
+                <div className="intro-code-status"><span className="intro-code-status-dot" /> PROFILE STATUS <strong>READY</strong></div>
+            </aside>
             </div>
             <div className="intro-actions">
               <button ref={introEnterRef} className="button button-primary intro-enter" type="button" onClick={dismissIntro}>Explore my portfolio <ArrowDown size={15} /></button>

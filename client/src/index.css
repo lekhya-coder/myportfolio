@@ -918,24 +918,44 @@ h1 em, .contact-intro h2 em {
 .intro-overlay.is-exiting { transform: translateY(-105%); pointer-events: none; }
 .intro-overlay::before { position: absolute; inset: 0; content: ''; pointer-events: none; opacity: .34; background-image: linear-gradient(color-mix(in srgb, var(--lime) 12%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--lime) 12%, transparent) 1px, transparent 1px); background-size: 56px 56px; mask-image: radial-gradient(ellipse at center, #000 0%, transparent 76%); }
 .intro-overlay::after { position: absolute; top: 50%; left: 50%; width: min(800px, 100vw); height: min(620px, 100vh); content: ''; pointer-events: none; background: radial-gradient(ellipse, color-mix(in srgb, var(--lime) 12%, transparent), transparent 68%); transform: translate(-50%, -50%); }
-.intro-card { position: relative; z-index: 1; width: min(610px, 100%); max-height: calc(100dvh - 32px); padding: clamp(26px, 5vw, 48px); overflow-x: hidden; overflow-y: auto; border: 1px solid var(--line-strong); border-radius: 22px; background: color-mix(in srgb, var(--surface) 94%, transparent); box-shadow: 0 30px 100px rgba(0,0,0,.25); animation: intro-card-arrive .58s cubic-bezier(.2,.8,.2,1) both; }
+.intro-card { position: relative; z-index: 1; width: min(980px, 100%); max-height: calc(100dvh - 32px); padding: clamp(26px, 5vw, 52px); overflow-x: hidden; overflow-y: auto; border: 1px solid var(--line-strong); border-radius: 24px; background: linear-gradient(145deg, color-mix(in srgb, var(--surface) 97%, transparent), color-mix(in srgb, var(--bg) 91%, transparent)); box-shadow: 0 30px 100px rgba(0,0,0,.25); animation: intro-card-arrive .58s cubic-bezier(.2,.8,.2,1) both; }
 .intro-card::before { position: absolute; top: 0; right: 0; left: 0; height: 3px; content: ''; background: linear-gradient(90deg, var(--lime), var(--accent-cyan), var(--accent-violet)); }
-.intro-card-top { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: clamp(44px, 8vh, 76px); }
+.intro-card-top { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: clamp(24px, 4vh, 38px); }
 .intro-mark { position: relative; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 12px; background: var(--button-gradient); color: #fff; font-family: 'Space Mono', monospace; font-size: 15px; font-weight: 800; letter-spacing: -1px; box-shadow: 0 8px 26px color-mix(in srgb, var(--lime) 25%, transparent); }
 .intro-mark span { position: absolute; right: 6px; bottom: 3px; color: rgba(255,255,255,.72); font-size: 11px; }
-.intro-index { display: inline-flex; align-items: center; gap: 9px; color: var(--muted); font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .9px; }
+.intro-index { display: inline-flex; align-items: center; gap: 9px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px; background: color-mix(in srgb, var(--surface) 76%, transparent); color: var(--muted); font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .7px; }
 .intro-index i { width: 7px; height: 7px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 12px color-mix(in srgb, var(--lime) 65%, transparent); }
-.intro-greeting { min-height: 1.25em; margin-bottom: 10px; color: var(--muted); font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: .5px; }
+.intro-layout { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(300px, .92fr); align-items: center; gap: clamp(28px, 4.6vw, 64px); }
+.intro-copy { min-width: 0; }
+.intro-greeting { min-height: 1.25em; margin-bottom: 12px; color: var(--muted); font-family: 'Space Mono', monospace; font-size: clamp(15px, 1.6vw, 18px); letter-spacing: .3px; }
 .intro-greeting-live { display: inline-block; min-height: 1.25em; }
 .intro-typing-caret { display: inline-block; width: 7px; height: 1em; margin-left: 4px; background: var(--lime); vertical-align: -.12em; animation: typing-caret-blink .8s steps(1) infinite; }
 .intro-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-.intro-title { margin-bottom: 20px; color: var(--text); font-size: clamp(2.7rem, 8vw, 4.9rem); font-weight: 800; letter-spacing: -.075em; line-height: .98; }
+.intro-title { margin-bottom: 18px; color: var(--text); font-size: clamp(2.65rem, 6.2vw, 5rem); font-weight: 800; letter-spacing: -.075em; line-height: .98; }
 .intro-title span { color: var(--lime); }
-.intro-description { max-width: 490px; margin-bottom: 24px; color: var(--muted); font-size: 16px; line-height: 1.7; }
+.intro-description { max-width: 490px; margin-bottom: 22px; color: var(--muted); font-size: 15px; line-height: 1.7; }
 .intro-details { display: flex; flex-wrap: wrap; gap: 12px 22px; color: var(--muted); font-family: 'Space Mono', monospace; font-size: 10px; }
 .intro-details span { display: inline-flex; align-items: center; gap: 7px; }
 .intro-details svg { color: var(--lime); }
-.intro-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 32px; }
+.intro-code-window { min-width: 0; overflow: hidden; border: 1px solid var(--line-strong); border-radius: 16px; background: linear-gradient(145deg, color-mix(in srgb, var(--surface) 97%, transparent), color-mix(in srgb, var(--bg) 92%, transparent)); box-shadow: var(--shadow), 0 0 0 1px color-mix(in srgb, var(--lime) 8%, transparent); }
+.intro-code-toolbar { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px; min-height: 46px; padding: 0 14px; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--surface-2) 76%, transparent); }
+.intro-code-dots { display: inline-flex; gap: 5px; }
+.intro-code-dots i { width: 7px; height: 7px; border-radius: 50%; background: #f28b82; }
+.intro-code-dots i:nth-child(2) { background: #fbbc04; }
+.intro-code-dots i:nth-child(3) { background: #81c995; }
+.intro-code-file { overflow: hidden; color: var(--muted); font-family: 'Space Mono', monospace; font-size: 9px; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
+.intro-code-live { display: inline-flex; align-items: center; gap: 5px; color: var(--lime); font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: .5px; }
+.intro-code-live i, .intro-code-status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 10px color-mix(in srgb, var(--lime) 65%, transparent); }
+.intro-code-body { padding: 19px 18px 17px; color: var(--muted); font-family: 'Space Mono', monospace; font-size: clamp(9px, 1vw, 11px); line-height: 1.95; }
+.intro-code-line { margin: 0; white-space: nowrap; }
+.intro-code-indent { padding-left: 18px; }
+.intro-code-keyword { color: var(--accent-violet); }
+.intro-code-variable { color: var(--accent-cyan); }
+.intro-code-property { color: var(--text); }
+.intro-code-string { color: var(--lime); }
+.intro-code-status { display: flex; align-items: center; gap: 8px; padding: 11px 16px; border-top: 1px solid var(--line); background: color-mix(in srgb, var(--lime) 6%, transparent); color: var(--muted); font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: .55px; }
+.intro-code-status strong { margin-left: auto; color: var(--lime); font-size: 9px; }
+.intro-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 27px; }
 .intro-enter { margin-top: 0; }
 .intro-skip { min-height: 42px; padding: 0 12px; border-radius: 999px; background: transparent; color: var(--muted); font-family: 'Space Mono', monospace; font-size: 10px; text-decoration: underline; text-underline-offset: 4px; transition: color .2s ease, background .2s ease; }
 .intro-skip:hover { background: color-mix(in srgb, var(--lime) 8%, transparent); color: var(--text); }
@@ -992,4 +1012,19 @@ h1 em, .contact-intro h2 em {
   .skills-marquee-mark { width: 46px; height: 46px; }
   .skills-marquee-mark img { width: 24px; height: 24px; }
   .skills-marquee-label { font-size: 8px; }
+}
+
+
+@media (max-width: 760px) {
+  .intro-card { width: min(700px, 100%); }
+  .intro-layout { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .intro-code-window { width: 100%; }
+}
+
+@media (max-width: 680px) {
+  .intro-card-top { margin-bottom: 28px; }
+  .intro-layout { gap: 20px; }
+  .intro-code-body { padding: 15px 14px 14px; font-size: 9px; }
+  .intro-code-line { white-space: normal; overflow-wrap: anywhere; }
+  .intro-actions { margin-top: 22px; }
 }
