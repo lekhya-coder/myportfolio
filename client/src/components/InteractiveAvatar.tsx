@@ -173,7 +173,7 @@ export function InteractiveAvatar({
           ref={avatar}
           size="100%"
           className="assistant-avatar assistant-avatar-compact"
-          ariaLabel="Lekhya’s animated portfolio chatbot"
+          ariaLabel="Get to know Lekhya assistant mascot"
         />
       </span>
     );
@@ -204,11 +204,7 @@ export function InteractiveAvatar({
       <div className="assistant-avatar-copy">
         <span><i /> {variant === "hero" ? "LS / INTERFACE" : "AVATAR SIGNAL"}</span>
         <strong>{moodCopy}</strong>
-        <small>
-          {variant === "hero" ? "A living layer of the portfolio" : (
-            <>Powered by <a href="https://github.com/smontlouis/bible-strong-avatar-lab/tree/79fe9ba06e4874b11394b8e8a3f2c493c9d197ba" target="_blank" rel="noreferrer">Bible Strong Avatar Lab</a></>
-          )}
-        </small>
+        {variant === "hero" ? <small>A living layer of the portfolio</small> : null}
       </div>
     </div>
   );

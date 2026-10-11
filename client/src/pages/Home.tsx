@@ -540,7 +540,7 @@ function Home() {
             <div className="floating-note floating-note-bottom"><span>Currently exploring</span><strong>AI & Embedded Systems</strong></div>
             <div className="hero-avatar-widget">
               <InteractiveAvatar mood={avatarMood} variant="hero" look={heroLook} />
-              <button className="hero-avatar-cta" type="button" onClick={() => setChatOpen(true)}><MessageCircle size={12} /> Chat with the avatar</button>
+              <button className="hero-avatar-cta" type="button" onClick={() => setChatOpen(true)}><MessageCircle size={12} /> Get to know Lekhya</button>
             </div>
           </div>
         </section>
@@ -780,24 +780,24 @@ function Home() {
         className={`chat-launcher ${chatOpen ? "is-open" : ""}`}
         type="button"
         onClick={() => setChatOpen(open => !open)}
-        aria-label={chatOpen ? "Close portfolio chatbot" : "Chat with Lekhya’s avatar"}
+        aria-label={chatOpen ? "Close Get to know Lekhya" : "Get to know Lekhya"}
         aria-expanded={chatOpen}
       >
         <span className="chat-launcher-icon">
           {chatOpen ? <X size={20} /> : <InteractiveAvatar mood={avatarMood} variant="launcher" followPointer />}
         </span>
         <span className="chat-launcher-copy">
-          <strong>Chat with the avatar</strong>
+          <strong>Get to know Lekhya</strong>
           <small>Ask about Lekhya’s portfolio</small>
         </span>
       </button>
       {chatOpen ? (
-        <aside className="chat-panel" aria-label="Chat with Lekhya’s portfolio avatar">
+        <aside className="chat-panel" aria-label="Get to know Lekhya assistant">
           <div className="chat-header">
             <div className="chat-title">
               <span className="chat-avatar"><InteractiveAvatar mood={avatarMood} variant="launcher" /></span>
               <div>
-                <strong>Lekhya’s avatar</strong>
+                <strong>Get to know Lekhya</strong>
                 <span><span className="status-dot" /> Portfolio guide · grounded answers</span>
               </div>
             </div>
@@ -807,7 +807,7 @@ function Home() {
             </div>
           </div>
           <InteractiveAvatar mood={avatarMood} followPointer />
-          <div className="chat-messages" role="log" aria-label="Conversation with the portfolio avatar" aria-live="polite" aria-relevant="additions text">
+          <div className="chat-messages" role="log" aria-label="Conversation with Get to know Lekhya" aria-live="polite" aria-relevant="additions text">
             {messages.map(message => (
               <div className={`chat-message ${message.role}`} key={message.id}>
                 <div className="chat-bubble">
@@ -840,7 +840,7 @@ function Home() {
             </div>
           ) : null}
           <form className="chat-input" onSubmit={event => { event.preventDefault(); void askAssistant(draft); }}>
-            <input value={draft} onChange={event => setDraft(event.target.value)} placeholder="Ask about the portfolio…" aria-label="Ask Lekhya’s portfolio avatar" />
+            <input value={draft} onChange={event => setDraft(event.target.value)} placeholder="Ask about the portfolio…" aria-label="Ask Get to know Lekhya" />
             <button type="submit" disabled={!draft.trim() || chatTyping} aria-label="Send message"><Send size={17} /></button>
           </form>
         </aside>
