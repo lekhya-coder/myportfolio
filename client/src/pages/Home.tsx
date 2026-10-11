@@ -46,10 +46,9 @@ type ChatMessage = {
   showResumeActions?: boolean;
 };
 
-type IntroPhase = "waiting" | "visible" | "exiting" | "closed";
+type IntroPhase = "visible" | "exiting" | "closed";
 type ScrollingSkill = { label: string; Icon: LucideIcon; logoSrc?: string };
 const INTRO_GREETING = "Hello, I'm";
-const INTRO_OPEN_DELAY_MS = 2000;
 const INTRO_AUTO_DISMISS_MS = 1900;
 const INTRO_EXIT_MS = 900;
 const INTRO_GREETING_INTERVAL_MS = 86;
@@ -267,7 +266,7 @@ function generateAssistantAnswer(userPrompt: string): string {
 
 function Home() {
   const { theme, toggleTheme } = useTheme();
-  const [introPhase, setIntroPhase] = useState<IntroPhase>("waiting");
+  const [introPhase, setIntroPhase] = useState<IntroPhase>("visible");
   const introOpen = introPhase === "visible" || introPhase === "exiting";
   const [typedGreeting, setTypedGreeting] = useState("");
   const introEnterRef = useRef<HTMLButtonElement>(null);
@@ -314,11 +313,6 @@ function Home() {
   );
 
   useEffect(() => {
-    if (introPhase === "waiting") {
-      const timeout = window.setTimeout(() => setIntroPhase("visible"), INTRO_OPEN_DELAY_MS);
-      return () => window.clearTimeout(timeout);
-    }
-
     if (introPhase === "closed") {
       heroTitleRef.current?.focus({ preventScroll: true });
       return;
