@@ -914,7 +914,7 @@ h1 em, .contact-intro h2 em {
 /* Personalized opening title card */
 .portfolio-content.is-blocked { visibility: hidden; opacity: 0; pointer-events: none; }
 .portfolio-content.is-ready { animation: portfolio-arrive .72s cubic-bezier(.2,.8,.2,1) both; }
-.intro-overlay { position: fixed; z-index: 1000; inset: 0; display: grid; place-items: center; overflow: hidden; padding: 24px; background: var(--bg); transform: translateY(0); transition: transform .78s cubic-bezier(.76,0,.24,1); will-change: transform; }
+.intro-overlay { position: fixed; z-index: 1000; inset: 0; display: grid; place-items: center; overflow: hidden; padding: 24px; background: var(--bg); transform: translateY(0); transition: transform .9s cubic-bezier(.76,0,.24,1); will-change: transform; }
 .intro-overlay.is-exiting { transform: translateY(-105%); pointer-events: none; }
 .intro-overlay::before { position: absolute; inset: 0; content: ''; pointer-events: none; opacity: .34; background-image: linear-gradient(color-mix(in srgb, var(--lime) 12%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--lime) 12%, transparent) 1px, transparent 1px); background-size: 56px 56px; mask-image: radial-gradient(ellipse at center, #000 0%, transparent 76%); }
 .intro-overlay::after { position: absolute; top: 50%; left: 50%; width: min(800px, 100vw); height: min(620px, 100vh); content: ''; pointer-events: none; background: radial-gradient(ellipse, color-mix(in srgb, var(--lime) 12%, transparent), transparent 68%); transform: translate(-50%, -50%); }
@@ -940,7 +940,7 @@ h1 em, .contact-intro h2 em {
 .intro-skip { min-height: 42px; padding: 0 12px; border-radius: 999px; background: transparent; color: var(--muted); font-family: 'Space Mono', monospace; font-size: 10px; text-decoration: underline; text-underline-offset: 4px; transition: color .2s ease, background .2s ease; }
 .intro-skip:hover { background: color-mix(in srgb, var(--lime) 8%, transparent); color: var(--text); }
 .intro-progress { height: 2px; margin-top: 30px; overflow: hidden; background: var(--line-strong); }
-.intro-progress span { display: block; width: 100%; height: 100%; background: linear-gradient(90deg, var(--lime), var(--accent-cyan)); transform: scaleX(0); transform-origin: left; animation: intro-progress 3.6s linear forwards; }
+.intro-progress span { display: block; width: 100%; height: 100%; background: linear-gradient(90deg, var(--lime), var(--accent-cyan)); transform: scaleX(0); transform-origin: left; animation: intro-progress 1.9s linear forwards; }
 .intro-auto-copy { margin: 10px 0 0; color: var(--muted); font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .4px; }
 @keyframes intro-card-arrive { from { opacity: 0; transform: translateY(14px) scale(.985); filter: blur(4px); } to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
 @keyframes portfolio-arrive { from { opacity: 0; transform: translateY(12px); filter: blur(4px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }

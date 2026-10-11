@@ -2,7 +2,7 @@
 
 > Building practical software and connected hardware through curiosity, steady practice, and problem-solving.
 
-**Live portfolio:** [lekhya-clyggkzk.manus.space](https://lekhya-clyggkzk.manus.space/) · **Resume:** [View PDF](https://lekhya-clyggkzk.manus.space/resume.pdf) · **Current live source:** [Download ZIP](https://lekhya-clyggkzk.manus.space/source-code.zip)
+**Live portfolio:** [lekhya-dgkarbmr.manus.space](https://lekhya-dgkarbmr.manus.space/) · **Resume:** [View PDF](https://lekhya-dgkarbmr.manus.space/resume.pdf) · **Current live source:** [Download ZIP](https://lekhya-dgkarbmr.manus.space/source-code.zip)
 
 This repository accompanies my portfolio website. The public site is the current deployed experience; its combined release source and license are also available from the live site because the deployed version includes the Avatar Lab runtime.
 
@@ -36,7 +36,7 @@ Ongoing C++ and Java practice through data structures, algorithms, and coding ch
 
 ## What the portfolio includes
 
-- **Opening title card:** A live-typed “Hello, I'm” greeting introduces the portfolio; Enter, Skip, or the short timed transition scrolls the card upward to reveal the page.
+- **Opening title card:** On every page load and reload, a live-typed “Hello, I'm” greeting introduces the portfolio, holds briefly, then slides upward to reveal the page; Enter and Skip start the upward slide immediately.
 - **Project showcase:** Three project cards with filters for All signals, Embedded & IoT, Wireless control, and Problem solving.
 - **Animated project marks:** Each terminal-style card types its own project title and detail line character by character on entry, while the full copy remains available to assistive technology.
 - **Skills logo marquee:** Two circular-mark rows scroll in opposite directions, pause on hover, and become a static accessible list for reduced-motion users.
@@ -47,7 +47,7 @@ Ongoing C++ and Java practice through data structures, algorithms, and coding ch
 
 ## Portfolio chatbot and mascot
 
-The floating text assistant answers questions about my profile, skills, projects, education, achievements, internship availability, contact information, and resume. It uses shared, resume-grounded answers; the managed AI is used only to classify questions that the local topic rules cannot confidently route. Unsupported questions receive a safe prompt to use the contact links.
+The floating text assistant launcher remains on the revealed portfolio on every page load. It answers questions about my profile, skills, projects, education, achievements, internship availability, contact information, and resume. It uses shared, resume-grounded answers; the managed AI is used only to classify questions that the local topic rules cannot confidently route. Unsupported questions receive a safe prompt to use the contact links.
 
 The animated mascot uses the official [Bible Strong Avatar Lab](https://github.com/smontlouis/bible-strong-avatar-lab) React runtime. It reacts to typing and answer states, and its gaze follows the pointer while idle. Both the chatbot and the main portfolio avatar honor reduced-motion preferences.
 
@@ -91,14 +91,14 @@ Run `pnpm start` after a successful production build. The portfolio facts and de
 
 The combined deployed portfolio is licensed under **AGPL-3.0-only**, including its Avatar Lab integration. The live site provides the release-specific license and corresponding source archive:
 
-- [Live release license](https://lekhya-clyggkzk.manus.space/LICENSE)
-- [Download the current live source archive](https://lekhya-clyggkzk.manus.space/source-code.zip)
+- [Live release license](https://lekhya-dgkarbmr.manus.space/LICENSE)
+- [Download the current live source archive](https://lekhya-dgkarbmr.manus.space/source-code.zip)
 - [Avatar Lab upstream source](https://github.com/smontlouis/bible-strong-avatar-lab)
 
 ## Useful links
 
-- [Live portfolio](https://lekhya-clyggkzk.manus.space/)
-- [Resume PDF](https://lekhya-clyggkzk.manus.space/resume.pdf)
+- [Live portfolio](https://lekhya-dgkarbmr.manus.space/)
+- [Resume PDF](https://lekhya-dgkarbmr.manus.space/resume.pdf)
 - [GitHub profile](https://github.com/lekhya-coder)
 - [LinkedIn](https://linkedin.com/in/lekhya-vinjamuri)
 - [LeetCode](https://leetcode.com/u/VLekhya)

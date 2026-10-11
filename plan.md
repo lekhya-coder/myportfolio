@@ -47,7 +47,7 @@ A single-page personal resume portfolio for recruiters, technical selection team
 
 ## Requested interaction and connection refinements
 
-- Restore the original live site's introduction from its public source: wait two seconds after page load before showing the card, type “Hello, I'm” live, show Lekhya's original profile details, then exit upward on Enter, Skip, or its timed transition. Keep the original appearance, active site theme, controls, focus behavior, and reduced-motion support.
+- Restore the original live site's introduction from its public source: wait two seconds after page load before showing the card, type “Hello, I'm” live, hold for about one second after the final character, then slide the card upward over about 0.9 seconds on its timed transition. Enter and Skip can still start the same upward slide immediately. Start the introduction again on every page reload (do not persist a dismissed state), keep the original appearance, active site theme, profile details, controls, focus behavior, and reduced-motion support, and keep the floating chatbot launcher present on the revealed website on every load.
 - Under “The tools I turn into momentum,” show every verified skill logo/icon in exactly two continuous rows, then the skill cards. Both rows start together, run at the same speed, and travel in opposite directions with seamless duplicate loops; pause both on hover, expose one semantic skills list while hiding duplicates from assistive technology, and show one static list when reduced motion is preferred.
 - Place a compact Quick connect row immediately after the About section's Profile Summary card, using the verified public email, LinkedIn, and GitHub contact destinations.
 

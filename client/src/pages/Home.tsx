@@ -50,14 +50,14 @@ type IntroPhase = "waiting" | "visible" | "exiting" | "closed";
 type ScrollingSkill = { label: string; Icon: LucideIcon; logoSrc?: string };
 const INTRO_GREETING = "Hello, I'm";
 const INTRO_OPEN_DELAY_MS = 2000;
-const INTRO_AUTO_DISMISS_MS = 3600;
-const INTRO_EXIT_MS = 780;
+const INTRO_AUTO_DISMISS_MS = 1900;
+const INTRO_EXIT_MS = 900;
 const INTRO_GREETING_INTERVAL_MS = 86;
 
 const profile = {
   name: "Vinjamuri Lekhya Sahiti",
   title: "IoT & Software Developer · B.Tech Student",
-  eyebrow: "B.Tech in Internet of Things (IoT) · SYNTH VISION Finalist",
+  eyebrow: "B.Tech in Internet of Things (IoT)",
   intro:
     "Second-year B.Tech student in Internet of Things at VNRVJIET with a strong academic foundation and a keen interest in software development, AI, and problem solving. Building foundations in Java, C++, and Data Structures through embedded-systems projects, hackathons, and regular coding practice.",
   location: "Hyderabad, India · VNRVJIET",

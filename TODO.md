@@ -3,9 +3,9 @@
 ## Recruiter-facing portfolio experience
 - [x] The website provides a polished, responsive single-page interface with a navy/white/charcoal palette, electric accent color, readable typography, smooth scrolling, subtle motion, visible focus states, and mobile navigation.
 - [x] The sticky navigation exposes Overview, About, Experience, Projects, and Contact sections, with a light/dark mode toggle, social/profile links, back-to-top action, and accessible labels.
-- [x] The hero introduces Vinjamuri Lekhya Sahiti as a second-year B.Tech student in Internet of Things at VNRVJIET, highlights CGPA 9.48/10 and internship availability, and provides resume view, resume download, and contact actions.
+- [x] The hero introduces Vinjamuri Lekhya Sahiti as a second-year B.Tech student in Internet of Things at VNRVJIET, and its top eyebrow reads “B.Tech in Internet of Things (IoT)” without appending “SYNTH VISION Finalist”; keep that recognition in the achievements section. The hero highlights CGPA 9.48/10 and internship availability, and provides resume view, resume download, and contact actions.
 - [x] The recruiter snapshot strip summarizes current focus, core practice, hands-on IoT work, and academic standing without claiming unsupported proficiency scores.
-- [x] About two seconds after page load, show the original site's full-screen opening title card, type “Hello, I'm” live, and present Vinjamuri Lekhya Sahiti's verified profile details. Match the original card's appearance and theme, preserve its Enter and Skip controls, focus behavior and reduced-motion support, and scroll the card upward to reveal the website on Enter, Skip, or its timed transition.
+- [x] About two seconds after every page load/reload, show the original site's full-screen opening title card, type “Hello, I'm” live, hold for about one second after the final character, then slide the card upward over about 0.9 seconds to reveal the website. Match the original card's appearance and theme, present Vinjamuri Lekhya Sahiti's verified profile details, preserve its Enter and Skip controls, focus behavior and reduced-motion support, and let Enter or Skip start the upward slide immediately.
 - [x] Under “The tools I turn into momentum,” show every skill logo/icon in exactly two continuous rows that move simultaneously in opposite directions at the same speed, using seamless duplicate loops. Pause both on hover, expose one semantic skills list while hiding duplicates from assistive technology, and show a static list for reduced-motion users.
 
 ## Resume-grounded evidence
@@ -22,7 +22,7 @@
 ## Contact and assistant
 - [x] The final Contact section is display-only and does not collect visitor-entered name, email, subject, or message data.
 - [x] The Contact section displays direct email, phone, LinkedIn, GitHub, LeetCode, CodeChef, location, internship focus, core strengths, and academic details.
-- [x] A floating resume assistant opens from the bottom-right, supports suggested questions, timestamps, typing state, clear history, Escape-to-close, and responsive layout.
+- [x] A floating resume assistant opens from the bottom-right and its launcher is present on every website load after the intro card reveals the portfolio; it supports suggested questions, timestamps, typing state, clear history, Escape-to-close, and responsive layout.
 - [x] The open resume assistant provides direct View resume and Download PDF actions linked to the supplied `/resume.pdf`.
 - [x] The assistant classifies ambiguous questions with the managed AI service but returns only fixed responses from a shared resume-grounded fact source; it does not forward chat history into future classification turns or echo unsupported generated facts.
 - [x] Server and client fallback routing share one intent map covering About/profile, technical skills, projects, education, achievements, availability, contact details, and resume access, with focused tests for each topic and safe unknown-question handling.
