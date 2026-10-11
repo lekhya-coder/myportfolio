@@ -47,7 +47,7 @@ A single-page personal resume portfolio for recruiters, technical selection team
 
 ## Requested interaction and connection refinements
 
-- Restore the original live site's first-load introduction from its public source: type “Hello, I'm” live, show Lekhya's original profile details, and exit upward on Enter, Skip, or the original timed transition. Keep its original appearance, active site theme, controls, focus behavior, and reduced-motion support; do not redesign or retime it.
+- Restore the original live site's introduction from its public source: wait two seconds after page load before showing the card, type “Hello, I'm” live, show Lekhya's original profile details, then exit upward on Enter, Skip, or its timed transition. Keep the original appearance, active site theme, controls, focus behavior, and reduced-motion support.
 - Preserve the original Technical toolkit order: section title and descriptive copy, then exactly two continuous rows of verified skill logos/icons, followed by the skill cards. The first row travels left and the second right. Keep both loops seamless, pause on hover, expose one semantic skills list while hiding duplicate loop content from assistive technology, and show one static list when reduced motion is preferred.
 - Place a compact Quick connect row immediately after the About section's Profile Summary card, using the verified public email, LinkedIn, and GitHub contact destinations.
 
